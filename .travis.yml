@@ -1,9 +1,13 @@
 language: bash 
 
 script:
-## Test Print Message (Delete it later)
-- echo "hello world"
-- echo "Test"
-
 # You can add any script with sh command to run any scripts in the repo you want 
+- echo "---- Start Running Test Scripts ----"
+
+# Add in requirements later if deploy is mandatory 
+deploy:
+- echo "---- Starting Deploy Process ----"
+
+after_deploy:
+- echo "Deployment is successful."
 
