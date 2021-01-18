@@ -1,5 +1,10 @@
 language: bash 
 
-
 script:
+## Test Print Message (Delete it later)
 - echo "hello world"
+
+# You can add any script with sh command to run any scripts in the repo you want 
+
+create an error to check block merge 
+
