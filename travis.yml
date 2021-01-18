@@ -1,0 +1,34 @@
+  # Remember to add a dot for the name to be ".travis.yml"
+
+  language: python
+  python:
+    - "2.7"
+    - "3.4"
+    - "3.5"
+    - "3.6"      # current default Python on Travis CI
+    - "3.7"
+    - "3.8"
+    - "3.9"
+    - "3.9-dev"  # 3.9 development branch
+    - "nightly"  # nightly build
+
+  # Please change the version if you needed 
+  env:
+    - DJANGO_VERSION=2.1.13
+    - DJANGO_VERSION=2.2.6
+
+  # command to install dependencies
+  install:
+    # needed Python dependencies added to the requirements.txt 
+    - pip install -r requirements.txt
+    - pip install -q Django==$DJANGO_VERSION
+    - python setup.py -q install
+
+    # try to add a install shell script here 
+
+  # command to run tests
+  script:
+    - make test 
+
+  deploy:
+    # Adjust this relate to requirements later 
