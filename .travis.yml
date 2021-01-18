@@ -4,10 +4,10 @@ script:
 # You can add any script with sh command to run any scripts in the repo you want 
 - echo "---- Start Running Test Scripts ----"
 
-# Add in requirements later if deploy is mandatory 
-deploy:
-- echo "---- Starting Deploy Process ----"
+# Not sure what needs to be done in deploy yet 
+# deploy:
+# - echo "---- Starting Deploy Process ----"
 
-after_deploy:
-- echo "Deployment is successful."
+# after_deploy:
+# - echo "Deployment is successful."
 
