@@ -9,7 +9,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/auth">
+        <Route path="/">
           <AuthPage />
         </Route>
         <Route path="/profile">

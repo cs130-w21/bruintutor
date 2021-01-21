@@ -1,17 +1,18 @@
+import TextInput from "../TextInput";
 import styles from "./styles.jsx";
-const TextInput = ({
+const AppTextInput = ({
   value,
-  type = "text",
+  style,
+  type,
   autoComplete,
   placeholder,
   onInput,
-  style,
 }) => {
   return (
-    <input
+    <TextInput
       type={type}
-      style={{ ...styles.input, ...style }}
       value={value}
+      style={{ ...styles.input, ...style }}
       placeholder={placeholder}
       autoComplete={autoComplete}
       onInput={onInput}
@@ -19,4 +20,4 @@ const TextInput = ({
   );
 };
 
-export default TextInput;
+export default AppTextInput;
