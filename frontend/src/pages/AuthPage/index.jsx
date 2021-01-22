@@ -5,8 +5,10 @@ import AppButton from "../../components/AppButton";
 import Text from "../../components/Text";
 import { themeColors, AuthStates } from "../../config";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const AuthPage = () => {
+  let history = useHistory();
   const [authState, setAuthState] = useState(AuthStates.SIGNIN);
   const [email, setEmail] = useState("");
   const [passwd, setPassWd] = useState("");
@@ -35,7 +37,9 @@ const AuthPage = () => {
               autoComplete="on"
               onInput={(e) => setPassWd(e.target.value)}
             />
-            <AppButton>Sign In</AppButton>
+            <AppButton onClick={() => history.push("/profile")}>
+              Sign In
+            </AppButton>
             <AppButton
               style={{
                 backgroundColor: "transparent",
@@ -98,7 +102,9 @@ const AuthPage = () => {
               type={"password"}
               onInput={(e) => setPassWd_2(e.target.value)}
             />
-            <AppButton>Create</AppButton>
+            <AppButton onClick={() => history.push("/profile")}>
+              Create
+            </AppButton>
             <AppButton
               style={{
                 backgroundColor: "transparent",
@@ -129,7 +135,7 @@ const AuthPage = () => {
               type={"email"}
               onInput={(e) => setEmail(e.target.value)}
             />
-            <AppButton>Send</AppButton>
+            <AppButton onClick={() => history.push("/reset")}>Send</AppButton>
             <AppButton
               style={{
                 backgroundColor: "transparent",

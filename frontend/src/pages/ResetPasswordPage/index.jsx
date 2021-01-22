@@ -1,0 +1,36 @@
+import Frame from "../../components/Frame";
+import PageFrame from "../../components/PageFrame";
+import AppTextInput from "../../components/AppTextInput";
+import AppButton from "../../components/AppButton";
+import Text from "../../components/Text";
+import { useState } from "react";
+
+const ResetPasswordPage = () => {
+  const [passwd, setPassWd] = useState("");
+  const [passwd_2, setPassWd_2] = useState("");
+  return (
+    <PageFrame>
+      <Frame>
+        <Text style={{ fontSize: 22, fontWeight: "bold", margin: 20 }}>
+          Reset Password
+        </Text>
+        <AppTextInput
+          placeholder="Password"
+          value={passwd}
+          type={"password"}
+          autoComplete="on"
+          onInput={(e) => setPassWd(e.target.value)}
+        />
+        <AppTextInput
+          placeholder="Confirm Password"
+          value={passwd_2}
+          type={"password"}
+          onInput={(e) => setPassWd_2(e.target.value)}
+        />
+        <AppButton>Change</AppButton>
+      </Frame>
+    </PageFrame>
+  );
+};
+
+export default ResetPasswordPage;
