@@ -8,6 +8,7 @@ const ProfileFrame = ({ children, style }) => {
         borderRadius: 20,
         backgroundColor: themeColors.darkgray,
         padding: 20,
+        boxShadow: "5px 5px 5px rgba(0,0,0,0.5)",
         ...style,
       }}
     >

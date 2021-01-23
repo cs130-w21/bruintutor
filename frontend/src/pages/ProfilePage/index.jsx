@@ -18,6 +18,17 @@ const ProfilePage = ({ match, uid }) => {
       major: "Computer Science",
       year: 3,
       rating: 3,
+      classes: [
+        "CS 111",
+        "COMSCI 131",
+        "CS 130",
+        "MATH 143",
+        "CS 111",
+        "CHEM 131",
+        "CS 130",
+        "PHYSICS 143",
+        "CS 111",
+      ],
     });
   }, []);
   const setProfileUrl = (url) =>
@@ -57,7 +68,7 @@ const ProfilePage = ({ match, uid }) => {
             <MsgSection />
           </Frame>
           <Frame>
-            <CourseSection />
+            {profileInfo && <CourseSection classes={profileInfo.classes} />}
             <CalendarSection />
           </Frame>
           <Frame>
