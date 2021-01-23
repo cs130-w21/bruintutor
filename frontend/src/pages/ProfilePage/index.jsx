@@ -11,7 +11,6 @@ import ProfileDescription from "../../components/ProfileDescription";
 import ProfileItem from "../../components/ProfileItem";
 import Line from "../../components/Line";
 import HeaderSpacer from "../../components/HeaderSpacer";
-import TouchableOpacity from "../../components/TouchableOpacity";
 
 const ProfilePage = () => {
   let history = useHistory();
