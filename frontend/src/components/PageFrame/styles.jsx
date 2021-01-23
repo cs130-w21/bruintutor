@@ -1,0 +1,68 @@
+import { themeColors } from "../../config.js";
+
+export default {
+  container: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "stretch",
+    fontFamily: "Roboto",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "stretch",
+    backgroundColor: themeColors.lightgray,
+  },
+  footer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "stretch",
+    backgroundColor: themeColors.darkgray,
+  },
+  title: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 25,
+    fontWeight: "bold",
+    color: themeColors.darkblue,
+    padding: 10,
+  },
+  content: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerRight: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  footerLeft: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  footerRight: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
+    color: themeColors.darkblue,
+    fontSize: 20,
+    padding: 10,
+  },
+};
