@@ -30,17 +30,7 @@ const PageFrame = ({ headerRight, children }) => {
   return (
     <Frame
       title={"BruinTutors"}
-      headerRight={
-        <TouchableOpacity
-          style={{
-            padding: 10,
-            color: themeColors.darkblue,
-            fontWeight: "bold",
-          }}
-        >
-          Sign In
-        </TouchableOpacity>
-      }
+      headerRight={headerRight}
       footerLeft={
         <>
           <FooterOption optionText="Privacy Policy" />

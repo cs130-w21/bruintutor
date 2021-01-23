@@ -7,7 +7,7 @@ import { themeColors, AuthStates } from "../../config";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const AuthPage = () => {
+const AuthPage = ({ uid }) => {
   let history = useHistory();
   const [authState, setAuthState] = useState(AuthStates.SIGNIN);
   const [email, setEmail] = useState("");
@@ -37,7 +37,7 @@ const AuthPage = () => {
               autoComplete="on"
               onInput={(e) => setPassWd(e.target.value)}
             />
-            <AppButton onClick={() => history.push("/profile")}>
+            <AppButton onClick={() => history.push("/profile/" + uid)}>
               Sign In
             </AppButton>
             <AppButton
@@ -135,7 +135,9 @@ const AuthPage = () => {
               type={"email"}
               onInput={(e) => setEmail(e.target.value)}
             />
-            <AppButton onClick={() => history.push("/reset")}>Send</AppButton>
+            <AppButton onClick={() => history.push("/reset/" + uid)}>
+              Send
+            </AppButton>
             <AppButton
               style={{
                 backgroundColor: "transparent",

@@ -1,4 +1,5 @@
+import PageFrame from "../../components/PageFrame";
 const SearchPage = () => {
-  return <div>Search Page</div>;
+  return <PageFrame>SearchPage</PageFrame>;
 };
 export default SearchPage;
