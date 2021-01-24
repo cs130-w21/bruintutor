@@ -4,3 +4,4 @@ tags*
 .rdb
 virtualenv/**
 __pycache__
+**/.eslintcache
