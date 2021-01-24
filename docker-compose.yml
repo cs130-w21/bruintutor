@@ -2,6 +2,7 @@ version: '3'
 
 services:
   frontend:
+    restart: unless-stopped
     build: ./frontend
     container_name: frontend
     ports:
@@ -12,3 +13,16 @@ services:
     build: ./nginx
     ports:
       - 8080:80
+
+  flask:
+    restart: unless-stopped
+    build: ./backend
+    container_name: backend
+    depends_on:
+      - redis
+    ports:
+      - 5001:5000
+
+  redis:
+    image: redis
+
