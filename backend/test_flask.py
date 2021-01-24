@@ -1,10 +1,7 @@
-from flask import Flask
-from flask_restful import Resource, Api
 import sys
 import os
 import json
-from flask import app,Flask, request
-from flask_restful import Resource, Api, reqparse
+from flask import Flask, request
 import redis
 
 app = Flask(__name__)
