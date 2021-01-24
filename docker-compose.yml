@@ -2,17 +2,24 @@ version: '3'
 
 services:
   frontend:
-    restart: unless-stopped
+    restart: 'no'
     build: ./frontend
     container_name: frontend
-    ports:
-      - 5000:80
+    volumes:
+      - static-pages:/usr/src/app/build/
 
   nginx:
     restart: unless-stopped
     build: ./nginx
+    # depends_on does not wait till ready; static files may not be avail immediate
+    # https://docs.docker.com/compose/startup-order/
+    depends_on:
+      - flask
+      - frontend
     ports:
       - 8080:80
+    volumes:
+      - static-pages:/var/www/:ro
 
   flask:
     restart: unless-stopped
@@ -25,4 +32,7 @@ services:
 
   redis:
     image: redis
+
+volumes:
+  static-pages:
 
