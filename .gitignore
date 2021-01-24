@@ -4,6 +4,7 @@ tags*
 .rdb
 virtualenv/**
 __pycache__
-**/.eslintcache
+**/.eslintcache*
 **/package-lock.json
 **/yarn.lock
+**/debug.log

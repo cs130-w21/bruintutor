@@ -2,6 +2,7 @@ export const themeColors = {
   darkblue: "#004D7F",
   lightgray: "#F0F0F0",
   darkgray: "#C4C4C4",
+  black: "#444444",
   // put theme colors here
 };
 

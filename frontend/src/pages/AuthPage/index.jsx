@@ -3,11 +3,12 @@ import PageFrame from "../../components/PageFrame";
 import AppTextInput from "../../components/AppTextInput";
 import AppButton from "../../components/AppButton";
 import Text from "../../components/Text";
+import ToggleSwitch from "../../components/ToggleSwitch";
 import { themeColors, AuthStates } from "../../config";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const AuthPage = () => {
+const AuthPage = ({ uid }) => {
   let history = useHistory();
   const [authState, setAuthState] = useState(AuthStates.SIGNIN);
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ const AuthPage = () => {
   const [passwd_2, setPassWd_2] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [isTutor, setIsTutor] = useState(false);
   switch (authState) {
     case AuthStates.SIGNIN:
       return (
@@ -37,7 +39,7 @@ const AuthPage = () => {
               autoComplete="on"
               onInput={(e) => setPassWd(e.target.value)}
             />
-            <AppButton onClick={() => history.push("/profile")}>
+            <AppButton onClick={() => history.push("/profile/" + uid)}>
               Sign In
             </AppButton>
             <AppButton
@@ -102,7 +104,12 @@ const AuthPage = () => {
               type={"password"}
               onInput={(e) => setPassWd_2(e.target.value)}
             />
-            <AppButton onClick={() => history.push("/profile")}>
+            <ToggleSwitch
+              label={"I want to be a tutor"}
+              checked={isTutor}
+              onChange={setIsTutor}
+            />
+            <AppButton onClick={() => history.push("/edit_profile/" + uid)}>
               Create
             </AppButton>
             <AppButton
@@ -135,7 +142,9 @@ const AuthPage = () => {
               type={"email"}
               onInput={(e) => setEmail(e.target.value)}
             />
-            <AppButton onClick={() => history.push("/reset")}>Send</AppButton>
+            <AppButton onClick={() => history.push("/reset/" + uid)}>
+              Send
+            </AppButton>
             <AppButton
               style={{
                 backgroundColor: "transparent",
