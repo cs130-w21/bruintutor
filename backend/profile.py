@@ -43,4 +43,4 @@ def register():
 
         flash(error)
 
-    return , 200
+    return '', 200

@@ -41,7 +41,7 @@ def register():
 
         flash(error)
 
-    return , 200
+    return '', 200
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
@@ -75,7 +75,7 @@ def login():
 
         flash(error)
 
-    return , 200
+    return '', 200
 
 @bp.route('/forgot', methods=('GET', 'POST'))
 def forgot():
@@ -99,7 +99,7 @@ def forgot():
             # TODO: send forgot password email
             return redirect(url_for('auth.login'))
 
-    return render_template('auth/forgot.html')
+    return '', 200
 
 @bp.route('/reset', methods=('GET', 'POST'))
 def reset ():
@@ -118,7 +118,7 @@ def reset ():
             redis_client.hset(uid, 'password', password)
             return redirect(url_for('auth.login'))
 
-    return , 200
+    return '', 200
 
 @bp.before_app_request
 def load_logged_in_user():
