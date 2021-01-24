@@ -5,4 +5,10 @@ services:
     build: ./frontend
     container_name: frontend
     ports:
+      - 5000:80
+
+  nginx:
+    restart: unless-stopped
+    build: ./nginx
+    ports:
       - 8080:80
