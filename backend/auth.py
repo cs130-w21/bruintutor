@@ -4,9 +4,9 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
-# TODO: why specify GETTABLE?
+# TODO: why specify GET?
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     redis_client = current_app.config['RDSCXN']

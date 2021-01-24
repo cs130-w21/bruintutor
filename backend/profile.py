@@ -4,7 +4,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-bp = Blueprint('profile', __name__, url_prefix='/auth')
+bp = Blueprint('profile', __name__, url_prefix='/api/auth')
 
 @bp.route('/edit', methods=('GET', 'POST'))
 def register():
