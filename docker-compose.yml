@@ -31,7 +31,7 @@ services:
       - 5001:5000
 
   redis:
-    image: redis
+    image: redis-alpine
     volumes:
       - redis-data:/data
 
