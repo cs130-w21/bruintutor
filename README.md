@@ -7,6 +7,20 @@
 which is good in them and follow it, and that which is bad and change it.” 
 -- Confucius *
 
+## Docker configuration
+
+All containers are accessible by their name:  
+- `frontend` (ephemeral - exits after static file gen)
+- `backend` (uwsgi instance)
+- `redis`
+
+**Exposed ports** are accessible from container to container. These are:
+- `backend:5000` (uwsgi TCP port, used to forward nginx)
+- `redis:6379` (redis DB port, used by backend to communicate with redis)
+
+**Published ports** are accessible from host to container.  
+`backend:80` is the only such port, which can be reached from `localhost:8080`
+
 ## Developing with Docker
 *equivalents exist for Docker Desktop*
 
@@ -56,5 +70,5 @@ Detach container and keep it running in background: `-d`
 
 ### Misc
 
-Delete cached images
+Delete cached images:  
 `docker system prune`

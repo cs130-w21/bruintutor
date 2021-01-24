@@ -27,11 +27,11 @@ services:
     container_name: backend
     depends_on:
       - redis
-    ports:
-      - 5001:5000
+    expose:
+      - 5000
 
   redis:
-    image: redis-alpine
+    image: redis:alpine
     volumes:
       - redis-data:/data
 
