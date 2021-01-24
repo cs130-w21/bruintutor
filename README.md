@@ -72,3 +72,6 @@ Detach container and keep it running in background: `-d`
 
 Delete cached images:  
 `docker system prune`
+
+Create a local redis instance connectable from localhost:6379:
+`docker run --rm -d -p 6379:6379 redis:alpine`
