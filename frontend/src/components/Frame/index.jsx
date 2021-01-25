@@ -1,5 +1,5 @@
 import styles from "./styles";
-const Frame = ({ children, extraStyle }) => {
-  return <div style={{ ...styles.frame, ...extraStyle }}>{children}</div>;
+const Frame = ({ children, style }) => {
+  return <div style={{ ...styles.frame, ...style }}>{children}</div>;
 };
 export default Frame;

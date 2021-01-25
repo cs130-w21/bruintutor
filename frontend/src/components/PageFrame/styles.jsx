@@ -38,7 +38,9 @@ export default {
     padding: 10,
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
+    overflowY: "auto",
+    overflowX: "hidden",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

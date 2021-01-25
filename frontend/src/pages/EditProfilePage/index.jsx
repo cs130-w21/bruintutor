@@ -1,4 +1,5 @@
+import PageFrame from "../../components/PageFrame";
 const EditProfilePage = () => {
-  return <div>EditProfilePage</div>;
+  return <PageFrame>EditProfilePage</PageFrame>;
 };
 export default EditProfilePage;
