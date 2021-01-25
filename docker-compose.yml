@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  frontend:
+    restart: 'no'
+    build: ./frontend
+    container_name: frontend
+    volumes:
+      - static-pages:/usr/src/app/build/
+
+  nginx:
+    restart: unless-stopped
+    build: ./nginx
+    # depends_on does not wait till ready; static files may not be avail immediate
+    # https://docs.docker.com/compose/startup-order/
+    depends_on:
+      - flask
+      - frontend
+    ports:
+      - 8080:80
+    volumes:
+      - static-pages:/var/www/:ro
+
+  flask:
+    restart: unless-stopped
+    build: ./backend
+    container_name: backend
+    depends_on:
+      - redis
+    expose:
+      - 5000
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis-data:/data
+
+volumes:
+  static-pages:
+  redis-data:

@@ -10,6 +10,8 @@ export const AuthStates = {
   SIGNIN: 0,
   SIGNUP: 1,
   FORGETPWD: 2,
+  PROFILE_VIEW: 3,
+  PROFILE_SAVE_CHANGES: 4,
 };
 
 export const icons = {

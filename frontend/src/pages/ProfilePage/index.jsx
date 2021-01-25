@@ -79,4 +79,5 @@ const ProfilePage = ({ match, uid }) => {
     </PageFrame>
   );
 };
+
 export default ProfilePage;
