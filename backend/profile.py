@@ -1,10 +1,10 @@
 import functools
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-bp = Blueprint('profile', __name__, url_prefix='/api/auth')
+bp = Blueprint('profile', __name__, url_prefix='/api/profile')
 
 @bp.route('/edit', methods=('GET', 'POST'))
 def register():
@@ -13,6 +13,7 @@ def register():
         fname = request.form['fname']
         lname = request.form['lname']
         email = request.form['email']
+        # TODO: store year and major
         year = request.form['year']
         major = request.form['major']
 

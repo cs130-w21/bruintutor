@@ -1,13 +1,11 @@
-language: bash 
+matrix:
+  include:
+    - language: bash
+      python: 3.6
+      install:
+      - sudo pip install -r ./backend/requirements.txt
 
-script:
-# You can add any script with sh command to run any scripts in the repo you want 
-- echo "---- Start Running Test Scripts ----"
-
-# Not sure what needs to be done in deploy yet 
-# deploy:
-# - echo "---- Starting Deploy Process ----"
-
-# after_deploy:
-# - echo "Deployment is successful."
-
+      script:
+      - echo "---- Start Running Backend Unit Tests ----"
+      - cd ./backend/test
+      - PYTHONPATH=.. pytest -v
