@@ -29,7 +29,9 @@ function App() {
           <Route
             exact
             path="/auth"
-            render={({ match }) => <AuthPage uid={uid} match={match} />}
+            render={({ match }) => (
+              <AuthPage uid={uid} setUid={setUid} match={match} />
+            )}
           />
           <Route
             exact

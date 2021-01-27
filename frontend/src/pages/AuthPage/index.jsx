@@ -5,10 +5,11 @@ import AppButton from "../../components/AppButton";
 import Text from "../../components/Text";
 import ToggleSwitch from "../../components/ToggleSwitch";
 import { themeColors, AuthStates } from "../../config";
-import { useState } from "react";
+import { signUpUser } from "../../api";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-const AuthPage = ({ uid }) => {
+const AuthPage = ({ uid, setUid }) => {
   let history = useHistory();
   const [authState, setAuthState] = useState(AuthStates.SIGNIN);
   const [email, setEmail] = useState("");
@@ -17,6 +18,19 @@ const AuthPage = ({ uid }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isTutor, setIsTutor] = useState(false);
+  const handleSignUp = async () => {
+    const res = await signUpUser(firstName, lastName, email, passwd, isTutor);
+    if (res.error) {
+      console.log(res.errMsg);
+    } else {
+      const data = res.data;
+      setUid(data.uid);
+    }
+    history.push("/eidt_profile/" + uid);
+  };
+  const handleSignIn = async () => {
+    history.push("/profile/" + uid);
+  };
   switch (authState) {
     case AuthStates.SIGNIN:
       return (
@@ -39,9 +53,7 @@ const AuthPage = ({ uid }) => {
               autoComplete="on"
               onInput={(e) => setPassWd(e.target.value)}
             />
-            <AppButton onClick={() => history.push("/profile/" + uid)}>
-              Sign In
-            </AppButton>
+            <AppButton onClick={handleSignIn}>Sign In</AppButton>
             <AppButton
               style={{
                 backgroundColor: "transparent",
@@ -109,9 +121,7 @@ const AuthPage = ({ uid }) => {
               checked={isTutor}
               onChange={setIsTutor}
             />
-            <AppButton onClick={() => history.push("/edit_profile/" + uid)}>
-              Create
-            </AppButton>
+            <AppButton onClick={handleSignUp}>Create</AppButton>
             <AppButton
               style={{
                 backgroundColor: "transparent",
