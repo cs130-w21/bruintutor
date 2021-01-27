@@ -7,15 +7,16 @@ from werkzeug.security import check_password_hash, generate_password_hash
 bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
 # TODO: why specify GET?
-@bp.route('/register', methods=('GET', 'POST'))
+@bp.route('/signUp', methods=('GET', 'POST'))
 def register():
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
-        fname = request.form['fname']
-        lname = request.form['lname']
-        email = request.form['email']
-        password = request.form['password']
-        isTutor = request.form['isTutor']
+        data = request.get_json(force=True)
+        fname = data['firstName']
+        lname = data['lastName']
+        email = data['email']
+        password = data['password']
+        isTutor = int(data['isTutor'])
         error = None
 
         if not fname:
@@ -28,14 +29,14 @@ def register():
             error = 'Password is required.'
 
         else:
-            for uid in redis_client.keys("uid*"):
+            for uid in redis_client.keys("user*"):
                 if email == redis_client.hget(uid, 'email'):
                     error = 'Email {} is already registered.'.format(email)
 
         if error is None:
             next_uid = redis_client.get('next_uid')
             redis_client.incr('next_uid')
-            redis_client.hmset("uid{}".format(next_uid), {'fname': fname, 'lname': lname, 'email': email, 'password': generate_password_hash(password), 'isTutor': isTutor, 'uid': "uid{}".format(next_uid)})
+            redis_client.hmset("user{}".format(next_uid), {'fname': fname, 'lname': lname, 'email': email, 'password': generate_password_hash(password), 'isTutor': isTutor, 'uid': next_uid})
             redis_client.bgsave()
             return redirect(url_for('auth.login'))
 
@@ -47,21 +48,20 @@ def register():
 def login():
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
-        username = request.form['email']
-        password = request.form['password']
+        data = request.get_json(force=True)
+        email = data['email']
+        password = data['password']
         # db = get_db()
         error = None
         # user = db.execute(
         #     'SELECT * FROM user WHERE username = ?', (username,)
         # ).fetchone()
         user = None
-        for uid in redis_client.keys("uid*"):
+        for uid in redis_client.keys("user*"):
             u = redis_client.hgetall(uid)
-            print(user)
-            if u['email'] == email:
+            if u is not None and u['email'] == email:
                 user = u
                 break
-        # print(user['password'])
 
         if user is None:
             error = 'Invalid email.'
@@ -79,15 +79,16 @@ def login():
 
 @bp.route('/forgot', methods=('GET', 'POST'))
 def forgot():
+    redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
-        email = request.form['email']
+        data = request.get_json(force=True)
+        email = data['email']
 
         error = None
 
         user = None
         for uid in redis_client.keys("uid*"):
             u = redis_client.hgetall(uid)
-            print(user)
             if u['email'] == email:
                 user = u
                 break
@@ -103,8 +104,10 @@ def forgot():
 
 @bp.route('/reset', methods=('GET', 'POST'))
 def reset ():
+    redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
-        email = request.form['password']
+        data = request.get_json(force=True)
+        email = data['password']
 
         error = None
 
@@ -122,6 +125,7 @@ def reset ():
 
 @bp.before_app_request
 def load_logged_in_user():
+    redis_client = current_app.config['RDSCXN']
     user_id = session.get('user_id')
 
     if user_id is None:
