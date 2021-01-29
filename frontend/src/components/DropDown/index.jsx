@@ -1,4 +1,5 @@
 // Need to npm install react-select@3.1.0
+
 import Select from 'react-select';
 
 // Replace this array with the full class list from UCLA registar 
@@ -24,3 +25,4 @@ function AppDropDown () {
 };
 
 export default AppDropDown;
+

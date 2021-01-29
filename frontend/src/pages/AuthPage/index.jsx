@@ -5,7 +5,7 @@ import AppButton from "../../components/AppButton";
 import Text from "../../components/Text";
 import ToggleSwitch from "../../components/ToggleSwitch";
 import { themeColors, AuthStates } from "../../config";
-import { signUpUser } from "../../api";
+import { signUpUser, forgotPwd } from "../../api";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -28,9 +28,15 @@ const AuthPage = ({ uid, setUid }) => {
     }
     history.push("/eidt_profile/" + uid);
   };
+
   const handleSignIn = async () => {
     history.push("/profile/" + uid);
   };
+
+  const handleResetPassword = async () => {
+    await forgotPwd(email);
+  };
+
   switch (authState) {
     case AuthStates.SIGNIN:
       return (
@@ -152,9 +158,7 @@ const AuthPage = ({ uid, setUid }) => {
               type={"email"}
               onInput={(e) => setEmail(e.target.value)}
             />
-            <AppButton onClick={() => history.push("/reset/" + uid)}>
-              Send
-            </AppButton>
+            <AppButton onClick={handleResetPassword}>Send</AppButton>
             <AppButton
               style={{
                 backgroundColor: "transparent",
