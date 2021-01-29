@@ -26,7 +26,7 @@ const AuthPage = ({ uid, setUid }) => {
       const data = res.data;
       setUid(data.uid);
     }
-    history.push("/eidt_profile/" + uid);
+    history.push("/edit_profile/" + uid);
   };
 
   const handleSignIn = async () => {

@@ -50,7 +50,7 @@ function App() {
           />
           <Route
             exact
-            path="/reset/:id"
+            path="/reset/:secret"
             render={({ match }) => (
               <ResetPasswordPage uid={uid} match={match} />
             )}

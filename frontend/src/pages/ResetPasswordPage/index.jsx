@@ -3,11 +3,19 @@ import PageFrame from "../../components/PageFrame";
 import AppTextInput from "../../components/AppTextInput";
 import AppButton from "../../components/AppButton";
 import Text from "../../components/Text";
+import { resetPwd } from "../../api";
 import { useState } from "react";
 
-const ResetPasswordPage = () => {
+const ResetPasswordPage = ({ match }) => {
   const [passwd, setPassWd] = useState("");
   const [passwd_2, setPassWd_2] = useState("");
+  const handleResetPwd = async () => {
+    if (passwd === passwd_2) {
+      await resetPwd(passwd, match.params.secret);
+    } else {
+      window.alert("Passwords don't match!");
+    }
+  };
   return (
     <PageFrame>
       <Frame>
@@ -27,7 +35,7 @@ const ResetPasswordPage = () => {
           type={"password"}
           onInput={(e) => setPassWd_2(e.target.value)}
         />
-        <AppButton>Change</AppButton>
+        <AppButton onClick={handleResetPwd}>Change</AppButton>
       </Frame>
     </PageFrame>
   );
