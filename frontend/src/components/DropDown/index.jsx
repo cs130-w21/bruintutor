@@ -1,4 +1,3 @@
-
 import Select from "react-select";
 
 // Replace this array with the full class list from UCLA registar
@@ -12,13 +11,10 @@ const classesUCLA = [
   { label: "Chem 100", value: "Chem 100" },
 ];
 
-function AppDropDown() {
+function AppDropDown({ onSelect }) {
   return (
     <div style={{ width: "200px" }}>
-      <Select
-        options={classesUCLA}
-        onChange={(opt) => console.log(opt.label, opt.value)}
-      />
+      <Select options={classesUCLA} onChange={(opt) => onSelect(opt.value)} />
     </div>
   );
 }

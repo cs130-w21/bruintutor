@@ -4,6 +4,7 @@ import AppTextInput from "../../components/AppTextInput";
 import AppButton from "../../components/AppButton";
 import Text from "../../components/Text";
 import AppDropDown from "../../components/DropDown";
+import Course from "../../components/Course";
 import { editProfile } from "../../api";
 import { useState } from "react";
 
@@ -16,6 +17,19 @@ const EditProfilePage = () => {
   const [editYear, setEditYear] = useState("");
   const [classes, setClasses] = useState([]);
 
+  const addClass = (entry) => {
+    if (classes.indexOf(entry) === -1) setClasses([...classes, entry]);
+  };
+
+  const deleteClass = (entry) => {
+    const index = classes.indexOf(entry);
+    const newClasses = [...classes];
+    if (index !== -1) {
+      newClasses.splice(index, 1);
+      setClasses(newClasses);
+    }
+  };
+
   const handleEditProfile = async () => {
     const res = await editProfile(
       firstName,
@@ -26,7 +40,7 @@ const EditProfilePage = () => {
       classes
     );
     if (res.error) {
-      // TO DO, notify the failure
+      window.alert(res.errMsg);
     } else {
       // TO DO, change the states of the user
     }
@@ -71,8 +85,16 @@ const EditProfilePage = () => {
           onInput={(e) => setEditYear(e.target.value)}
         />
         <Text>Classes</Text>
-        <AppDropDown></AppDropDown>
-
+        <AppDropDown onSelect={addClass}></AppDropDown>
+        <Frame style={{ flexDirection: "row" }}>
+          {classes.map((entry, index) => (
+            <Course
+              key={index}
+              courseName={entry}
+              onClick={() => deleteClass(entry)}
+            />
+          ))}
+        </Frame>
         <AppButton onClick={handleEditProfile}>Save Changes</AppButton>
       </Frame>
     </PageFrame>

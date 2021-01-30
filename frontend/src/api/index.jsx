@@ -101,4 +101,3 @@ export const editProfile = async (
   const data = await res.json();
   return createSuccess(data);
 };
-

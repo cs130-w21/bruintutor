@@ -1,4 +1,4 @@
-const Text = ({ children, style }) => {
+const Text = ({ children, style, onClick }) => {
   return (
     <div
       style={{
@@ -9,6 +9,7 @@ const Text = ({ children, style }) => {
         textAlign: "center",
         fontFamily: "roboto",
       }}
+      onClick={onClick}
     >
       {children}
     </div>

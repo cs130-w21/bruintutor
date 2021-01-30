@@ -1,7 +1,7 @@
 import Text from "../Text";
 import { themeColors } from "../../config";
 
-const Course = ({ courseName }) => {
+const Course = ({ courseName, onClick }) => {
   return (
     <Text
       style={{
@@ -12,6 +12,7 @@ const Course = ({ courseName }) => {
         fontSize: 15,
         fontWeight: "bold",
       }}
+      onClick={onClick}
     >
       {courseName}
     </Text>
