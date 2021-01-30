@@ -1,4 +1,4 @@
-const HOST = "http://localhost:5000/api";
+const HOST = "http://localhost:8080/api";
 
 const POST = async (endpoint, data, extraOptions) => {
   const response = await fetch(HOST + endpoint, {
@@ -55,6 +55,7 @@ export const signUpUser = async (
   const data = await res.json();
   return createSuccess(data);
 };
+
 
 export const forgotPwd = async (email) => {
   const res = await POST("/auth/forgot", {

@@ -31,6 +31,13 @@ const AuthPage = ({ uid, setUid }) => {
   };
 
   const handleSignIn = async () => {
+    const res = await signInRequest(email, passwd);
+    if (res.error) {
+      console.log(res.errMsg);
+    } else {
+      const data = res.data;
+      setUid(data.uid);
+    }
     history.push("/profile/" + uid);
   };
 
