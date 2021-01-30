@@ -78,3 +78,27 @@ export const resetPwd = async (password, secret) => {
   const data = await res.json();
   return createSuccess(data);
 };
+
+export const editProfile = async (
+  firstName,
+  lastName,
+  email,
+  major,
+  year,
+  classes
+) => {
+  const res = await POST("/profile/edit", {
+    firstName,
+    lastName,
+    email,
+    major,
+    year,
+    classes,
+  });
+  if (res.status !== 200) {
+    return createError(res, "Status Error: " + res.status);
+  }
+  const data = await res.json();
+  return createSuccess(data);
+};
+

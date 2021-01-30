@@ -4,6 +4,7 @@ import AppTextInput from "../../components/AppTextInput";
 import AppButton from "../../components/AppButton";
 import Text from "../../components/Text";
 import AppDropDown from "../../components/DropDown";
+import { editProfile } from "../../api";
 import { useState } from "react";
 
 const EditProfilePage = () => {
@@ -13,6 +14,23 @@ const EditProfilePage = () => {
   const [email, setEmail] = useState("");
   const [editMajor, setEditMajor] = useState("");
   const [editYear, setEditYear] = useState("");
+  const [classes, setClasses] = useState([]);
+
+  const handleEditProfile = async () => {
+    const res = await editProfile(
+      firstName,
+      lastName,
+      email,
+      editMajor,
+      editYear,
+      classes
+    );
+    if (res.error) {
+      // TO DO, notify the failure
+    } else {
+      // TO DO, change the states of the user
+    }
+  };
 
   return (
     <PageFrame>
@@ -53,8 +71,9 @@ const EditProfilePage = () => {
           onInput={(e) => setEditYear(e.target.value)}
         />
         <Text>Classes</Text>
-        <AppDropDown />
-        <AppButton>Save Changes</AppButton>
+        <AppDropDown></AppDropDown>
+
+        <AppButton onClick={handleEditProfile}>Save Changes</AppButton>
       </Frame>
     </PageFrame>
   );

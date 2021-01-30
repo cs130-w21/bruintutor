@@ -18,10 +18,11 @@ const AuthPage = ({ uid, setUid }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isTutor, setIsTutor] = useState(false);
+
   const handleSignUp = async () => {
     const res = await signUpUser(firstName, lastName, email, passwd, isTutor);
     if (res.error) {
-      console.log(res.errMsg);
+      // TO DO: notify the error
     } else {
       const data = res.data;
       setUid(data.uid);
@@ -34,7 +35,12 @@ const AuthPage = ({ uid, setUid }) => {
   };
 
   const handleResetPassword = async () => {
-    await forgotPwd(email);
+    const res = await forgotPwd(email);
+    if (res.error) {
+      // TO DO: notify the error
+    } else {
+      // TO DO: notify the email
+    }
   };
 
   switch (authState) {
