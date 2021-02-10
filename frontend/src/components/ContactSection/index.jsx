@@ -1,5 +1,5 @@
 import ProfileFrame from "../ProfileFrame";
-const ContactSection = () => {
+const ContactSection = ({ uid }) => {
   return (
     <ProfileFrame
       style={{ width: 200, height: 760, margin: 10 }}

@@ -5,7 +5,7 @@ import AppButton from "../../components/AppButton";
 import Text from "../../components/Text";
 import ToggleSwitch from "../../components/ToggleSwitch";
 import { themeColors, AuthStates } from "../../config";
-import { signUpUser, forgotPwd } from "../../api";
+import { signUpUser, forgotPwd, signInRequest } from "../../api";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -31,6 +31,8 @@ const AuthPage = ({ uid, setUid }) => {
   };
 
   const handleSignIn = async () => {
+    // for testing without backend
+    history.push("/profile/" + uid);
     const res = await signInRequest(email, passwd);
     if (res.error) {
       console.log(res.errMsg);
@@ -38,7 +40,7 @@ const AuthPage = ({ uid, setUid }) => {
       const data = res.data;
       setUid(data.uid);
     }
-    history.push("/profile/" + uid);
+    //history.push("/profile/" + uid);
   };
 
   const handleResetPassword = async () => {

@@ -4,8 +4,9 @@ import Frame from "../Frame";
 
 const CourseSection = ({ classes }) => {
   const entries = [];
-  classes.map((item) => {
-    entries.push(<Course courseName={item} />);
+  classes.map((item, index) => {
+    entries.push(<Course key={String(index)} courseName={item} />);
+    return item;
   });
   return (
     <ProfileFrame style={{ width: 500, height: 200, margin: 10 }}>

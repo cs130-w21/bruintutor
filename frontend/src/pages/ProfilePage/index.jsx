@@ -29,6 +29,8 @@ const ProfilePage = ({ match, uid }) => {
         "PHYSICS 143",
         "CS 111",
       ],
+      messages: [],
+      notifications: [],
     });
   }, []);
   const setProfileUrl = (url) =>
@@ -37,47 +39,50 @@ const ProfilePage = ({ match, uid }) => {
       profileUrl: url,
     });
   const isOwner = match.params.id === uid;
-  return (
-    <PageFrame>
-      <Frame
-        style={{
-          flexDirection: "column",
-          margin: "auto",
-          overflow: "auto",
-        }}
-      >
+  if (!profileInfo) {
+    return <div></div>;
+  } else
+    return (
+      <PageFrame>
         <Frame
           style={{
-            flexDirection: "row",
+            flexDirection: "column",
             margin: "auto",
+            overflow: "auto",
           }}
         >
-          <Frame>
-            {profileInfo && (
-              <InfoSection
-                isOwner={isOwner}
-                uid={profileInfo.uid}
-                profileUrl={profileInfo.profileUrl}
-                setProfileUrl={setProfileUrl}
-                firstName={profileInfo.firstName}
-                lastName={profileInfo.lastName}
-                year={profileInfo.year}
-                major={profileInfo.major}
-              />
-            )}
-            <MsgSection />
-          </Frame>
-          <Frame>
-            {profileInfo && <CourseSection classes={profileInfo.classes} />}
-            <CalendarSection />
-          </Frame>
-          <Frame>
-            <ContactSection />
+          <Frame
+            style={{
+              flexDirection: "row",
+              margin: "auto",
+            }}
+          >
+            <Frame>
+              {profileInfo && (
+                <InfoSection
+                  isOwner={isOwner}
+                  uid={profileInfo.uid}
+                  profileUrl={profileInfo.profileUrl}
+                  setProfileUrl={setProfileUrl}
+                  firstName={profileInfo.firstName}
+                  lastName={profileInfo.lastName}
+                  year={profileInfo.year}
+                  major={profileInfo.major}
+                />
+              )}
+              <MsgSection uid={uid} hostUid={profileInfo.uid} />
+            </Frame>
+            <Frame>
+              {profileInfo && <CourseSection classes={profileInfo.classes} />}
+              <CalendarSection />
+            </Frame>
+            <Frame>
+              <ContactSection />
+            </Frame>
           </Frame>
         </Frame>
-      </Frame>
-    </PageFrame>
-  );
+      </PageFrame>
+    );
 };
 
 export default ProfilePage;
