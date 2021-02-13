@@ -1,13 +1,16 @@
 import functools
+import flask
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
+import json
+
 bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
 # TODO: why specify GET?
-@bp.route('/signUp', methods=('GET', 'POST'))
+@bp.route('/register', methods=('GET', 'POST'))
 def register():
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
@@ -38,11 +41,12 @@ def register():
             redis_client.incr('next_uid')
             redis_client.hmset("user{}".format(next_uid), {'fname': fname, 'lname': lname, 'email': email, 'password': generate_password_hash(password), 'isTutor': isTutor, 'uid': next_uid})
             redis_client.bgsave()
-            return redirect(url_for('auth.login'))
+            resp_body_json = json.dumps({'error': False})
+            return flask.Response(status=200, content_type='application/json', response=resp_body_json)
 
-        flash(error)
-
-    return '', 200
+        resp_body_json = json.dumps({'error': True, 'errMsg': error})
+        return flask.Response(status=200, content_type='application/json', response=resp_body_json)
+    return flask.Response(status=200, response='')
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
@@ -59,11 +63,11 @@ def login():
         user = None
         for uid in redis_client.keys("user*"):
             u = redis_client.hgetall(uid)
-            if u is not None and u['email'] == email:
+            if u is not None and 'email' in u.keys() and u['email'] == email:
                 user = u
                 break
 
-        if user is None:
+        if user is None or 'uid' not in user.keys():
             error = 'Invalid email.'
         elif not check_password_hash(user['password'], password):
             error = 'Incorrect password.'
@@ -71,11 +75,12 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['uid']
-            return redirect(url_for('index'))
+            resp_body_json = json.dumps({'error': False, 'uid': user['uid']})
+            return flask.Response(status=200, content_type='application/json', response=resp_body_json)
 
-        flash(error)
-
-    return '', 200
+        resp_body_json = json.dumps({'error': True, 'errMsg': error})
+        return flask.Response(status=200, content_type='application/json', response=resp_body_json)
+    return flask.Response(status=200, response='')
 
 @bp.route('/forgot', methods=('GET', 'POST'))
 def forgot():

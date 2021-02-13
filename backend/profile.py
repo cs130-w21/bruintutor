@@ -1,47 +1,68 @@
 import functools
+import flask
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+import json
 
 bp = Blueprint('profile', __name__, url_prefix='/api/profile')
 
 @bp.route('/edit', methods=('GET', 'POST'))
-def register():
+def edit():
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
-        fname = request.form['fname']
-        lname = request.form['lname']
-        email = request.form['email']
-        # TODO: store year and major
-        year = request.form['year']
-        major = request.form['major']
-
-        password = request.form['password']
-        isTutor = request.form['isTutor']
+        data = request.get_json(force=True)
+        fname = data['firstName']
+        lname = data['lastName']
+        major = data['major']
+        year = data['year']
+        classes = data['classes']
+        uid = data['uid']
         error = None
 
-        if not fname:
-            error = 'First Name is required.'
-        elif not lname:
-            error = 'Last Name is required.'
-        elif not email:
-            error = 'Email is required.'
-        elif not password:
-            error = 'Password is required.'
-
-        else:
-            for uid in redis_client.keys("uid*"):
-                if email == redis_client.hget(uid, 'email'):
-                    error = 'Email {} is already registered.'.format(email)
+        if not redis_client.keys("user{}".format(uid)):
+            error = "User with UID {} not found".format(uid)
 
         if error is None:
-            next_uid = redis_client.get('next_uid')
-            redis_client.incr('next_uid')
-            redis_client.hmset("uid{}".format(next_uid), {'fname': fname, 'lname': lname, 'email': email, 'password': generate_password_hash(password), 'isTutor': isTutor, 'uid': "uid{}".format(next_uid)})
-            redis_client.bgsave()
-            return redirect(url_for('auth.login'))
+            redis_client.hset("user{}".format(uid), key="fname", value=fname)
+            redis_client.hset("user{}".format(uid), key="lname", value=lname)
+            redis_client.hset("user{}".format(uid), key="major", value=major)
+            redis_client.hset("user{}".format(uid), key="year", value=year)
+            redis_client.delete("classes{}".format(uid))
+            for c in classes:
+                redis_client.rpush("classes{}".format(uid), c)
+            resp_body_json = json.dumps({'error': False})
+            return flask.Response(status=200, content_type='application/json', response=resp_body_json)
 
-        flash(error)
+        resp_body_json = json.dumps({'error': True, 'errMsg': error})
+        return flask.Response(status=200, content_type='application/json', response=resp_body_json)
 
-    return '', 200
+    return flask.Response(status=200, response='')
+
+@bp.route('/get', methods=('GET', 'POST'))
+def get():
+    redis_client = current_app.config['RDSCXN']
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        uid = data['uid']
+        error = None
+        user = redis_client.hgetall("user{}".format(uid))
+        if user is None:
+            error = "User with UID {} not found".format(uid)
+
+        if error is None:
+            classes = redis_client.lrange("classes{}".format(uid), 0, -1)
+            resp_body_json = json.dumps({'error': False,
+            'firstName': user['fname'] if 'fname' in user.keys() else None,
+            'lastName': user['lname'] if 'lname' in user.keys() else None,
+            'year': user['year'] if 'year' in user.keys() else None,
+            'major': user['major'] if 'major' in user.keys() else None,
+            'classes': classes,
+            'isTutor': user['isTutor']=="1" if 'isTutor' in user.keys() else None})
+            return flask.Response(status=200, content_type='application/json', response=resp_body_json)
+
+        resp_body_json = json.dumps({'error': True, 'errMsg': error})
+        return flask.Response(status=200, content_type='application/json', response=resp_body_json)
+
+    return flask.Response(status=200, response='')
