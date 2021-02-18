@@ -156,13 +156,10 @@ export const editProfile = async (
   }
 };
 
-export const sendMsg = async (from, to, msg) => {
+export const getProfile = async (uid) => {
   try {
-    const res = await POST("/message/add", {
-      from,
-      to,
-      msg,
-      createdDate: new Date(),
+    const res = await POST("/profile/get", {
+      uid,
     });
     if (res.status !== 200) {
       return createError(res, "Status Error: " + res.status);
@@ -178,10 +175,34 @@ export const sendMsg = async (from, to, msg) => {
   }
 };
 
-export const getMsgs = async (uid) => {
+export const sendMsg = async (from, to, msg) => {
+  try {
+    const newMsg = {
+      from,
+      to,
+      msg,
+      createdDate: new Date(),
+    };
+    const res = await POST("/message/add", newMsg);
+    if (res.status !== 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(newMsg);
+    }
+  } catch (e) {
+    return createError(e, "server disconnected");
+  }
+};
+
+export const getMsgs = async (uid1, uid2) => {
   try {
     const res = await POST("/message/get", {
-      uid,
+      uid1,
+      uid2,
     });
     if (res.status !== 200) {
       return createError(res, "Status Error: " + res.status);

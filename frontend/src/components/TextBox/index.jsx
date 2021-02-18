@@ -9,7 +9,6 @@ const TextBox = ({ style, text, changeText }) => {
   return (
     <div
       style={{
-        ...style,
         width: 200,
         height: 100,
         padding: 10,
@@ -17,6 +16,7 @@ const TextBox = ({ style, text, changeText }) => {
         fontSize: 15,
         backgroundColor: themeColors.lightgray,
         overflow: "auto",
+        ...style,
       }}
       ref={(ref) => (textBox.current = ref)}
       onInput={() => changeText(textBox.current.innerText)}

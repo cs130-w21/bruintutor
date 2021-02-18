@@ -10,6 +10,20 @@ import { useState, useEffect } from "react";
 
 function App() {
   const [uid, setUid] = useState("");
+  const [userStore, setUserStore] = useState({
+    test: {
+      uid: "test",
+      firstName: "Joe",
+      lastName: "Bruin",
+    },
+    test2: {
+      uid: "test2",
+      firstName: "Paul",
+      lastName: "Eggert",
+    },
+  });
+  const [contacts, setContacts] = useState(["test2"]);
+  const [matchedTutors, setMatchedTutors] = useState(["test2"]);
   useEffect(() => {
     // TO DO: fetch uid from the server
     setUid("test");
@@ -36,7 +50,14 @@ function App() {
           <Route
             exact
             path="/profile/:id"
-            render={({ match }) => <ProfilePage uid={uid} match={match} />}
+            render={({ match }) => (
+              <ProfilePage
+                uid={uid}
+                userStore={userStore}
+                contacts={contacts}
+                match={match}
+              />
+            )}
           />
           <Route
             exact

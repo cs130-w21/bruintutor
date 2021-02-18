@@ -6,11 +6,22 @@ import CourseSection from "../../components/CourseSection";
 import CalendarSection from "../../components/CalendarSection";
 import ContactSection from "../../components/ContactSection";
 import { useEffect, useState } from "react";
+import { getProfile } from "../../api";
 
-const ProfilePage = ({ match, uid }) => {
+const ProfilePage = ({ match, uid, userStore, contacts }) => {
   const [profileInfo, setProfileInfo] = useState();
-  useEffect(() => {
-    // TO DO: fetch user info from server
+  const [targetUid, setTargetUid] = useState();
+  const fetchInfo = async () => {
+    /*
+    const res = await getProfile(match.params.id)
+    if (res.error) {
+      console.log(res.errMsg)
+    } else {
+      const data = res.data
+      setProfileInfo(data)
+      setTargetUid(data.uid)
+    }
+    */
     setProfileInfo({
       uid: "test",
       firstName: "Joe",
@@ -32,12 +43,19 @@ const ProfilePage = ({ match, uid }) => {
       messages: [],
       notifications: [],
     });
+    setTargetUid("test");
+  };
+  useEffect(() => {
+    fetchInfo();
   }, []);
-  const setProfileUrl = (url) =>
+
+  const setProfileUrl = (url) => {
     setProfileInfo({
       ...profileInfo,
       profileUrl: url,
     });
+  };
+
   const isOwner = match.params.id === uid;
   if (!profileInfo) {
     return <div></div>;
@@ -70,14 +88,24 @@ const ProfilePage = ({ match, uid }) => {
                   major={profileInfo.major}
                 />
               )}
-              <MsgSection uid={uid} hostUid={profileInfo.uid} />
+              <MsgSection
+                uid={uid}
+                targetUid={targetUid}
+                userStore={userStore}
+              />
             </Frame>
             <Frame>
               {profileInfo && <CourseSection classes={profileInfo.classes} />}
               <CalendarSection />
             </Frame>
             <Frame>
-              <ContactSection />
+              {profileInfo && (
+                <ContactSection
+                  userStore={userStore}
+                  contacts={contacts}
+                  setTargetUid={setTargetUid}
+                />
+              )}
             </Frame>
           </Frame>
         </Frame>
