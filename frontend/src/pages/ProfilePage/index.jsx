@@ -12,16 +12,16 @@ const ProfilePage = ({ match, uid, userStore, contacts }) => {
   const [profileInfo, setProfileInfo] = useState();
   const [targetUid, setTargetUid] = useState();
   const fetchInfo = async () => {
-    /*
+    
     const res = await getProfile(match.params.id)
     if (res.error) {
-      console.log(res.errMsg)
+      console.log(res.errMsg);
     } else {
-      const data = res.data
+      const data = res.data;
       setProfileInfo(data)
       setTargetUid(data.uid)
     }
-    */
+    
     setProfileInfo({
       uid: "test",
       firstName: "Joe",
