@@ -1,0 +1,72 @@
+{
+    "register": [
+        {
+            "firstName": "Joe",
+            "lastName": "Bruin",
+            "email": "joebruin@ucla.edu",
+            "password": "ucla",
+            "isTutor": true,
+            "uid": "123456789"
+        }
+    ],
+    "login": [
+        {
+            "firstName": "Gene",
+            "lastName": "Block",
+            "email": "geneblock@ucla.edu",
+            "password": "thebigman",
+            "isTutor": true,
+            "uid": "912345678"
+        }
+    ],
+    "forgot": [
+        {
+            "firstName": "Jane",
+            "lastName": "Bruina",
+            "email": "janebruin@ucla.edu",
+            "password": "wootwoot",
+            "isTutor": true,
+            "uid": "981234567"
+        }
+    ],
+    "reset": [
+        {
+            "firstName": "Ugrad",
+            "lastName": "Student",
+            "email": "ugradstudent@ucla.edu",
+            "password": "whatisthis",
+            "isTutor": false,
+            "uid": "987123456"
+        }
+    ],
+    "edit": [
+        {
+            "firstName": "Grad",
+            "lastName": "Candidate",
+            "email": "gradcandidate@ucla.edu",
+            "password": "imbored",
+            "isTutor": false,
+            "uid": "987612345"
+        }
+    ],
+    "add": [
+        {
+            "firstName": "Michael",
+            "lastName": "Scott",
+            "email": "michaelscott@ucla.edu",
+            "password": "papercompany",
+            "isTutor": false,
+            "uid": "987651234"
+        }
+    ],
+    "get": [
+        {
+            "firstName": "Dwight",
+            "lastName": "Shrute",
+            "email": "dwightshrute@ucla.edu",
+            "password": "assistanttothemanager",
+            "isTutor": false,
+            "uid": "987654123"
+        }
+    ]
+}

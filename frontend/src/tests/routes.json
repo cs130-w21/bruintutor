@@ -1,0 +1,10 @@
+{
+    "/": "/",
+    "/api/auth/register": "/register",
+    "/api/auth/login": "/login",
+    "/api/auth/forgot": "/forgot",
+    "/api/auth/reset": "/reset",
+    "/api/profile/edit": "/edit",
+    "/api/message/add": "/add",
+    "/api/message/get": "/get"
+  }
