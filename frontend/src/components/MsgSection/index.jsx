@@ -2,18 +2,16 @@ import ProfileFrame from "../ProfileFrame";
 import MsgModal from "../MsgModal";
 import { useState } from "react";
 
-const MsgSection = ({ uid, targetUid, userStore }) => {
-  const [msgModalOn, setMsgModalOn] = useState(true);
-
+const MsgSection = ({ uid, msgUid, setMsgUid, userStore }) => {
   return (
     <ProfileFrame style={{ width: 300, height: 400, margin: 10 }}>
-      {msgModalOn && (
+      {msgUid && (
         <MsgModal
           uid={uid}
-          targetUid={targetUid}
+          msgUid={msgUid}
           userStore={userStore}
           closeModal={() => {
-            setMsgModalOn(false);
+            setMsgUid("");
           }}
         />
       )}

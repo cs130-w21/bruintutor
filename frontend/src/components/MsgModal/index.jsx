@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { themeColors, icons } from "../../config.js";
 import { getMsgs, sendMsg } from "../../api";
 
-const MsgLine = ({ message, uid, targetUid }) => {
+const MsgLine = ({ message, uid, msgUid }) => {
   return (
     <div
       style={{
@@ -30,7 +30,7 @@ const MsgLine = ({ message, uid, targetUid }) => {
   );
 };
 
-const MsgModal = ({ uid, targetUid, closeModal, userStore }) => {
+const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
   const [text, changeText] = useState("");
   const [messages, setMessages] = useState([]);
   useEffect(() => {
@@ -41,7 +41,7 @@ const MsgModal = ({ uid, targetUid, closeModal, userStore }) => {
     setMessages(res.data)
     */
     setMessages([]);
-  }, [uid, targetUid]);
+  }, [uid, msgUid]);
 
   const checkMessage = (msg) => {
     return !(msg === "" || msg.length > 140);
@@ -51,7 +51,7 @@ const MsgModal = ({ uid, targetUid, closeModal, userStore }) => {
     if (checkMessage(msg)) {
       /*
       implementation with backend
-      const res = await sendMsg(uid, targetUid, msg);
+      const res = await sendMsg(uid, msgUid, msg);
       if (!res.error) {
         changeText("");
         const newMessages = [...messages];
@@ -65,7 +65,7 @@ const MsgModal = ({ uid, targetUid, closeModal, userStore }) => {
       const newMessages = [...messages];
       newMessages.push({
         from: uid,
-        to: targetUid,
+        to: msgUid,
         msg,
         createdDate: new Date(),
       });
@@ -78,7 +78,7 @@ const MsgModal = ({ uid, targetUid, closeModal, userStore }) => {
   let msgLines = [];
 
   messages.map((msg) => {
-    msgLines.push(<MsgLine message={msg} uid={uid} targetUid={targetUid} />);
+    msgLines.push(<MsgLine message={msg} uid={uid} msgUid={msgUid} />);
   });
 
   return (
@@ -88,7 +88,7 @@ const MsgModal = ({ uid, targetUid, closeModal, userStore }) => {
       </TouchableOpacity>
       <Frame style={styles.msgSection}>
         <Text style={styles.title}>
-          {userStore[targetUid].firstName + " " + userStore[targetUid].lastName}
+          {userStore[msgUid].firstName + " " + userStore[msgUid].lastName}
         </Text>
         {msgLines.length === 0 ? (
           <Text style={{ margin: "auto" }}>No Messages Sent</Text>

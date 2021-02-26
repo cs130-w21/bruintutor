@@ -6,22 +6,25 @@ import CourseSection from "../../components/CourseSection";
 import CalendarSection from "../../components/CalendarSection";
 import ContactSection from "../../components/ContactSection";
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { getProfile } from "../../api";
 
 const ProfilePage = ({ match, uid, userStore, contacts }) => {
   const [profileInfo, setProfileInfo] = useState();
   const [targetUid, setTargetUid] = useState();
+  const [msgUid, setMsgUid] = useState();
+  const history = useHistory();
   const fetchInfo = async () => {
-    
+    /*
     const res = await getProfile(match.params.id)
     if (res.error) {
-      console.log(res.errMsg);
+      console.log(res.errMsg)
     } else {
-      const data = res.data;
+      const data = res.data
       setProfileInfo(data)
       setTargetUid(data.uid)
     }
-    
+    */
     setProfileInfo({
       uid: "test",
       firstName: "Joe",
@@ -61,7 +64,7 @@ const ProfilePage = ({ match, uid, userStore, contacts }) => {
     return <div></div>;
   } else
     return (
-      <PageFrame>
+      <PageFrame onTitleClick={() => history.push("/search/")}>
         <Frame
           style={{
             flexDirection: "column",
@@ -75,7 +78,9 @@ const ProfilePage = ({ match, uid, userStore, contacts }) => {
               margin: "auto",
             }}
           >
-            <Frame>
+            <Frame
+              style={{ justifyContent: "flex-start", alignSelf: "stretch" }}
+            >
               {profileInfo && (
                 <InfoSection
                   isOwner={isOwner}
@@ -88,11 +93,14 @@ const ProfilePage = ({ match, uid, userStore, contacts }) => {
                   major={profileInfo.major}
                 />
               )}
-              <MsgSection
-                uid={uid}
-                targetUid={targetUid}
-                userStore={userStore}
-              />
+              {msgUid && (
+                <MsgSection
+                  uid={uid}
+                  msgUid={msgUid}
+                  userStore={userStore}
+                  setMsgUid={setMsgUid}
+                />
+              )}
             </Frame>
             <Frame>
               {profileInfo && <CourseSection classes={profileInfo.classes} />}
@@ -103,7 +111,7 @@ const ProfilePage = ({ match, uid, userStore, contacts }) => {
                 <ContactSection
                   userStore={userStore}
                   contacts={contacts}
-                  setTargetUid={setTargetUid}
+                  setMsgUid={setMsgUid}
                 />
               )}
             </Frame>

@@ -1,4 +1,4 @@
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, PlusOutlined, MinusOutlined } from "@ant-design/icons";
 
 export const themeColors = {
   darkblue: "#004D7F",
@@ -7,6 +7,7 @@ export const themeColors = {
   black: "#444444",
   white: "#FFFFFF",
   transparentBlack: "rgba(0,0,0,0.4)",
+  yellow: "#FFD700",
   // put theme colors here
 };
 
@@ -20,4 +21,6 @@ export const AuthStates = {
 
 export const icons = {
   close: <CloseOutlined style={{ color: "#FFFFFF" }} />,
+  add: <PlusOutlined style={{ color: "#C4C4C4" }} />,
+  remove: <MinusOutlined style={{ color: "#C4C4C4" }} />,
 };

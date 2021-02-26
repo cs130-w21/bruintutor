@@ -1,6 +1,7 @@
 import styles from "./styles.jsx";
 import FooterOption from "../FooterOption";
 import TouchableOpacity from "../TouchableOpacity";
+import { useHistory } from "react-router-dom";
 import { themeColors } from "../../config.js";
 
 export const Frame = ({
@@ -26,10 +27,12 @@ export const Frame = ({
   );
 };
 
-const PageFrame = ({ headerRight, children }) => {
+const PageFrame = ({ headerRight, onTitleClick, children }) => {
   return (
     <Frame
-      title={"BruinTutors"}
+      title={
+        <TouchableOpacity onClick={onTitleClick}>BruinTutors</TouchableOpacity>
+      }
       headerRight={headerRight}
       footerLeft={
         <>

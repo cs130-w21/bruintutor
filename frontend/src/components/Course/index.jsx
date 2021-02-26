@@ -1,9 +1,9 @@
-import Text from "../Text";
+import TouchableOpacity from "../TouchableOpacity";
 import { themeColors } from "../../config";
 
-const Course = ({ courseName, onClick }) => {
+const Course = ({ courseName, onClick, style }) => {
   return (
-    <Text
+    <TouchableOpacity
       style={{
         backgroundColor: themeColors.lightgray,
         color: themeColors.black,
@@ -11,11 +11,12 @@ const Course = ({ courseName, onClick }) => {
         margin: 10,
         fontSize: 15,
         fontWeight: "bold",
+        ...style,
       }}
       onClick={onClick}
     >
       {courseName}
-    </Text>
+    </TouchableOpacity>
   );
 };
 

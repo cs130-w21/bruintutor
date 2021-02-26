@@ -9,16 +9,16 @@ const ContactCard = ({ entry, onClick }) => {
     </TouchableOpacity>
   );
 };
-const ContactSection = ({ uid, contacts, userStore, setTargetUid }) => {
+const ContactSection = ({ uid, contacts, userStore, setMsgUid }) => {
   const contactUsers = contacts.map((uid) => userStore[uid]);
   const entries = contactUsers.map((user) => (
-    <ContactCard entry={user} onClick={() => setTargetUid(user.uid)} />
+    <ContactCard entry={user} onClick={() => setMsgUid(user.uid)} />
   ));
   return (
     <ProfileFrame
       style={{
         width: 200,
-        height: 760,
+        height: 720,
         margin: 10,
         justifyContent: "flex-start",
       }}
