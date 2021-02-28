@@ -1,5 +1,5 @@
 import os
-import auth, profile, class_list, match
+import auth, profile, class_list, recovery, match
 from flask import Flask
 import rdscli
 
@@ -7,8 +7,8 @@ rdscli.connect()
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    rdscli.r.set('next_uid', 1)
-    rdscli.r.set('next_pid', 1)
+    if rdscli.r.get('next_uid') == None:
+        rdscli.r.set('next_uid', 1)
     rdscli.r.bgsave()
     app.config.from_mapping(
         SECRET_KEY = 'dev',
@@ -31,6 +31,7 @@ def create_app(test_config=None):
     app.register_blueprint(auth.bp)
     app.register_blueprint(profile.bp)
     app.register_blueprint(class_list.bp)
+    app.register_blueprint(recovery.bp)
     app.register_blueprint(match.bp)
 
     return app

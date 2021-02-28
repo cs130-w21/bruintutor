@@ -2,7 +2,7 @@
 .idea
 tags*
 .rdb
-virtualenv/**
+**/virtualenv/**
 __pycache__
 **/.eslintcache*
 **/package-lock.json

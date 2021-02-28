@@ -45,7 +45,7 @@ def test_get(client, app):
     data = json.dumps(json_data)
     response = client.post(url, data=data)
     assert response.status_code == 200
-    response_json = response.json
+    response_json = response.json['payload']
     assert not response_json['error']
     assert response_json['firstName'] == "j"
     assert response_json['lastName'] == "b"

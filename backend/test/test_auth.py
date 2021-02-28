@@ -39,7 +39,7 @@ def test_login(client, app):
     assert response.status_code == 400
 
 def test_forgot(client, app):
-    url = 'api/auth/forgot'
+    url = 'api/recovery/forgot'
     json_data = {
         "email": "joebruin@gmail.com"
     }
@@ -49,9 +49,9 @@ def test_forgot(client, app):
     assert response.status_code == 200
 
     response = client.post(url, data=None)
-    assert response.status_code == 400
+    assert response.json['error']
 
 def test_logout(client, app):
-    url = 'api/auth/forgot'
+    url = 'api/auth/logout'
     response = client.get(url)
     assert response.status_code == 200

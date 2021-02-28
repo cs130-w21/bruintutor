@@ -4,7 +4,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-import json
+from form_response import jsonResponse, errorResponse
 
 bp = Blueprint('profile', __name__, url_prefix='/api/profile')
 
@@ -32,13 +32,11 @@ def edit():
             redis_client.delete("classes{}".format(uid))
             for c in classes:
                 redis_client.rpush("classes{}".format(uid), c)
-            resp_body_json = json.dumps({'error': False})
-            return flask.Response(status=200, content_type='application/json', response=resp_body_json)
+            return jsonResponse()
 
-        resp_body_json = json.dumps({'error': True, 'errMsg': error})
-        return flask.Response(status=200, content_type='application/json', response=resp_body_json)
+        return errorResponse(error)
+    return errorResponse('POST to this endpoint')
 
-    return flask.Response(status=200, response='')
 
 @bp.route('/get', methods=('GET', 'POST'))
 def get():
@@ -53,16 +51,13 @@ def get():
 
         if error is None:
             classes = redis_client.lrange("classes{}".format(uid), 0, -1)
-            resp_body_json = json.dumps({'error': False,
-            'firstName': user['fname'] if 'fname' in user.keys() else None,
-            'lastName': user['lname'] if 'lname' in user.keys() else None,
-            'year': user['year'] if 'year' in user.keys() else None,
-            'major': user['major'] if 'major' in user.keys() else None,
-            'classes': classes,
-            'isTutor': user['isTutor']=="1" if 'isTutor' in user.keys() else None})
-            return flask.Response(status=200, content_type='application/json', response=resp_body_json)
+            return jsonResponse({'error': False,
+                'firstName': user['fname'] if 'fname' in user.keys() else None,
+                'lastName': user['lname'] if 'lname' in user.keys() else None,
+                'year': user['year'] if 'year' in user.keys() else None,
+                'major': user['major'] if 'major' in user.keys() else None,
+                'classes': classes,
+                'isTutor': user['isTutor']=="1" if 'isTutor' in user.keys() else None})
 
-        resp_body_json = json.dumps({'error': True, 'errMsg': error})
-        return flask.Response(status=200, content_type='application/json', response=resp_body_json)
-
-    return flask.Response(status=200, response='')
+        return errorResponse(error)
+    return errorResponse('POST to this endpoint')

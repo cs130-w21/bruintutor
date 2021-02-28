@@ -1,11 +1,9 @@
-matrix:
-  include:
-    - language: bash
-      python: 3.6
-      install:
-      - sudo pip install -r ./backend/requirements.txt
+language: python
+install:
+  - pip install -r ./backend/requirements.txt
 
-      script:
-      - echo "---- Start Running Backend Unit Tests ----"
-      - cd ./backend/test
-      - PYTHONPATH=.. pytest -v
+
+script:
+  - echo "---- Start Running Backend Unit Tests ----"
+  - cd ./backend/test
+  - PYTHONPATH=.. pytest -v

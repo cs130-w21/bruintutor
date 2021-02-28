@@ -9,6 +9,7 @@ RUN set -e; \
         python3 \
         uwsgi \
         uwsgi-python3 \
+        exim \
 	; \
     python3 -m ensurepip; \
     pip3 --no-cache-dir -q install wheel; \
