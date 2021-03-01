@@ -7,6 +7,8 @@ export const themeColors = {
   black: "#444444",
   white: "#FFFFFF",
   transparentBlack: "rgba(0,0,0,0.4)",
+  green: "#008000",
+  halfgreen: "#00D000",
   yellow: "#FFD700",
   // put theme colors here
 };

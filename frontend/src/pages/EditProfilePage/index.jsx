@@ -7,6 +7,7 @@ import AppDropDown from "../../components/DropDown";
 import Course from "../../components/Course";
 import { editProfile } from "../../api";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const EditProfilePage = ({ uid }) => {
   // defined useState for the fields in the edit profile page
@@ -16,6 +17,7 @@ const EditProfilePage = ({ uid }) => {
   const [editMajor, setEditMajor] = useState("");
   const [editYear, setEditYear] = useState("");
   const [classes, setClasses] = useState([]);
+  const history = useHistory();
 
   // ** Move to the search page as well 
   // Move the selectedClass, setSelectedClass from drop down to edit profile page 
@@ -52,7 +54,7 @@ const EditProfilePage = ({ uid }) => {
   };
 
   return (
-    <PageFrame>
+    <PageFrame onTitleClick={() => history.push("/search/")}>
       <Frame>
         <Text style={{ fontSize: 22, fontWeight: "bold", margin: 20 }}>
           Profile

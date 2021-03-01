@@ -35,7 +35,20 @@ const TutorCard = ({ tutor }) => {
           />
         ))}
       </Frame>
-      <Calendar />
+      <Calendar
+        data={[
+          [0, 0, 0, 1, 1, 1, 1],
+          [0, 1, 1, 1, 1, 0, 1],
+          [0, 0, 0, 1, 1, 0, 1],
+          [0, 0, 1, 1, 1, 1, 1],
+          [0, 0, 0, 0, 1, 1, 1],
+          [1, 1, 1, 0, 0, 0, 1],
+          [1, 1, 1, 0, 1, 0, 1],
+        ]}
+        width={200}
+        height={100}
+        style={{ margin: 10, fontSize: 8, color: themeColors.white }}
+      />
     </Frame>
   );
 };
