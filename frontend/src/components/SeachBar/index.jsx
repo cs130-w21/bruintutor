@@ -34,6 +34,8 @@ const FilterCard = ({ name, content, height, cancelFunc }) => {
   );
 };
 
+const zeros = Array(42).fill(0);
+
 const marks = {
   0: { style: styles.rating, label: "1★" },
   25: { style: styles.rating, label: "2★" },
@@ -45,15 +47,7 @@ const marks = {
 const SearchBar = () => {
   const [classes, setClasses] = useState([]);
   const [rating, setRating] = useState([0, 100]);
-  const [schedule, setSchedule] = useState([
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-  ]);
+  const [schedule, setSchedule] = useState(zeros);
 
   const addClass = (entry) => {
     if (classes.indexOf(entry) === -1) setClasses([...classes, entry]);
@@ -119,23 +113,21 @@ const SearchBar = () => {
         name="Availability"
         height={100}
         cancelFunc={() => {
-          setSchedule([
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-          ]);
+          setSchedule(zeros);
         }}
         content={
           <Calendar
             data={schedule}
+            setData={setSchedule}
             width={200}
             height={100}
             editable={true}
-            style={{ margin: 10, fontSize: 8, color: themeColors.white }}
+            style={{
+              margin: 10,
+              fontSize: 8,
+              color: themeColors.white,
+              backgroundColor: themeColors.darkgray,
+            }}
           />
         }
       />

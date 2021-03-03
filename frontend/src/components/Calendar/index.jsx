@@ -9,13 +9,13 @@ const Block = ({ level, children, onClick, onContextMenu }) => {
     <TouchableOpacity
       style={{
         ...styles.block,
-        alignItems: "flex-start",
+        alignItems: "center",
         backgroundColor:
           level > 1
             ? themeColors.green
             : level == 1
             ? themeColors.halfgreen
-            : themeColors.darkgray,
+            : "transparent",
       }}
       onClick={onClick}
       onContextMenu={onContextMenu}
@@ -35,23 +35,29 @@ const DayMap = {
   6: "Sat",
 };
 
-const Calendar = ({ data = [[]], width, height, style, editable = false }) => {
-  const [bytes, setBytes] = useState(data);
-  useEffect(() => {
-    setBytes(data);
-  }, [data]);
+
+const Calendar = ({
+  data = [],
+  setData = () => {},
+  width,
+  height,
+  style,
+  editable = false,
+}) => {
+  const bytes = data;
   const calendar = [];
   const changeByte = (i, j, d) => {
-    const newBytes = JSON.parse(JSON.stringify(bytes));
-    newBytes[i][j] += d;
-    if (newBytes[i][j] >= 0 && newBytes[i][j] <= 1) setBytes(newBytes);
+    const newBytes = [...bytes];
+    newBytes[6 * i + j] += d;
+    if (newBytes[6 * i + j] >= 0 && newBytes[6 * i + j] <= 1) {
+      setData(newBytes);
+    }
   };
-  for (let i = 0; i < bytes.length; i++) {
-    const row = bytes[i];
+  for (let i = 0; i < 7; i++) {
     const column = [];
     column.push(<Block level={0}>{DayMap[i]}</Block>);
-    for (let j = 0; j < row.length; j++) {
-      const byte = row[j];
+    for (let j = 0; j < 6; j++) {
+      const byte = bytes[6 * i + j];
       column.push(
         <Block
           onClick={() => {

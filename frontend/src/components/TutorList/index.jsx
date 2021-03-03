@@ -36,18 +36,15 @@ const TutorCard = ({ tutor }) => {
         ))}
       </Frame>
       <Calendar
-        data={[
-          [0, 0, 0, 1, 1, 1, 1],
-          [0, 1, 1, 1, 1, 0, 1],
-          [0, 0, 0, 1, 1, 0, 1],
-          [0, 0, 1, 1, 1, 1, 1],
-          [0, 0, 0, 0, 1, 1, 1],
-          [1, 1, 1, 0, 0, 0, 1],
-          [1, 1, 1, 0, 1, 0, 1],
-        ]}
+        data={Array(42).fill(1)}
         width={200}
         height={100}
-        style={{ margin: 10, fontSize: 8, color: themeColors.white }}
+        style={{
+          margin: 10,
+          fontSize: 8,
+          color: themeColors.white,
+          backgroundColor: themeColors.darkgray,
+        }}
       />
     </Frame>
   );
