@@ -1,5 +1,5 @@
 import os
-import auth, profile, class_list, recovery, match, message
+import auth, profile, class_list, recovery, match, message, schedule
 from flask import Flask
 import rdscli
 
@@ -11,6 +11,8 @@ def create_app(test_config=None):
         rdscli.r.set('next_uid', 1)
     if rdscli.r.get('next_mid') == None:
         rdscli.r.set('next_mid', 1)
+    if rdscli.r.get('next_nid') == None:
+        rdscli.r.set('next_nid', 1)
     rdscli.r.bgsave()
     app.config.from_mapping(
         SECRET_KEY = 'dev',
@@ -36,6 +38,7 @@ def create_app(test_config=None):
     app.register_blueprint(message.bp)
     app.register_blueprint(recovery.bp)
     app.register_blueprint(match.bp)
+    app.register_blueprint(schedule.bp)
 
     return app
 
