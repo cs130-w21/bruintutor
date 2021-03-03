@@ -1,5 +1,5 @@
 import os
-import auth, profile, class_list, recovery, match, message, schedule
+import auth, profile, class_list, recovery, match, message, schedule, search
 from flask import Flask
 import rdscli
 
@@ -39,6 +39,7 @@ def create_app(test_config=None):
     app.register_blueprint(recovery.bp)
     app.register_blueprint(match.bp)
     app.register_blueprint(schedule.bp)
+    app.register_blueprint(search.bp)
 
     return app
 
