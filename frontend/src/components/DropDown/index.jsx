@@ -111,42 +111,32 @@ const subjectArea = [
   { label: "Yiddish", value: "Yiddish" },
 ];
 
-// Check this
-const AppDropDown = (selectedClass, setSelectedClass) => {
-  // Test with some dummy values if selected subject = Art (dummy values)
-  // const entries = ["Art_1A", "Art_1B", "Art_11A", "Art_11B"];
-  // // Testing purpose
-  // const handleGetClassList2 = () => {
-  //   let subclassFromApi = entries.map((item) => {
-  //     return {label: item, value: item};
-  //   });
-  //   setClassList(subclassFromApi);
-  // }
+const AppDropDown = ({onSelect}) => {
 
   const [classList, setClassList] = useState([]);
-  // Moved to edit profile page
-  // const [selectedClass, setSelectedClass] = useState("");
-
   const handleGetClassList = async (selectedSubject) => {
+
+    // selectedSubject is not empty 
+    if (selectedSubject != null) {
+      console.log("Selected Subject Area: " + selectedSubject);
+    } 
+
     const res = await getClassList(selectedSubject);
     if (res.error) {
       console.log(res.errMsg);
     } else {
       const data = res.data;
-      // assume the field called classes
-      const subClasses = data.classes;
 
-      let subclassFromApi = subClasses.map((item) => {
-        return { label: item, value: item };
+      // console.log("This is my parse data: " + JSON.parse(JSON.stringify(data)));
+      var api_class_list = JSON.parse(JSON.stringify(data))
+      var class_array = api_class_list.classList;
+      console.log("API class array: " + api_class_list.classList);
+  
+      let subclassFromApi = class_array.map((item) => {
+        return {label: item, value: item};
       });
-
       setClassList(subclassFromApi);
     }
-  };
-
-  const handleSelectedClass = (clickClass) => {
-    setSelectedClass(clickClass);
-    console.log("Adding a class: " + clickClass);
   };
 
   return (
@@ -159,7 +149,7 @@ const AppDropDown = (selectedClass, setSelectedClass) => {
       <Text>Sub-Class List</Text>
       <Select
         options={classList}
-        onChange={(opt) => handleSelectedClass(opt.label)}
+        onChange={(opt) => onSelect(opt.label)}
       ></Select>
     </div>
   );

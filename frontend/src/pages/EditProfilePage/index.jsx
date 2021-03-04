@@ -26,9 +26,7 @@ const EditProfilePage = ({ uid }) => {
     setEditYear(location.year);
   }, [location]);
 
-  // ** Move to the search page as well
-  // Move the selectedClass, setSelectedClass from drop down to edit profile page
-  const [selectedClass, setSelectedClass] = useState("");
+  // const [selectedClass, setSelectedClass] = useState("");
 
   const addClass = (entry) => {
     if (classes.indexOf(entry) === -1) setClasses([...classes, entry]);
@@ -93,12 +91,12 @@ const EditProfilePage = ({ uid }) => {
           onInput={(e) => setEditYear(e.target.value)}
         />
         <Text>Classes</Text>
-        <AppDropDown
+        {/* <AppDropDown
           onSelect={addClass}
           selectedClass={selectedClass}
           setSelectedClass={setSelectedClass}
-        ></AppDropDown>
-        {/* <AppDropDown onSelect={addClass}></AppDropDown> */}
+        ></AppDropDown> */}
+        <AppDropDown onSelect={addClass}></AppDropDown>
         <Frame style={{ flexDirection: "row" }}>
           {classes.map((entry, index) => (
             <Course
