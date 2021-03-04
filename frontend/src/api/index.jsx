@@ -60,7 +60,7 @@ export const signUpUser = async (
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected");
+    return createError(e, "server not working for signing up ");
   }
 };
 
@@ -80,7 +80,7 @@ export const signInRequest = async (email, password) => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected");
+    return createError(e, "server not working for signing in ");
   }
 };
 
@@ -99,7 +99,7 @@ export const forgotPwd = async (email) => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected");
+    return createError(e, "server not working for forgetting password");
   }
 };
 
@@ -119,7 +119,7 @@ export const resetPwd = async (password, secret) => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected");
+    return createError(e, "server not working for resetting password");
   }
 };
 
@@ -152,7 +152,7 @@ export const editProfile = async (
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected");
+    return createError(e, "server not working for editing profile");
   }
 };
 
@@ -171,7 +171,7 @@ export const getProfile = async (uid) => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected");
+    return createError(e, "server not working for getting profile");
   }
 };
 
@@ -181,7 +181,7 @@ export const sendMsg = async (from, to, msg) => {
       from,
       to,
       msg,
-      createdDate: new Date().now(),
+      createdDate: Date.now(),
     };
     const res = await POST("/message/add", newMsg);
     if (res.status !== 200) {
@@ -194,7 +194,7 @@ export const sendMsg = async (from, to, msg) => {
       return createSuccess(newMsg);
     }
   } catch (e) {
-    return createError(e, "server disconnected");
+    return createError(e, "server not working for sending messages");
   }
 };
 
@@ -214,7 +214,7 @@ export const getMsgs = async (uid1, uid2) => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected");
+    return createError(e, "server not working for getting messages");
   }
 };
 
@@ -236,7 +236,7 @@ export const initiateRequest = async (studentUID, tutorUID) => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected.");
+    return createError(e, "server not working for initiating match request");
   }
 };
 
@@ -263,7 +263,7 @@ export const tutorRespondRequest = async (
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected.");
+    return createError(e, "server not working for tutor response request.");
   }
 };
 
@@ -285,7 +285,7 @@ export const tutorCheckRequest = async (tutorUID) => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected.");
+    return createError(e, "server not working for checking tutor response.");
   }
 };
 
@@ -308,7 +308,7 @@ export const studentCheckResponse = async (studentUID, tutorUID) => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected.");
+    return createError(e, "server not working for checking student response.");
   }
 };
 
@@ -328,6 +328,84 @@ export const getClassList = async (subjectArea) => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "server disconnected.");
+    return createError(e, "server not working for getting class list.");
+  }
+};
+
+export const getNotifications = async (uid) => {
+  try {
+    const res = await POST("/notification/get", {
+      uid,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "server not working for getting notifications.");
+  }
+};
+
+export const addNotification = async (uid, notification) => {
+  try {
+    const res = await POST("/notification/add", {
+      uid,
+      notification,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "server not working for adding notifications.");
+  }
+};
+
+export const getSchedule = async (uid) => {
+  try {
+    const res = await POST("/schedule/get", {
+      uid,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "server not working for getting schedules.");
+  }
+};
+
+export const setSchedule = async (uid, bytes) => {
+  try {
+    const res = await POST("/schedule/set", {
+      uid,
+      bytes,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "server not working for setting schedules.");
   }
 };

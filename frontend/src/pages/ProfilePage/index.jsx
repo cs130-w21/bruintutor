@@ -5,11 +5,22 @@ import MsgSection from "../../components/MsgSection";
 import CourseSection from "../../components/CourseSection";
 import CalendarSection from "../../components/CalendarSection";
 import ContactSection from "../../components/ContactSection";
+import NotificationBar from "../../components/NotificationBar";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { getProfile } from "../../api";
+import TouchableOpacity from "../../components/TouchableOpacity";
+import { icons } from "../../config";
 
-const ProfilePage = ({ match, uid, userStore, contacts }) => {
+const ProfilePage = ({
+  match,
+  uid,
+  userStore,
+  contacts,
+  notificationOn,
+  notifications,
+  setNotificationOn,
+}) => {
   const [profileInfo, setProfileInfo] = useState();
   const [targetUid, setTargetUid] = useState();
   const [msgUid, setMsgUid] = useState();
@@ -64,7 +75,20 @@ const ProfilePage = ({ match, uid, userStore, contacts }) => {
     return <div></div>;
   } else
     return (
-      <PageFrame onTitleClick={() => history.push("/search/")}>
+      <PageFrame
+        onTitleClick={() => history.push("/search/")}
+        headerRight={
+          <TouchableOpacity
+            style={{ margin: 10 }}
+            onClick={() => {
+              setNotificationOn(!notificationOn);
+            }}
+          >
+            {notificationOn ? icons.notificationOn : icons.notificationOff}
+          </TouchableOpacity>
+        }
+      >
+        {notificationOn && <NotificationBar notifications={notifications} />}
         <Frame
           style={{
             flexDirection: "column",

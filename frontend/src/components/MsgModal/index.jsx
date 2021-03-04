@@ -40,7 +40,9 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
     const res = getMsgs(uid, hostUid);
     setMessages(res.data)
     */
+    // implementation without backend
     setMessages([]);
+    // implementation without backend
   }, [uid, msgUid]);
 
   const checkMessage = (msg) => {
@@ -51,6 +53,7 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
     if (checkMessage(msg)) {
       /*
       implementation with backend
+      //
       const res = await sendMsg(uid, msgUid, msg);
       if (!res.error) {
         changeText("");
@@ -60,7 +63,8 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
       } else {
         window.alert("Message not sent: " + res.errMsg);
       }
-    */
+      */
+      // implementation without backend
       changeText("");
       const newMessages = [...messages];
       newMessages.push({
@@ -70,6 +74,7 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
         createdDate: new Date(),
       });
       setMessages(newMessages);
+      // implementation without backend
     } else {
       window.alert("Message is invalid");
     }

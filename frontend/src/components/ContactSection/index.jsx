@@ -1,6 +1,7 @@
 import ProfileFrame from "../ProfileFrame";
 import TouchableOpacity from "../TouchableOpacity";
 import styles from "./styles.jsx";
+import Text from "../Text";
 
 const ContactCard = ({ entry, onClick }) => {
   return (
@@ -23,7 +24,7 @@ const ContactSection = ({ uid, contacts, userStore, setMsgUid }) => {
         justifyContent: "flex-start",
       }}
     >
-      {entries}
+      {entries.length === 0 ? <Text>No contacts</Text> : entries}
     </ProfileFrame>
   );
 };

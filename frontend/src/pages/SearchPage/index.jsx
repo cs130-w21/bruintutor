@@ -3,12 +3,35 @@ import Frame from "../../components/Frame";
 import { useHistory } from "react-router-dom";
 import SearchBar from "../../components/SeachBar";
 import TutorList from "../../components/TutorList";
-const SearchPage = ({ uid, userStore, matchedTutors }) => {
+import NotificationBar from "../../components/NotificationBar";
+import TouchableOpacity from "../../components/TouchableOpacity";
+import { icons } from "../../config";
+const SearchPage = ({
+  uid,
+  userStore,
+  matchedTutors,
+  notificationOn,
+  notifications,
+  setNotificationOn,
+}) => {
   const history = useHistory();
   const tutors = [];
   matchedTutors.map((tutorId) => tutors.push(userStore[tutorId]));
   return (
-    <PageFrame onTitleClick={() => history.push("/profile/" + uid)}>
+    <PageFrame
+      onTitleClick={() => history.push("/profile/" + uid)}
+      headerRight={
+        <TouchableOpacity
+          style={{ margin: 10 }}
+          onClick={() => {
+            setNotificationOn(!notificationOn);
+          }}
+        >
+          {notificationOn ? icons.notificationOn : icons.notificationOff}
+        </TouchableOpacity>
+      }
+    >
+      {notificationOn && <NotificationBar notifications={notifications} />}
       <Frame
         style={{
           flexDirection: "row",

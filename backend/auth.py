@@ -69,6 +69,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['uid']
+
             return jsonResponse({'uid': user['uid']})
 
         return errorResponse(error)

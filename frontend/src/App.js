@@ -6,10 +6,31 @@ import EditProfilePage from "./pages/EditProfilePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CoverPage from "./pages/CoverPage";
 import "./index.css";
+import { NotificationTypes } from "./config.js";
 import { useState, useEffect } from "react";
+import { getNotifications } from "./api";
 
 function App() {
   const [uid, setUid] = useState("");
+  const [notificationOn, setNotificationOn] = useState(false);
+  const [notifications, setNotifications] = useState([
+    {
+      msg: "This is a message from xxx",
+      createdDate: new Date(),
+      read: false,
+      type: NotificationTypes.MSG,
+      from: "xxx",
+      to: "xxx",
+    },
+    {
+      msg: "Invitation from xxx",
+      createdDate: new Date(),
+      read: false,
+      type: NotificationTypes.INVITE,
+      from: "xxx",
+      to: "xxx",
+    },
+  ]);
   const [userStore, setUserStore] = useState({
     test: {
       uid: "test",
@@ -128,7 +149,19 @@ function App() {
     setUid("test");
   }, []);
 
-  console.log(uid);
+  useEffect(() => {
+    retrieveNotifications(uid);
+  }, [uid]);
+
+  const retrieveNotifications = async (uid) => {
+    const res = await getNotifications(uid);
+    if (res.error) {
+      window.alert(res.errMsg);
+    } else {
+      const data = res.data;
+      setNotifications(data.notifications);
+    }
+  };
 
   return (
     <Router>
@@ -154,6 +187,9 @@ function App() {
                 uid={uid}
                 userStore={userStore}
                 contacts={contacts}
+                notifications={notifications}
+                setNotificationOn={setNotificationOn}
+                notificationOn={notificationOn}
                 match={match}
               />
             )}
@@ -167,6 +203,9 @@ function App() {
                 match={match}
                 userStore={userStore}
                 matchedTutors={matchedTutors}
+                notifications={notifications}
+                setNotificationOn={setNotificationOn}
+                notificationOn={notificationOn}
               />
             )}
           />

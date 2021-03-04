@@ -1,4 +1,10 @@
-import { CloseOutlined, PlusOutlined, MinusOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  PlusOutlined,
+  MinusOutlined,
+  BellFilled,
+  BellOutlined,
+} from "@ant-design/icons";
 
 export const themeColors = {
   darkblue: "#004D7F",
@@ -25,4 +31,15 @@ export const icons = {
   close: <CloseOutlined style={{ color: "#FFFFFF" }} />,
   add: <PlusOutlined style={{ color: "#C4C4C4" }} />,
   remove: <MinusOutlined style={{ color: "#C4C4C4" }} />,
+  notificationOn: (
+    <BellFilled style={{ fontSize: 20, color: themeColors.darkblue }} />
+  ),
+  notificationOff: (
+    <BellOutlined style={{ fontSize: 20, color: themeColors.darkblue }} />
+  ),
+};
+
+export const NotificationTypes = {
+  MSG: "MESSAGE",
+  INVITE: "INVITATION",
 };
