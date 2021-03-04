@@ -71,7 +71,7 @@ def test_get(client, app):
     assert response.content_type == 'application/json'
     response_json = response.json
     assert not response_json['error']
-    messages = response_json['messages']
+    messages = response_json['payload']['messages']
     assert len(messages) == 4
     assert messages[0]['msg'] == "Message0 from 2 to 1"
     assert messages[1]['msg'] == "Message1 from 1 to 2"

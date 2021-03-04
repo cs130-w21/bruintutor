@@ -1,6 +1,6 @@
 import os
 # from flask_cors import CORS, cross_origin
-import auth, profile, class_list, recovery, match, message, search, schedule
+import auth, profile, class_list, recovery, match, message, search, schedule, notification
 from flask import Flask
 import rdscli
 
@@ -42,6 +42,7 @@ def create_app(test_config=None):
     app.register_blueprint(match.bp)
     app.register_blueprint(schedule.bp)
     app.register_blueprint(search.bp)
+    app.register_blueprint(notification.bp)
 
     return app
 
