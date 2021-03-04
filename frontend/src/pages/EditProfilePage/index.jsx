@@ -6,18 +6,25 @@ import Text from "../../components/Text";
 import AppDropDown from "../../components/DropDown";
 import Course from "../../components/Course";
 import { editProfile } from "../../api";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
 const EditProfilePage = ({ uid }) => {
   // defined useState for the fields in the edit profile page
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
   const [editMajor, setEditMajor] = useState("");
   const [editYear, setEditYear] = useState("");
   const [classes, setClasses] = useState([]);
   const history = useHistory();
+  const location = useLocation();
+
+  useEffect(() => {
+    setFirstName(location.firstName);
+    setLastName(location.lastName);
+    setEditMajor(location.major);
+    setEditYear(location.year);
+  }, [location]);
 
   // ** Move to the search page as well
   // Move the selectedClass, setSelectedClass from drop down to edit profile page
@@ -41,15 +48,16 @@ const EditProfilePage = ({ uid }) => {
       uid,
       firstName,
       lastName,
-      email,
       editMajor,
       editYear,
       classes
     );
+    console.log(res);
     if (res.error) {
       window.alert(res.errMsg);
     } else {
       // TO DO, change the states of the user
+      history.push("/profile/" + String(uid)); // first change to fix blank profile page
     }
   };
 
@@ -70,13 +78,6 @@ const EditProfilePage = ({ uid }) => {
           value={lastName}
           autoComplete="on"
           onInput={(e) => setLastName(e.target.value)}
-        />
-        <AppTextInput
-          placeholder="Email"
-          value={email}
-          type={"email"}
-          autoComplete="on"
-          onInput={(e) => setEmail(e.target.value)}
         />
         <AppTextInput
           placeholder="Major"

@@ -20,39 +20,36 @@ const AuthPage = ({ uid, setUid }) => {
   const [isTutor, setIsTutor] = useState(false);
 
   const handleSignUp = async () => {
-    history.push("/edit_profile/" + uid);
-
-    /*
     const res = await signUpUser(firstName, lastName, email, passwd, isTutor);
     if (res.error) {
-      console.log(res.errMsg);
+      window.alert(res.errMsg);
     } else {
       const data = res.data;
       setUid(data.uid);
-      history.push("/edit_profile/" + data.uid);
+      history.push({
+        pathname: "/edit_profile/" + data.uid,
+        firstName,
+        lastName,
+        isTutor,
+      });
     }
-    */
   };
 
   const handleSignIn = async () => {
-    history.push("/profile/" + uid);
-
-    /*
     const res = await signInRequest(email, passwd);
     if (res.error) {
-      console.log(res.errMsg);
+      window.alert(res.errMsg);
     } else {
       const data = res.data;
       setUid(data.uid);
       history.push("/profile/" + data.uid);
     }
-    */
   };
 
   const handleResetPassword = async () => {
     const res = await forgotPwd(email);
     if (res.error) {
-      // TO DO: notify the error
+      window.alert(res.errMsg);
     } else {
       // TO DO: notify the email
     }

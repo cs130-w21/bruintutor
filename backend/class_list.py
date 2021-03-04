@@ -7,10 +7,10 @@ from flask import (
 bp = Blueprint('class_list', __name__, url_prefix='/api/classList')
 from form_response import jsonResponse, errorResponse
 
-@bp.route('/get', methods=['GET'])
+@bp.route('/get', methods=('GET', 'POST'))
 def class_list():
     response = None
-    if request.method == 'GET':
+    if request.method == 'POST':
         data = request.get_json()
         if not data:
             return errorResponse('Data Body Required')
@@ -30,5 +30,5 @@ def class_list():
 
         class_file.close()
         return jsonResponse({"classList": classes})
-    return errorResponse('GET to this endpoint')
+    return errorResponse('POST to this endpoint')
 

@@ -409,3 +409,41 @@ export const setSchedule = async (uid, bytes) => {
     return createError(e, "server not working for setting schedules.");
   }
 };
+
+
+export const uploadProfilePicture = async (uid, profilePicUrl) => {
+  try {
+    const res = await POST("/profile/pictureUpload", {
+      uid,
+      profilePicUrl,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "Server disconnected");
+  }
+};
+
+export const getUid = async () => {
+  try {
+    const res = await GET("/auth/getuid");
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "Server disconnected");
+  }
+};

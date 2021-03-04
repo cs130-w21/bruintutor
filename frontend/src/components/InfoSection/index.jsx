@@ -6,7 +6,7 @@ import AppButton from "../AppButton";
 import { useHistory } from "react-router-dom";
 
 const formatYear = (year) => {
-  if (0 < year < 5) return ["1st", "2rd", "3rd", "4th"][year];
+  if (0 < year < 5) return ["Student", "1st", "2rd", "3rd", "4th"][year];
   else return "Graduated";
 };
 
@@ -51,7 +51,15 @@ const InfoSection = ({
       {isOwner && (
         <AppButton
           style={{ width: 100, height: 30 }}
-          onClick={() => history.push("/edit_profile/" + uid)}
+          onClick={() =>
+            history.push({
+              pathname: "/edit_profile/" + uid,
+              firstName,
+              lastName,
+              major,
+              year,
+            })
+          }
         >
           Edit Profile
         </AppButton>
