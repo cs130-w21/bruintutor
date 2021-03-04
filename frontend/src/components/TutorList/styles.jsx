@@ -15,6 +15,13 @@ export default {
     fontSize: 18,
     fontWeight: "bold",
   },
+  major: {
+    fontSize: 16,
+  },
+  class: {
+    fontSize: 14,
+    color: themeColors.red,
+  },
   tutorList: {
     alignSelf: "stretch",
     justifyContent: "flex-start",

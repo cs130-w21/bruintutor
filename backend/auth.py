@@ -9,7 +9,7 @@ from form_response import jsonResponse, errorResponse
 bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
 # TODO: why specify GET?
-@bp.route('/register', methods=('GET', 'POST'))
+@bp.route('/register', methods=['POST'])
 def register():
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
@@ -45,7 +45,7 @@ def register():
         return errorResponse(error)
     return errorResponse('POST to this endpoint')
 
-@bp.route('/login', methods=('GET', 'POST'))
+@bp.route('/login', methods=['POST'])
 def login():
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
@@ -76,7 +76,7 @@ def login():
     return errorResponse('POST to this endpoint')
 
 # a way for the frontend to get uid of currently logged in user, if avail
-@bp.route('/getuid')
+@bp.route('/getuid', methods=['GET'])
 def getuid():
     return jsonResponse({'uid': session.get('user_id')})
 
@@ -90,7 +90,7 @@ def load_logged_in_user():
     else:
         g.user = redis_client.hgetall(user_id)
 
-@bp.route('/logout')
+@bp.route('/logout', methods=['GET'])
 def logout():
     session.clear()
     return jsonResponse()

@@ -8,8 +8,13 @@ import CoverPage from "./pages/CoverPage";
 import "./index.css";
 import { NotificationTypes } from "./config.js";
 import { useState, useEffect } from "react";
-import { getUid, signInRequest, getNotifications } from "./api";
-
+import {
+  getNotifications,
+  getContacts,
+  getUid,
+  getProfile,
+  getSchedule,
+} from "./api";
 
 function App() {
   const [uid, setUid] = useState("");
@@ -32,137 +37,52 @@ function App() {
       to: "xxx",
     },
   ]);
-  const [userStore, setUserStore] = useState({
-    test: {
-      uid: "test",
-      firstName: "Joe",
-      lastName: "Bruin",
-      major: "Computer Science",
-      year: 3,
-      rating: 3,
-      classes: [
-        "CS 111",
-        "COMSCI 131",
-        "CS 130",
-        "MATH 143",
-        "CS 111",
-        "CHEM 131",
-        "CS 130",
-        "PHYSICS 143",
-        "CS 111",
-      ],
-    },
-    test2: {
-      uid: "test2",
-      firstName: "First",
-      lastName: "Last",
-      major: "Biology",
-      year: 4,
-      rating: 3,
-      classes: [
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-      ],
-    },
-    test3: {
-      uid: "test3",
-      firstName: "First",
-      lastName: "Last",
-      major: "Biology",
-      year: 4,
-      rating: 4,
-      classes: [
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-      ],
-    },
-    test4: {
-      uid: "test4",
-      firstName: "First",
-      lastName: "Last",
-      major: "Biology",
-      year: 4,
-      rating: 1,
-      classes: [
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-      ],
-    },
-    test5: {
-      uid: "test5",
-      firstName: "First",
-      lastName: "Last",
-      major: "Biology",
-      year: 4,
-      rating: 5,
-      classes: [
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-        "CS130",
-      ],
-    },
-  });
-  const [contacts, setContacts] = useState([
-    "test2",
-    "test3",
-    "test4",
-    "test5",
-  ]);
-  const [matchedTutors, setMatchedTutors] = useState([
-    "test2",
-    "test3",
-    "test4",
-    "test5",
-  ]);
+  const [userStore, setUserStore] = useState({});
+  const [contacts, setContacts] = useState([]);
+  const [matchedTutors, setMatchedTutors] = useState([]);
 
   useEffect(() => {
     getAuthState();
   }, []);
 
-  const getAuthState = async () => {
-    const res = await getUid();
+  useEffect(() => {
+    for (let id of matchedTutors) {
+      if (!(id in userStore)) {
+        retrieveProfile(id);
+      }
+    }
+  }, [matchedTutors]);
+
+  useEffect(() => {
+    for (let id of contacts) {
+      if (!id in userStore) {
+        retrieveProfile(id);
+      }
+    }
+  }, [contacts]);
+
+  useEffect(() => {
+    retrieveNotifications(uid);
+    retrieveContacts(uid);
+  }, [uid]);
+
+  const retrieveProfile = async (uid) => {
+    const res = await getProfile(uid);
+    const schRes = await getSchedule(uid);
     if (res.error) {
       window.alert(res.errMsg);
     } else {
-      const data = res.data;
-      setUid(data.uid);
+      const info = res.data;
+      const schedule = schRes.data;
+      info.uid = uid;
+      if (schedule.bytes.length > 0) info.schedule = schedule.bytes;
+      else info.schedule = Array(42).fill(0);
+      setUserStore({
+        ...userStore,
+        [uid]: info,
+      });
     }
   };
-    
-  useEffect(() => {
-    retrieveNotifications(uid);
-  }, [uid]);
 
   const retrieveNotifications = async (uid) => {
     const res = await getNotifications(uid);
@@ -171,6 +91,26 @@ function App() {
     } else {
       const data = res.data;
       setNotifications(data.notifications);
+    }
+  };
+
+  const retrieveContacts = async (uid) => {
+    const res = await getContacts(uid);
+    if (res.error) {
+      window.alert(res.errMsg);
+    } else {
+      const data = res.data;
+      setContacts(data.contacts);
+    }
+  };
+
+  const getAuthState = async () => {
+    const res = await getUid();
+    if (res.error) {
+      window.alert(res.errMsg);
+    } else {
+      const data = res.data;
+      setUid(data.uid);
     }
   };
 
@@ -214,6 +154,7 @@ function App() {
                 match={match}
                 userStore={userStore}
                 matchedTutors={matchedTutors}
+                setMatchedTutors={setMatchedTutors}
                 notifications={notifications}
                 setNotificationOn={setNotificationOn}
                 notificationOn={notificationOn}

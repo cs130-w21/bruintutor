@@ -127,7 +127,6 @@ export const editProfile = async (
   uid,
   firstName,
   lastName,
-  email,
   major,
   year,
   classes
@@ -137,7 +136,6 @@ export const editProfile = async (
       uid,
       firstName,
       lastName,
-      email,
       major,
       year,
       classes,
@@ -371,6 +369,26 @@ export const addNotification = async (uid, notification) => {
   }
 };
 
+export const uploadProfilePicture = async (uid, profilePicUrl) => {
+  try {
+    const res = await POST("/profile/pictureUpload", {
+      uid,
+      profilePicUrl,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "server not working for uploading profile picture.");
+  }
+};
+
 export const getSchedule = async (uid) => {
   try {
     const res = await POST("/schedule/get", {
@@ -410,27 +428,6 @@ export const setSchedule = async (uid, bytes) => {
   }
 };
 
-
-export const uploadProfilePicture = async (uid, profilePicUrl) => {
-  try {
-    const res = await POST("/profile/pictureUpload", {
-      uid,
-      profilePicUrl,
-    });
-    if (res.status != 200) {
-      return createError(res, "Status Error: " + res.status);
-    }
-    const data = await res.json();
-    if (data.error) {
-      return createError(null, data.errMsg);
-    } else {
-      return createSuccess(data.payload);
-    }
-  } catch (e) {
-    return createError(e, "Server disconnected");
-  }
-};
-
 export const getUid = async () => {
   try {
     const res = await GET("/auth/getuid");
@@ -444,6 +441,46 @@ export const getUid = async () => {
       return createSuccess(data.payload);
     }
   } catch (e) {
-    return createError(e, "Server disconnected");
+    return createError(e, "server not working for getting uid.");
+  }
+};
+
+export const getContacts = async (uid) => {
+  try {
+    const res = await POST("/contacts/get", {
+      uid,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "server not working for getting contacts.");
+  }
+};
+
+export const searchTutors = async (name, classes, bytes) => {
+  try {
+    const res = await POST("/search/get", {
+      name,
+      classes,
+      bytes,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "server not working for searching tutors.");
   }
 };

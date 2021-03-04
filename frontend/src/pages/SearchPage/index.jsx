@@ -5,18 +5,23 @@ import SearchBar from "../../components/SeachBar";
 import TutorList from "../../components/TutorList";
 import NotificationBar from "../../components/NotificationBar";
 import TouchableOpacity from "../../components/TouchableOpacity";
-import { icons } from "../../config";
+import Text from "../../components/Text";
+import { icons, themeColors } from "../../config";
 const SearchPage = ({
   uid,
   userStore,
   matchedTutors,
+  setMatchedTutors,
   notificationOn,
   notifications,
   setNotificationOn,
 }) => {
   const history = useHistory();
   const tutors = [];
-  matchedTutors.map((tutorId) => tutors.push(userStore[tutorId]));
+  console.log(matchedTutors, userStore);
+  matchedTutors.map((tutorId) => {
+    if (tutorId in userStore) tutors.push(userStore[tutorId]);
+  });
   return (
     <PageFrame
       onTitleClick={() => history.push("/profile/" + uid)}
@@ -28,6 +33,19 @@ const SearchPage = ({
           }}
         >
           {notificationOn ? icons.notificationOn : icons.notificationOff}
+          {notifications.length > 0 && (
+            <Text
+              style={{
+                position: "absolute",
+                top: 15,
+                right: 13,
+                backgroundColor: themeColors.red,
+                borderRadius: "50%",
+                width: 5,
+                height: 5,
+              }}
+            ></Text>
+          )}
         </TouchableOpacity>
       }
     >
@@ -47,7 +65,7 @@ const SearchPage = ({
             overflow: "auto",
           }}
         >
-          <SearchBar />
+          <SearchBar setMatchedTutors={setMatchedTutors} />
         </Frame>
         <Frame
           style={{

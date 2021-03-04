@@ -16,6 +16,7 @@ export const themeColors = {
   green: "#008000",
   halfgreen: "#00D000",
   yellow: "#FFD700",
+  red: "#DC143C",
   // put theme colors here
 };
 

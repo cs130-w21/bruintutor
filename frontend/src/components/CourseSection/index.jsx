@@ -1,6 +1,7 @@
 import ProfileFrame from "../ProfileFrame";
 import Course from "../Course";
 import Frame from "../Frame";
+import Text from "../Text";
 
 const CourseSection = ({ classes }) => {
   const entries = [];
@@ -20,7 +21,7 @@ const CourseSection = ({ classes }) => {
           flexWrap: "wrap",
         }}
       >
-        {entries}
+        {entries.length === 0 ? <Text>No classes listed</Text> : entries}
       </Frame>
     </ProfileFrame>
   );
