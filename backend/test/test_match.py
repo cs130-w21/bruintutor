@@ -17,114 +17,89 @@ STUDENT_INFO = {
 }
 
 def set_users(redis_client):
-    TUTOR_INFO['uid'] = 1
-    STUDENT_INFO['uid'] = 2
-    redis_client.hmset("user1", TUTOR_INFO)
-    redis_client.hmset("user2", STUDENT_INFO)
+    TUTOR_INFO['uid'] = 10
+    STUDENT_INFO['uid'] = 12
+    redis_client.hmset("user10", TUTOR_INFO)
+    redis_client.hmset("user12", STUDENT_INFO)
 
-
-# test initiate match
-def test_initiate(client, app):
-    redis_client = app.config['RDSCXN']
-
-    set_users(redis_client)
-
-    initate_url = 'api/match/initiate'
-    initiate_data = json.dumps({
-     "tutor": 1,
-     "student": 2
-    })
-    initiate_response = client.post(initate_url, headers={'Content-Type': 'application/json'}, data=initiate_data)
-    assert initiate_response.status_code == 200
-    initiate_response_json = initiate_response.json
-    assert not initiate_response_json['error']
-
-    initiate_response = client.post(initate_url, headers={'Content-Type': 'application/json'}, data=initiate_data)
-    assert initiate_response.status_code == 200
-    initiate_response_json = initiate_response.json
-    assert initiate_response_json['error']
-    assert initiate_response_json['errMsg'] == 'student already requested match'
 
 def test_tutorrespond(client, app):
     redis_client = app.config['RDSCXN']
 
     set_users(redis_client)
-    redis_client.rpush('match_req1', 2)
+    redis_client.rpush('match_req10', 12)
 
     tutorrespond_url = 'api/match/tutorrespond'
     tutor_data = {
-        "tutor": 1,
-        "student": 2,
-        "requestDecision": "no"
+        "tutor": 10,
+        "student": 12,
     }
+    tutor_data = json.dumps(tutor_data)
 
-
-    def test_tr(redis_client, tutor_data):
-        tutor_data_json = json.dumps(tutor_data)
-        return client.post(tutorrespond_url, headers={'Content-Type': 'application/json'}, data=tutor_data_json)
-
-    tutor_response = test_tr(redis_client, tutor_data)
-    assert tutor_response.status_code == 200
-    tutor_response_json = tutor_response.json
-    assert not tutor_response_json['error']
+    response = client.post(tutorrespond_url, headers={'Content-Type': 'application/json'}, data=tutor_data)
+    json_response = response.json
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    assert not json_response['error']
     assert redis_client.lrange('match_req1', 0, -1) == []
+    assert redis_client.lrange('students10', 0, -1) == ['12']
+    assert redis_client.lrange('tutor12', 0, -1) == ['10']
 
-    redis_client.rpush('match_req1', 2)
-    tutor_data['requestDecision'] = 'yes'
-    tutor_response = test_tr(redis_client, tutor_data)
-    assert tutor_response.status_code == 200
-    tutor_response_json = tutor_response.json
-    assert not tutor_response_json['error']
-    assert redis_client.lrange('match_req1', 0, -1) == []
-    assert redis_client.lrange('students1', 0, -1) == ['2']
+    response = client.post(tutorrespond_url, headers={'Content-Type': 'application/json'}, data=tutor_data)
+    json_response = response.json
+    assert response.status_code == 200
+    assert json_response['error']
+    assert json_response['errMsg'] == 'Student with UID 12 has not sent a request'
 
-    tutor_response = test_tr(redis_client, tutor_data)
-    assert tutor_response.status_code == 200
-    tutor_response_json = tutor_response.json
-    assert tutor_response_json['errMsg'] == 'Student with UID 2 has not sent a request'
+    tutor_data = json.dumps({"tutor": 1, "student": 12})
+    response = client.post(tutorrespond_url, headers={'Content-Type': 'application/json'}, data=tutor_data)
+    json_response = response.json
+    assert response.status_code == 200
+    assert json_response['error']
+    assert json_response['errMsg'] == 'Tutor with UID 1 not found'
 
-def test_tutor_check_request(client, app):
+    tutor_data = json.dumps({"tutor": 10, "student": 1})
+    response = client.post(tutorrespond_url, headers={'Content-Type': 'application/json'}, data=tutor_data)
+    json_response = response.json
+    assert response.status_code == 200
+    assert json_response['error']
+    assert json_response['errMsg'] == 'Student with UID 1 not found'
+
+def initiate_lists(redis_client):
+    redis_client.rpush('students12', 13)
+    redis_client.rpush('students12', 27)
+    redis_client.rpush('students12', 2021)
+
+    redis_client.rpush('tutor2021', 12)
+
+def test_get_user_list(client, app):
     redis_client = app.config['RDSCXN']
 
-    set_users(redis_client)
-    redis_client.rpush('match_req1', 2)
+    user_list_url = 'api/match/getUserList'
 
-    tutorrespond_url = 'api/match/tutorCheckRequest'
-    tutor_data = {
-        "tutor": 1
-    }
+    initiate_lists(redis_client)
 
-    tutor_data_json = json.dumps(tutor_data)
-    tutor_response = client.get(tutorrespond_url, headers={'Content-Type': 'application/json'}, data=tutor_data_json)
-    assert tutor_response.status_code == 200
-    tutor_response_json = tutor_response.json
-    assert not tutor_response_json['error']
-    assert tutor_response_json['payload'] == ['2']
+    response = client.post(user_list_url, headers={'Content-Type': 'application/json'}, data=json.dumps({"uid": 12}))
+    json_response = response.json
+    assert response.status_code == 200
+    assert not json_response['error']
+    assert json_response['payload'] == [13, 27, 2021]
 
-def test_student_check_response(client, app):
-    redis_client = app.config['RDSCXN']
+    response = client.post(user_list_url, headers={'Content-Type': 'application/json'}, data=json.dumps({"uid": 2021}))
+    json_response = response.json
+    assert response.status_code == 200
+    assert not json_response['error']
+    assert json_response['payload'] == [12]
 
-    set_users(redis_client)
+    response = client.post(user_list_url, headers={'Content-Type': 'application/json'}, data=json.dumps({"uid": 13}))
+    json_response = response.json
+    assert response.status_code == 200
+    assert not json_response['error']
+    assert json_response['payload'] == []
 
-    check_url = 'api/match/studentCheckResponse'
-    data = {
-        "tutor": 1,
-        "student": 2
-    }
-    data_json = json.dumps(data)
+    response = client.post(user_list_url, headers={'Content-Type': 'application/json'}, data=json.dumps({}))
+    json_response = response.json
+    assert response.status_code == 200
+    assert json_response['error']
+    assert json_response['errMsg'] == 'Please include User ID'
 
-    def check_request(status):
-        response = client.get(check_url, headers={'Content-Type': 'application/json'}, data=data_json)
-        assert response.status_code == 200
-        response_json = response.json
-        assert not response_json['error']
-        assert response_json['payload'] == status
-
-    check_request('no')
-
-    redis_client.rpush('match_req1', 2)
-    check_request('pending')
-
-    redis_client.lrem('match_req1', 1, 2)
-    redis_client.rpush('students1', 2)
-    check_request('yes')
