@@ -126,7 +126,7 @@ def main():
 						sys.stderr.write("Error: Unable to read className")
 						className = ""
 						
-					writer.writerow([headerName, headerAcronym, classNum, className])
+					writer.writerow([headerName.strip(), headerAcronym.strip(), classNum.strip(), className.strip()])
 	except (IOError, OSError):
 		sys.stderr.write("Error: Unable to write to csv file\n")
 		sys.exit(1)
