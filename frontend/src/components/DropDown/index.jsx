@@ -20,6 +20,7 @@ const subjectArea = [
     value: "Chicana/o and Central American Studies",
   },
   { label: "Chinese", value: "Chinese" },
+  { label: "Computer Science", value: "Computer Science" },
   {
     label: "Civil and Environmental Engineering",
     value: "Civil and Environmental Engineering",
