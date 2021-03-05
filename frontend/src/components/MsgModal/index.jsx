@@ -34,7 +34,7 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
   const [text, changeText] = useState("");
   const [messages, setMessages] = useState([]);
   useEffect(() => {
-    retrieveMsgs();
+    if (uid && msgUid) retrieveMsgs();
   }, [uid, msgUid]);
 
   const retrieveMsgs = async () => {
@@ -97,15 +97,19 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
         <></>
       )}
       <Frame style={styles.commentSection}>
-        <TextBox
-          style={{
-            alignSelf: "stretch",
-            backgroundColor: themeColors.white,
-            width: "auto",
-          }}
-          text={text}
-          changeText={changeText}
-        />
+        {uid === msgUid ? (
+          <Text>You cannot send message to yourself</Text>
+        ) : (
+          <TextBox
+            style={{
+              alignSelf: "stretch",
+              backgroundColor: themeColors.white,
+              width: "auto",
+            }}
+            text={text}
+            changeText={changeText}
+          />
+        )}
       </Frame>
       <AppButton
         style={{

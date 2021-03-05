@@ -9,9 +9,14 @@ import NotificationBar from "../../components/NotificationBar";
 import Text from "../../components/Text";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { getProfile, uploadProfilePicture } from "../../api";
+import {
+  getProfile,
+  uploadProfilePicture,
+  deleteNotification,
+} from "../../api";
 import TouchableOpacity from "../../components/TouchableOpacity";
 import { icons, themeColors } from "../../config";
+import AppButton from "../../components/AppButton";
 
 const ProfilePage = ({
   match,
@@ -22,6 +27,8 @@ const ProfilePage = ({
   notifications,
   setNotificationOn,
   setUserStore,
+  removeNotification,
+  logOut,
 }) => {
   const [profileInfo, setProfileInfo] = useState();
   const [targetUid, setTargetUid] = useState();
@@ -45,8 +52,11 @@ const ProfilePage = ({
   useEffect(() => {
     fetchInfo();
     if (!isOwner) setMsgUid(match.params.id);
+    else {
+      setMsgUid("");
+    }
     console.log("fetching user info");
-  }, [match.params.id]);
+  }, [match.params.id, uid]);
 
   const setProfileUrl = async (url) => {
     await uploadProfilePicture(uid, url);
@@ -64,30 +74,54 @@ const ProfilePage = ({
       <PageFrame
         onTitleClick={() => history.push("/search/")}
         headerRight={
-          <TouchableOpacity
-            style={{ margin: 10 }}
-            onClick={() => {
-              setNotificationOn(!notificationOn);
-            }}
-          >
-            {notificationOn ? icons.notificationOn : icons.notificationOff}
-            {notifications.length > 0 && (
-              <Text
-                style={{
-                  position: "absolute",
-                  top: 15,
-                  right: 13,
-                  backgroundColor: themeColors.red,
-                  borderRadius: "50%",
-                  width: 5,
-                  height: 5,
-                }}
-              ></Text>
-            )}
-          </TouchableOpacity>
+          <Frame style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              style={{ margin: 10 }}
+              onClick={() => {
+                setNotificationOn(!notificationOn);
+              }}
+            >
+              {notificationOn ? icons.notificationOn : icons.notificationOff}
+              {notifications.length > 0 && (
+                <Text
+                  style={{
+                    position: "absolute",
+                    top: 15,
+                    right: 13,
+                    backgroundColor: themeColors.red,
+                    borderRadius: "50%",
+                    width: 5,
+                    height: 5,
+                  }}
+                ></Text>
+              )}
+            </TouchableOpacity>
+            <AppButton
+              style={{
+                height: "auto",
+                width: "auto",
+                padding: 5,
+                borderRadius: 5,
+              }}
+              onClick={async () => {
+                await logOut();
+                history.push("/");
+              }}
+            >
+              Logout
+            </AppButton>
+          </Frame>
         }
       >
-        {notificationOn && <NotificationBar notifications={notifications} />}
+        {notificationOn && (
+          <NotificationBar
+            checkNotification={async (notifId) => {
+              const res = await deleteNotification(uid, notifId);
+              if (!res.error) removeNotification(notifId);
+            }}
+            notifications={notifications}
+          />
+        )}
         <Frame
           style={{
             flexDirection: "column",

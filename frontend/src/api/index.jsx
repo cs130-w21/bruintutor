@@ -84,6 +84,23 @@ export const signInRequest = async (email, password) => {
   }
 };
 
+export const logOutRequest = async () => {
+  try {
+    const res = await GET("/auth/logout");
+    if (res.status !== 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "server not working for signing in ");
+  }
+};
+
 export const forgotPwd = async (email) => {
   try {
     const res = await POST("/auth/forgot", {
@@ -216,40 +233,11 @@ export const getMsgs = async (uid1, uid2) => {
   }
 };
 
-// Create the initiateRequest send from student side; pass the student UID, tutor UID
-// TODO: Link the initiate Request to a request button created in message box
-export const initiateRequest = async (studentUID, tutorUID) => {
-  try {
-    const res = await POST("/match/initate", {
-      studentUID,
-      tutorUID,
-    });
-    if (res.status != 200) {
-      return createError(res, "Status Error: " + res.status);
-    }
-    const data = await res.json();
-    if (data.error) {
-      return createError(null, data.errMsg);
-    } else {
-      return createSuccess(data.payload);
-    }
-  } catch (e) {
-    return createError(e, "server not working for initiating match request");
-  }
-};
-
-// Create the tutorRespondRequest send from tutor side to the backend to deliver the decision
-// Link the tutorRespondRequest to a respond button in message box
-export const tutorRespondRequest = async (
-  studentUID,
-  tutorUID,
-  requestDecision
-) => {
+export const tutorRespondRequest = async (student, tutor) => {
   try {
     const res = await POST("/match/tutorrespond", {
-      studentUID,
-      tutorUID,
-      requestDecision,
+      student,
+      tutor,
     });
     if (res.status != 200) {
       return createError(res, "Status Error: " + res.status);
@@ -262,51 +250,6 @@ export const tutorRespondRequest = async (
     }
   } catch (e) {
     return createError(e, "server not working for tutor response request.");
-  }
-};
-
-// Create the get match request for tutor user checking for new tutor requests
-// Not sure what to expect for the response? A list of request message?
-// TODO: Link this API to a check request button in message box
-export const tutorCheckRequest = async (tutorUID) => {
-  try {
-    const res = await GET("/match/getrequest", {
-      tutorUID,
-    });
-    if (res.status != 200) {
-      return createError(res, "Status Error: " + res.status);
-    }
-    const data = await res.json();
-    if (data.error) {
-      return createError(null, data.errMsg);
-    } else {
-      return createSuccess(data.payload);
-    }
-  } catch (e) {
-    return createError(e, "server not working for checking tutor response.");
-  }
-};
-
-// Create the get match request for student user checking for responses of sent requests
-// Not sure what to expect for the response? yes/no/pending?
-// TODO: Linke this API to a check response button in message box
-export const studentCheckResponse = async (studentUID, tutorUID) => {
-  try {
-    const res = await GET("/match/studentcheckrequest", {
-      studentUID,
-      tutorUID,
-    });
-    if (res.status != 200) {
-      return createError(res, "Status Error: " + res.status);
-    }
-    const data = await res.json();
-    if (data.error) {
-      return createError(null, data.errMsg);
-    } else {
-      return createSuccess(data.payload);
-    }
-  } catch (e) {
-    return createError(e, "server not working for checking student response.");
   }
 };
 
@@ -366,6 +309,26 @@ export const addNotification = async (uid, notification) => {
     }
   } catch (e) {
     return createError(e, "server not working for adding notifications.");
+  }
+};
+
+export const deleteNotification = async (uid, notificationID) => {
+  try {
+    const res = await POST("/notification/delete", {
+      uid,
+      notificationID,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(e, "server not working for deleting notifications.");
   }
 };
 

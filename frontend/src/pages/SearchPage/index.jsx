@@ -7,6 +7,7 @@ import NotificationBar from "../../components/NotificationBar";
 import TouchableOpacity from "../../components/TouchableOpacity";
 import Text from "../../components/Text";
 import { icons, themeColors } from "../../config";
+import { deleteNotification } from "../../api";
 const SearchPage = ({
   uid,
   userStore,
@@ -15,6 +16,7 @@ const SearchPage = ({
   notificationOn,
   notifications,
   setNotificationOn,
+  removeNotification,
 }) => {
   const history = useHistory();
   const tutors = [];
@@ -48,7 +50,15 @@ const SearchPage = ({
         </TouchableOpacity>
       }
     >
-      {notificationOn && <NotificationBar notifications={notifications} />}
+      {notificationOn && (
+        <NotificationBar
+          checkNotification={async (notifId) => {
+            const res = await deleteNotification(uid, notifId);
+            if (!res.error) removeNotification(notifId);
+          }}
+          notifications={notifications}
+        />
+      )}
       <Frame
         style={{
           flexDirection: "row",

@@ -6,20 +6,22 @@ import Text from "../Text";
 import { useHistory } from "react-router-dom";
 
 const ContactCard = ({ entry, onClick, addToChat }) => {
-  return (
-    <TouchableOpacity style={styles.card} onClick={onClick}>
-      <Text>{entry.firstName + " " + entry.lastName}</Text>
-      <AppButton
-        style={styles.btn}
-        onClick={(e) => {
-          e.stopPropagation();
-          addToChat();
-        }}
-      >
-        Chat
-      </AppButton>
-    </TouchableOpacity>
-  );
+  if (entry)
+    return (
+      <TouchableOpacity style={styles.card} onClick={onClick}>
+        <Text>{entry.firstName + " " + entry.lastName}</Text>
+        <AppButton
+          style={styles.btn}
+          onClick={(e) => {
+            e.stopPropagation();
+            addToChat();
+          }}
+        >
+          Chat
+        </AppButton>
+      </TouchableOpacity>
+    );
+  else return <></>;
 };
 const ContactSection = ({ uid, contacts, userStore, setMsgUid }) => {
   const contactUsers = contacts.map((uid) => userStore[uid]);
