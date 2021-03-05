@@ -32,14 +32,7 @@ def tutor_respond():
             error = 'Student with UID {} not found'.format(studentID)
             return errorResponse(error)
 
-        requests = redis_client.lrange('match_req{}'.format(tutorID), 0, -1)
-        requests = (map(int, requests))
-        if studentID not in requests:
-            error = 'Student with UID {} has not sent a request'.format(studentID)
-            return errorResponse(error)
-
         redis_client.rpush('students{}'.format(tutorID), studentID)
-        redis_client.lrem('match_req{}'.format(tutorID), 1, studentID)
         redis_client.delete("tutor{}".format(studentID))
         redis_client.rpush('tutor{}'.format(studentID), tutorID)
 

@@ -27,7 +27,6 @@ def test_tutorrespond(client, app):
     redis_client = app.config['RDSCXN']
 
     set_users(redis_client)
-    redis_client.rpush('match_req10', 12)
 
     tutorrespond_url = 'api/match/tutorrespond'
     tutor_data = {
@@ -41,15 +40,8 @@ def test_tutorrespond(client, app):
     assert response.status_code == 200
     assert response.content_type == 'application/json'
     assert not json_response['error']
-    assert redis_client.lrange('match_req1', 0, -1) == []
     assert redis_client.lrange('students10', 0, -1) == ['12']
     assert redis_client.lrange('tutor12', 0, -1) == ['10']
-
-    response = client.post(tutorrespond_url, headers={'Content-Type': 'application/json'}, data=tutor_data)
-    json_response = response.json
-    assert response.status_code == 200
-    assert json_response['error']
-    assert json_response['errMsg'] == 'Student with UID 12 has not sent a request'
 
     tutor_data = json.dumps({"tutor": 1, "student": 12})
     response = client.post(tutorrespond_url, headers={'Content-Type': 'application/json'}, data=tutor_data)
