@@ -447,7 +447,7 @@ export const getUid = async () => {
 
 export const getContacts = async (uid) => {
   try {
-    const res = await POST("/contacts/get", {
+    const res = await POST("/match/getUserList", {
       uid,
     });
     if (res.status != 200) {

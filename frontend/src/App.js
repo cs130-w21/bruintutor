@@ -19,24 +19,7 @@ import {
 function App() {
   const [uid, setUid] = useState("");
   const [notificationOn, setNotificationOn] = useState(false);
-  const [notifications, setNotifications] = useState([
-    {
-      msg: "This is a message from xxx",
-      createdDate: new Date(),
-      read: false,
-      type: NotificationTypes.MSG,
-      from: "xxx",
-      to: "xxx",
-    },
-    {
-      msg: "Invitation from xxx",
-      createdDate: new Date(),
-      read: false,
-      type: NotificationTypes.INVITE,
-      from: "xxx",
-      to: "xxx",
-    },
-  ]);
+  const [notifications, setNotifications] = useState([]);
   const [userStore, setUserStore] = useState({});
   const [contacts, setContacts] = useState([]);
   const [matchedTutors, setMatchedTutors] = useState([]);
@@ -62,9 +45,18 @@ function App() {
   }, [contacts]);
 
   useEffect(() => {
-    retrieveNotifications(uid);
-    retrieveContacts(uid);
+    if (uid) {
+      retrieveNotifications(uid);
+      retrieveContacts(uid);
+    }
   }, [uid]);
+
+  useEffect(() => {
+    for (let notif of notifications) {
+      const uid = notif.from;
+      if (uid) retrieveProfile(uid);
+    }
+  }, [notifications]);
 
   const retrieveProfile = async (uid) => {
     const res = await getProfile(uid);
@@ -90,7 +82,7 @@ function App() {
       window.alert(res.errMsg);
     } else {
       const data = res.data;
-      setNotifications(data.notifications);
+      if (data.notification) setNotifications(data.notification);
     }
   };
 
@@ -100,7 +92,7 @@ function App() {
       window.alert(res.errMsg);
     } else {
       const data = res.data;
-      setContacts(data.contacts);
+      if (data) setContacts(data);
     }
   };
 
@@ -136,6 +128,7 @@ function App() {
             render={({ match }) => (
               <ProfilePage
                 uid={uid}
+                setUserStore={setUserStore}
                 userStore={userStore}
                 contacts={contacts}
                 notifications={notifications}

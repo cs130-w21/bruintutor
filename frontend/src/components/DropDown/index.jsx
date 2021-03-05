@@ -111,29 +111,20 @@ const subjectArea = [
   { label: "Yiddish", value: "Yiddish" },
 ];
 
-const AppDropDown = ({onSelect}) => {
-
+const AppDropDown = ({ onSelect }) => {
   const [classList, setClassList] = useState([]);
   const handleGetClassList = async (selectedSubject) => {
-
-    // selectedSubject is not empty 
-    if (selectedSubject != null) {
-      console.log("Selected Subject Area: " + selectedSubject);
-    } 
-
     const res = await getClassList(selectedSubject);
     if (res.error) {
-      console.log(res.errMsg);
+      window.alert(res.errMsg);
     } else {
       const data = res.data;
 
-      // console.log("This is my parse data: " + JSON.parse(JSON.stringify(data)));
-      var api_class_list = JSON.parse(JSON.stringify(data))
+      var api_class_list = JSON.parse(JSON.stringify(data));
       var class_array = api_class_list.classList;
-      console.log("API class array: " + api_class_list.classList);
-  
+
       let subclassFromApi = class_array.map((item) => {
-        return {label: item, value: item};
+        return { label: item, value: item };
       });
       setClassList(subclassFromApi);
     }

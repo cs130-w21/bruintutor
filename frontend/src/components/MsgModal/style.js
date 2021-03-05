@@ -35,6 +35,17 @@ export default {
     backgroundColor: themeColors.darkblue,
     color: themeColors.lightgray,
   },
+  msgContainer: {
+    flex: 1,
+    backgroundColor: "white",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    margin: 10,
+    borderRadius: 10,
+    overflow: "auto",
+    alignItems: "stretch",
+  },
   msgSection: {
     flex: 1,
     backgroundColor: "white",

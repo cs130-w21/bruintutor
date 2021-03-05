@@ -60,7 +60,6 @@ const SearchBar = ({ setMatchedTutors }) => {
       window.alert(res.errMsg);
     } else {
       const data = res.data;
-      console.log(res);
       setMatchedTutors(data);
     }
   };

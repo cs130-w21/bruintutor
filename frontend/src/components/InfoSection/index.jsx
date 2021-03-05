@@ -87,7 +87,9 @@ const InfoSection = ({
       ) : (
         <AppButton
           style={{ width: 120, height: 30 }}
-          onClick={() => history.push("/profile/" + uid)}
+          onClick={() => {
+            history.push("/profile/" + uid);
+          }}
         >
           Back to Profile
         </AppButton>

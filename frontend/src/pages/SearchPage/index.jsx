@@ -18,7 +18,6 @@ const SearchPage = ({
 }) => {
   const history = useHistory();
   const tutors = [];
-  console.log(matchedTutors, userStore);
   matchedTutors.map((tutorId) => {
     if (tutorId in userStore) tutors.push(userStore[tutorId]);
   });

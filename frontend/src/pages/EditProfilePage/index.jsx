@@ -50,7 +50,6 @@ const EditProfilePage = ({ uid }) => {
       editYear,
       classes
     );
-    console.log(res);
     if (res.error) {
       window.alert(res.errMsg);
     } else {

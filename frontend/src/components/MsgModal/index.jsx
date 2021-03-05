@@ -6,8 +6,8 @@ import TextBox from "../TextBox";
 import Text from "../Text";
 import styles from "./style.js";
 import { useState, useEffect } from "react";
-import { themeColors, icons } from "../../config.js";
-import { getMsgs, sendMsg } from "../../api";
+import { themeColors, icons, NotificationTypes } from "../../config.js";
+import { getMsgs, sendMsg, addNotification } from "../../api";
 
 const MsgLine = ({ message, uid, msgUid }) => {
   return (
@@ -34,16 +34,19 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
   const [text, changeText] = useState("");
   const [messages, setMessages] = useState([]);
   useEffect(() => {
-    /*
-    implementation with backend
-
-    const res = getMsgs(uid, hostUid);
-    setMessages(res.data)
-    */
-    // implementation without backend
-    setMessages([]);
-    // implementation without backend
+    retrieveMsgs();
   }, [uid, msgUid]);
+
+  const retrieveMsgs = async () => {
+    const res = await getMsgs(uid, msgUid);
+    if (res.error) {
+      window.alert(res.errMsg);
+    } else {
+      if (res.data) {
+        setMessages(res.data.messages);
+      }
+    }
+  };
 
   const checkMessage = (msg) => {
     return !(msg === "" || msg.length > 140);
@@ -51,9 +54,6 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
 
   const sendMessage = async (msg) => {
     if (checkMessage(msg)) {
-      /*
-      implementation with backend
-      //
       const res = await sendMsg(uid, msgUid, msg);
       if (!res.error) {
         changeText("");
@@ -63,18 +63,6 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
       } else {
         window.alert("Message not sent: " + res.errMsg);
       }
-      */
-      // implementation without backend
-      changeText("");
-      const newMessages = [...messages];
-      newMessages.push({
-        from: uid,
-        to: msgUid,
-        msg,
-        createdDate: new Date(),
-      });
-      setMessages(newMessages);
-      // implementation without backend
     } else {
       window.alert("Message is invalid");
     }
@@ -82,25 +70,32 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
 
   let msgLines = [];
 
-  messages.map((msg) => {
-    msgLines.push(<MsgLine message={msg} uid={uid} msgUid={msgUid} />);
-  });
+  if (messages)
+    messages.map((msg) => {
+      msgLines.push(<MsgLine message={msg} uid={uid} msgUid={msgUid} />);
+    });
 
   return (
     <div style={styles.container}>
       <TouchableOpacity style={styles.closeButton} onClick={() => closeModal()}>
         {icons.close}
       </TouchableOpacity>
-      <Frame style={styles.msgSection}>
-        <Text style={styles.title}>
-          {userStore[msgUid].firstName + " " + userStore[msgUid].lastName}
-        </Text>
-        {msgLines.length === 0 ? (
-          <Text style={{ margin: "auto" }}>No Messages Sent</Text>
-        ) : (
-          msgLines
-        )}
-      </Frame>
+      {userStore[msgUid] ? (
+        <Frame style={styles.msgContainer}>
+          <Text style={styles.title}>
+            {userStore[msgUid].firstName + " " + userStore[msgUid].lastName}
+          </Text>
+          <Frame style={styles.msgSection}>
+            {msgLines.length === 0 ? (
+              <Text style={{ margin: "auto" }}>No Messages Sent</Text>
+            ) : (
+              msgLines
+            )}
+          </Frame>
+        </Frame>
+      ) : (
+        <></>
+      )}
       <Frame style={styles.commentSection}>
         <TextBox
           style={{
@@ -120,7 +115,28 @@ const MsgModal = ({ uid, msgUid, closeModal, userStore }) => {
           alignSelf: "center",
           margin: 0,
         }}
-        onClick={async () => await sendMessage(text)}
+        onClick={async () => {
+          await sendMessage(text);
+          if (messages.length === 0) {
+            await addNotification(msgUid, {
+              msg: text,
+              createdDate: Date.now(),
+              read: false,
+              type: NotificationTypes.INVITE,
+              from: uid,
+              to: msgUid,
+            });
+          } else {
+            await addNotification(msgUid, {
+              msg: text,
+              createdDate: Date.now(),
+              read: false,
+              type: NotificationTypes.MSG,
+              from: uid,
+              to: msgUid,
+            });
+          }
+        }}
       >
         Send
       </AppButton>
