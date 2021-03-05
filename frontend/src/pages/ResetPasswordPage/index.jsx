@@ -8,17 +8,19 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 const ResetPasswordPage = ({ match }) => {
-  const history = useHistory();
+  let history = useHistory();
+
   const [passwd, setPassWd] = useState("");
   const [passwd_2, setPassWd_2] = useState("");
   const handleResetPwd = async () => {
     if (passwd === passwd_2) {
       const res = await resetPwd(passwd, match.params.secret);
-      if (res.error) {
-        window.alert(res.errMsg);
-        history.push("/result/failure");
+      if (res.error == false) {
+          window.alert("Password reset successfully!");
+          history.push("/auth");
       } else {
-        history.push("/result/success");
+          window.alert("Bad reset request.");
+          history.push("/auth");
       }
     } else {
       window.alert("Passwords don't match!");

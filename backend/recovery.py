@@ -29,7 +29,6 @@ def forgot():
     for uid in redis_client.keys("user*"):
         if email == redis_client.hget(uid, 'email'):
             secret = ''.join(random.choices(string.ascii_letters, k=20))
-            print(recoverystr.format(email=email, secret=secret, baseurl=baseurl))
             try:
                 subprocess.call(
                     recoverystr.format(email=email, secret=secret, baseurl=baseurl),
@@ -46,19 +45,13 @@ def reset ():
     redis_client = current_app.config['RDSCXN']
     try:
         d = request.get_json(force=True)
-        secret, email, password = d['secret'], d['email'], d['password']
+        secret, password = d['secret'], d['password']
     except:
         return errorResponse('Bad request')
 
     for uid in redis_client.keys("user*"):
-        if email == redis_client.hget(uid, 'email'):
-            if not redis_client.exists(f"recovery{uid}"):
-                return errorResponse('No recovery requested, or recovery expired')
-            if secret != redis_client.get(f"recovery{uid}"):
-                return errorResponse('Bad secret')
+        if secret == redis_client.get(f"recovery{uid}"):
             redis_client.hset(uid, 'password', generate_password_hash(password))
             redis_client.delete(f"recovery{uid}")
             return jsonResponse()
-
-    return errorResponse('Recovery action not found')
-
+    return errorResponse('No recovery requested, or recovery expired')

@@ -103,7 +103,7 @@ export const logOutRequest = async () => {
 
 export const forgotPwd = async (email) => {
   try {
-    const res = await POST("/auth/forgot", {
+    const res = await POST("/recovery/forgot", {
       email,
     });
     if (res.status !== 200) {
@@ -122,7 +122,7 @@ export const forgotPwd = async (email) => {
 
 export const resetPwd = async (password, secret) => {
   try {
-    const res = await POST("/auth/reset", {
+    const res = await POST("/recovery/reset", {
       secret,
       password,
     });

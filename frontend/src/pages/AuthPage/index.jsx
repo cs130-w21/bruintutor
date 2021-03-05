@@ -54,9 +54,8 @@ const AuthPage = ({ uid, setUid }) => {
     if (res.error) {
       window.alert(res.errMsg);
     } else {
-      window.alert(
-        "An reset email will be sent to your email address: " + email
-      );
+      window.alert("Recovery request has been sent. Check your email.");
+      history.push("/");
     }
   };
 
