@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import {
   getProfile,
   uploadProfilePicture,
+  downloadProfilePicture,
   deleteNotification,
 } from "../../api";
 import TouchableOpacity from "../../components/TouchableOpacity";
@@ -36,11 +37,19 @@ const ProfilePage = ({
   const history = useHistory();
   const fetchInfo = async () => {
     const res = await getProfile(match.params.id);
+    const res2 = await downloadProfilePicture(match.params.id);
     if (res.error) {
       window.alert(res.errMsg);
     } else {
+      let url;
+      if (res2.error) {
+        window.alert(res2.errMsg);
+      } else {
+        url = res2.data.profilePicUrl;
+      }
       const data = res.data;
       data.uid = match.params.id;
+      data.profileUrl = url;
       setProfileInfo(data);
       setUserStore({
         ...userStore,
@@ -59,11 +68,15 @@ const ProfilePage = ({
   }, [match.params.id, uid]);
 
   const setProfileUrl = async (url) => {
-    await uploadProfilePicture(uid, url);
-    setProfileInfo({
-      ...profileInfo,
-      profileUrl: url,
-    });
+    const res = await uploadProfilePicture(uid, url);
+    if (res.error) {
+      window.alert(res.errMsg);
+    } else {
+      setProfileInfo({
+        ...profileInfo,
+        profileUrl: url,
+      });
+    }
   };
 
   const isOwner = match.params.id === uid;
@@ -75,6 +88,20 @@ const ProfilePage = ({
         onTitleClick={() => history.push("/search/")}
         headerRight={
           <Frame style={{ flexDirection: "row" }}>
+            <AppButton
+              style={{
+                height: "auto",
+                width: "auto",
+                padding: 5,
+                borderRadius: 5,
+              }}
+              onClick={async () => {
+                await logOut();
+                history.push("/");
+              }}
+            >
+              Logout
+            </AppButton>
             <TouchableOpacity
               style={{ margin: 10 }}
               onClick={() => {
@@ -96,20 +123,6 @@ const ProfilePage = ({
                 ></Text>
               )}
             </TouchableOpacity>
-            <AppButton
-              style={{
-                height: "auto",
-                width: "auto",
-                padding: 5,
-                borderRadius: 5,
-              }}
-              onClick={async () => {
-                await logOut();
-                history.push("/");
-              }}
-            >
-              Logout
-            </AppButton>
           </Frame>
         }
       >
@@ -119,6 +132,7 @@ const ProfilePage = ({
               const res = await deleteNotification(uid, notifId);
               if (!res.error) removeNotification(notifId);
             }}
+            userStore={userStore}
             notifications={notifications}
           />
         )}

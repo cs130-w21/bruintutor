@@ -56,6 +56,7 @@ const SearchPage = ({
             const res = await deleteNotification(uid, notifId);
             if (!res.error) removeNotification(notifId);
           }}
+          userStore={userStore}
           notifications={notifications}
         />
       )}

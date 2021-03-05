@@ -5,6 +5,8 @@ import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CoverPage from "./pages/CoverPage";
+import ResetPwdSuccess from "./pages/ResetPwdSuccess";
+import ResetPwdFail from "./pages/ResetPwdFail";
 import "./index.css";
 import { NotificationTypes } from "./config.js";
 import { useState, useEffect } from "react";
@@ -29,33 +31,33 @@ function App() {
     getAuthState();
   }, []);
 
-  useEffect(() => {
+  useEffect(async () => {
     for (let id of matchedTutors) {
       if (!(id in userStore)) {
-        retrieveProfile(id);
+        await retrieveProfile(id);
       }
     }
   }, [matchedTutors]);
 
-  useEffect(() => {
+  useEffect(async () => {
     for (let id of contacts) {
       if (!(id in userStore)) {
-        retrieveProfile(id);
+        await retrieveProfile(id);
       }
     }
   }, [contacts]);
 
-  useEffect(() => {
+  useEffect(async () => {
     if (uid) {
-      retrieveNotifications(uid);
-      retrieveContacts(uid);
+      await retrieveNotifications(uid);
+      await retrieveContacts(uid);
     }
   }, [uid]);
 
-  useEffect(() => {
+  useEffect(async () => {
     for (let notif of notifications) {
       const uid = notif.from;
-      if (uid) retrieveProfile(uid);
+      if (uid) await retrieveProfile(uid);
     }
   }, [notifications]);
 
@@ -186,6 +188,16 @@ function App() {
             render={({ match }) => (
               <ResetPasswordPage uid={uid} match={match} />
             )}
+          />
+          <Route
+            exact
+            path="/result/success"
+            render={({ match }) => <ResetPwdSuccess uid={uid} match={match} />}
+          />
+          <Route
+            exact
+            path="/result/failure"
+            render={({ match }) => <ResetPwdFail uid={uid} match={match} />}
           />
         </Switch>
       </div>

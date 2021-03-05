@@ -352,6 +352,28 @@ export const uploadProfilePicture = async (uid, profilePicUrl) => {
   }
 };
 
+export const downloadProfilePicture = async (uid) => {
+  try {
+    const res = await POST("/profile/pictureDownload", {
+      uid,
+    });
+    if (res.status != 200) {
+      return createError(res, "Status Error: " + res.status);
+    }
+    const data = await res.json();
+    if (data.error) {
+      return createError(null, data.errMsg);
+    } else {
+      return createSuccess(data.payload);
+    }
+  } catch (e) {
+    return createError(
+      e,
+      "server not working for downloading profile picture."
+    );
+  }
+};
+
 export const getSchedule = async (uid) => {
   try {
     const res = await POST("/schedule/get", {

@@ -5,13 +5,21 @@ import AppButton from "../../components/AppButton";
 import Text from "../../components/Text";
 import { resetPwd } from "../../api";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const ResetPasswordPage = ({ match }) => {
+  const history = useHistory();
   const [passwd, setPassWd] = useState("");
   const [passwd_2, setPassWd_2] = useState("");
   const handleResetPwd = async () => {
     if (passwd === passwd_2) {
-      await resetPwd(passwd, match.params.secret);
+      const res = await resetPwd(passwd, match.params.secret);
+      if (res.error) {
+        window.alert(res.errMsg);
+        history.push("/result/failure");
+      } else {
+        history.push("/result/success");
+      }
     } else {
       window.alert("Passwords don't match!");
     }

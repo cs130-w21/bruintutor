@@ -20,18 +20,21 @@ const AuthPage = ({ uid, setUid }) => {
   const [isTutor, setIsTutor] = useState(false);
 
   const handleSignUp = async () => {
-    const res = await signUpUser(firstName, lastName, email, passwd, isTutor);
-    if (res.error) {
-      window.alert(res.errMsg);
-    } else {
-      const data = res.data;
-      setUid(data.uid);
-      history.push({
-        pathname: "/edit_profile/" + data.uid,
-        firstName,
-        lastName,
-        isTutor,
-      });
+    if (passwd !== passwd_2) window.alert("Passwords do not match");
+    else {
+      const res = await signUpUser(firstName, lastName, email, passwd, isTutor);
+      if (res.error) {
+        window.alert(res.errMsg);
+      } else {
+        const data = res.data;
+        setUid(data.uid);
+        history.push({
+          pathname: "/edit_profile/" + data.uid,
+          firstName,
+          lastName,
+          isTutor,
+        });
+      }
     }
   };
 
@@ -51,7 +54,9 @@ const AuthPage = ({ uid, setUid }) => {
     if (res.error) {
       window.alert(res.errMsg);
     } else {
-      // TO DO: notify the email
+      window.alert(
+        "An reset email will be sent to your email address: " + email
+      );
     }
   };
 

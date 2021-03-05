@@ -7,8 +7,12 @@ import AppButton from "../AppButton";
 import { tutorRespondRequest } from "../../api";
 import { useHistory } from "react-router-dom";
 
-const NotificationCard = ({ notification, checkNotification }) => {
+const NotificationCard = ({ userStore, notification, checkNotification }) => {
   const history = useHistory();
+  const fromUser = userStore[notification.from];
+  const fromName = fromUser
+    ? fromUser.firstName + " " + fromUser.lastName
+    : "Unknown";
   return (
     <TouchableOpacity
       style={styles.card}
@@ -17,10 +21,11 @@ const NotificationCard = ({ notification, checkNotification }) => {
         history.push("/profile/" + notification.from);
       }}
     >
-      <Text>{notification.msg}</Text>
+      <Text style={{ fontWeight: "bold" }}>{notification.msg}</Text>
+      <Text style={{ fontSize: 12 }}>from {fromName}</Text>
       {notification.type === NotificationTypes.INVITE ? (
         <Frame style={styles.prompt}>
-          <Text>Accept invitation from {notification.from}?</Text>
+          <Text>Accept invitation from {fromName}?</Text>
           <Frame style={styles.buttons}>
             <AppButton
               style={styles.optionBtn}
@@ -69,10 +74,11 @@ const NotificationCard = ({ notification, checkNotification }) => {
   );
 };
 
-const NotificationBar = ({ checkNotification, notifications }) => {
+const NotificationBar = ({ userStore, checkNotification, notifications }) => {
   const notificationEntries = notifications.map((notification, index) => (
     <NotificationCard
       key={index}
+      userStore={userStore}
       checkNotification={checkNotification}
       notification={notification}
     />
