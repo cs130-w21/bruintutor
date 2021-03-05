@@ -63,7 +63,7 @@ def get():
         next_mid = int(redis_client.get("next_mid"))
         for mid in range(1,next_mid):
             msg = redis_client.hgetall("msg{}".format(mid))
-            if (if msg and msg['from'] == uid1 and msg['to'] == uid2) or (msg['from'] == uid2 and msg['to'] == uid1):
+            if (msg and msg['from'] == uid1 and msg['to'] == uid2) or (msg['from'] == uid2 and msg['to'] == uid1):
                 retMessages.append(msg)
         retMessages.sort(key=sortByDate)
         return jsonResponse({'messages': retMessages})
