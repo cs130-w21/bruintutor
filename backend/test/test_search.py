@@ -20,14 +20,14 @@ def test_search(client, app):
     create_user(12, 'Jill', 'Doe', 'Biology', ['Bio 121', 'Bio 35', 'Bio 173'], redis_client, '1', [1, 22, 24])
     create_user(13, 'JDoNot', 'Show', 'Biology', ['Bio 35', 'CS 111'], redis_client, '0', [1, 22, 27])
 
-    search_result({'name': 'J', 'class': [], 'bytes': create_schedule([])}, [11, 12], client, url)
-    search_result({'name': 'Jill', 'class': ['CS 180'], 'bytes': create_schedule([])}, [11, 12], client, url)
-    search_result({'name': 'JD', 'class': ['CS 111'], 'bytes': create_schedule([])}, [11], client, url)
-    search_result({'name': 'JD', 'class': ['CS 111'], 'bytes': create_schedule([1])}, [11, 12], client, url)
-    search_result({'name': '', 'class': ['CS 111'], 'bytes': create_schedule([1])}, [11, 12], client, url)
-    search_result({'name': '', 'class': [], 'bytes': create_schedule([15, 22])}, [11, 12], client, url)
-    search_result({'name': '', 'class': [], 'bytes': create_schedule([])}, [], client, url)
-    search_result({'name': 'Garbage Data', 'class': ['Unknown class'], 'bytes': create_schedule([13, 27])}, [], client, url)
+    search_result({'name': 'J', 'classes': [], 'bytes': create_schedule([])}, [11, 12], client, url)
+    search_result({'name': 'Jill', 'classes': ['CS 180'], 'bytes': create_schedule([])}, [11, 12], client, url)
+    search_result({'name': 'JD', 'classes': ['CS 111'], 'bytes': create_schedule([])}, [11], client, url)
+    search_result({'name': 'JD', 'classes': ['CS 111'], 'bytes': create_schedule([1])}, [11, 12], client, url)
+    search_result({'name': '', 'classes': ['CS 111'], 'bytes': create_schedule([1])}, [11, 12], client, url)
+    search_result({'name': '', 'classes': [], 'bytes': create_schedule([15, 22])}, [11, 12], client, url)
+    search_result({'name': '', 'classes': [], 'bytes': create_schedule([])}, [], client, url)
+    search_result({'name': 'Garbage Data', 'classes': ['Unknown classes'], 'bytes': create_schedule([13, 27])}, [], client, url)
 
 
 def search_result(values, expected, client, url):

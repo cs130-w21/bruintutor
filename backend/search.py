@@ -15,7 +15,7 @@ def search_results():
             return errorResponse(error)
 
         name = data.get('name')
-        cla = data.get('class')
+        cla = data.get('classes')
         schedule = data.get('bytes')
 
         users = redis_client.keys('user*')
