@@ -85,6 +85,7 @@ def delete():
             return errorResponse(error)
 
         redis_client.lrem("notifications{}".format(uid), 0, notificationID)
+        redis_client.delete("notif{}".format(notificationID))
 
         return jsonResponse()
     return jsonResponse()
