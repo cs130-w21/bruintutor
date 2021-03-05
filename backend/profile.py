@@ -12,15 +12,20 @@ bp = Blueprint('profile', __name__, url_prefix='/api/profile')
 def edit():
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
-        data = request.get_json(force=True)
-        fname = data['firstName']
-        lname = data['lastName']
-        major = data['major']
-        year = data['year']
-        classes = data['classes']
-        uid = data['uid']
+        data = request.get_json()
+        if not data:
+            error = 'Data Body Required'
+            return errorResponse(error)
+        fname = data['firstName'] if 'firstName' in data.keys() else ""
+        lname = data['lastName'] if 'lastName' in data.keys() else ""
+        major = data['major'] if 'major' in data.keys() else ""
+        year = data['year'] if 'year' in data.keys() else ""
+        classes = data['classes'] if 'classes' in data.keys() else []
+        uid = data['uid'] if 'uid' in data.keys() else None
         error = None
-
+        if uid is None:
+            error = "uid required"
+            return errorResponse(error)
         if not redis_client.keys("user{}".format(uid)):
             error = "User with UID {} not found".format(uid)
 
@@ -42,9 +47,15 @@ def edit():
 def get():
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
-        data = request.get_json(force=True)
-        uid = data['uid']
+        data = request.get_json()
+        if not data:
+            error = 'Data Body Required'
+            return errorResponse(error)
+        uid = data['uid'] if 'uid' in data.keys() else None
         error = None
+        if uid is None:
+            error = "uid required"
+            return errorResponse(error)
         user = redis_client.hgetall("user{}".format(uid))
         if user is None:
             error = "User with UID {} not found".format(uid)

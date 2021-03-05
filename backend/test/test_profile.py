@@ -12,7 +12,7 @@ def test_edit(client, app):
         "isTutor": False
     }
     data = json.dumps(json_data)
-    response = client.post(url, data=data)
+    response = client.post(url, data=data, headers={'Content-Type': 'application/json'})
     assert response.status_code == 200
     response_json = response.json
     assert not response_json['error']
@@ -26,12 +26,12 @@ def test_edit(client, app):
         "uid": "1"
     }
     data = json.dumps(json_data)
-    response = client.post(url, data=data)
+    response = client.post(url, data=data, headers={'Content-Type': 'application/json'})
     assert response.status_code == 200
     response_json = response.json
     assert not response_json['error']
 
-    response = client.post(url, data=None)
+    response = client.post(url, data=None, headers={'Content-Type': 'application/json'})
     assert response.status_code == 400
 
 # Testing the login() api
@@ -43,7 +43,7 @@ def test_get(client, app):
     }
 
     data = json.dumps(json_data)
-    response = client.post(url, data=data)
+    response = client.post(url, data=data, headers={'Content-Type': 'application/json'})
     assert response.status_code == 200
     response_json = response.json['payload']
     assert not response_json['error']
@@ -54,7 +54,7 @@ def test_get(client, app):
     assert response_json['classes'] == ["CS 130", "CS 181"]
     assert not response_json['isTutor']
 
-    response = client.post(url, data=None)
+    response = client.post(url, data=None, headers={'Content-Type': 'application/json'})
     assert response.status_code == 400
 
 def test_pictureUpload(client, app):
