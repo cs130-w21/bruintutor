@@ -16,25 +16,27 @@ def search_results():
 
         name = data.get('name')
         cla = data.get('class')
-        major = data.get('major')
         schedule = data.get('bytes')
 
         users = redis_client.keys('user*')
         uid_list = []
+
+        if not schedule:
+            return errorResponse('Please include bytes (schedule)')
+        if not name:
+            name = ''
+        if not cla:
+            cla = []
+
         for u in users:
             user = redis_client.hgetall(u)
             uid = int(u[4:])
 
             user_name = construct_name(user)
             classes = redis_client.lrange("classes{}".format(uid), 0, -1)
-            if 'major' in user.keys():
-                user_major = user['major']
-            else:
-                user_major = ''
 
-            if cla:
-                cla = set(cla)
-                classes = set(classes)
+            cla = set(cla)
+            classes = set(classes)
 
             if 'isTutor' in user.keys():
                 isTutor = user['isTutor']=="1"
@@ -44,11 +46,9 @@ def search_results():
             user_sched = list(map(int, redis_client.lrange('schedule{}'.format(uid), 0, -1)))
             overlaps = schedule_overlaps(schedule, user_sched)
 
-            if (not name or user_name.find(name) >= 0) and \
-                    (not cla or len(cla.intersection(classes)) > 0) and \
-                    (not major or user_major.find(major) >= 0) and \
-                    (not schedule or overlaps) and \
-                    (isTutor):
+            if ((name != '' and user_name.find(name) >= 0) or
+                    (len(cla.intersection(classes)) > 0) or
+                    overlaps) and isTutor:
                 uid_list.append(uid)
 
         return jsonResponse(uid_list)
