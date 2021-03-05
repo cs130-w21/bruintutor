@@ -22,6 +22,7 @@ const InfoSection = ({
   uid,
   isTutor,
   targetUid,
+  classes,
 }) => {
   const history = useHistory();
   return (
@@ -79,6 +80,7 @@ const InfoSection = ({
               lastName,
               major,
               year,
+              classes,
             })
           }
         >
@@ -93,7 +95,9 @@ const InfoSection = ({
         >
           Back to Profile
         </AppButton>
-      ) : (<div/>)}
+      ) : (
+        <div />
+      )}
     </ProfileFrame>
   );
 };

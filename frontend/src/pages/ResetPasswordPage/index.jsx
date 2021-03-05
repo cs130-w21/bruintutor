@@ -16,11 +16,11 @@ const ResetPasswordPage = ({ match }) => {
     if (passwd === passwd_2) {
       const res = await resetPwd(passwd, match.params.secret);
       if (res.error == false) {
-          window.alert("Password reset successfully!");
-          history.push("/auth");
+        window.alert("Password reset successfully!");
+        history.push("/auth");
       } else {
-          window.alert("Bad reset request.");
-          history.push("/auth");
+        window.alert("Bad reset request.");
+        history.push("/auth");
       }
     } else {
       window.alert("Passwords don't match!");

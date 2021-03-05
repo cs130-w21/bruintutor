@@ -164,6 +164,7 @@ const ProfilePage = ({
                   year={profileInfo.year}
                   isTutor={profileInfo.isTutor}
                   major={profileInfo.major}
+                  classes={profileInfo.classes}
                 />
               )}
               {msgUid && (

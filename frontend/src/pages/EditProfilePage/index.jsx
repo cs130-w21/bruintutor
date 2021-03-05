@@ -24,6 +24,7 @@ const EditProfilePage = ({ uid }) => {
     setLastName(location.lastName);
     setEditMajor(location.major);
     setEditYear(location.year);
+    setClasses(location.classes);
   }, [location]);
 
   // const [selectedClass, setSelectedClass] = useState("");
