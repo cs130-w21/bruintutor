@@ -61,3 +61,39 @@ def get():
 
         return errorResponse(error)
     return errorResponse('POST to this endpoint')
+
+@bp.route('/pictureUpload', methods=('GET', 'POST'))
+def pictureUpload():
+    redis_client = current_app.config['RDSCXN']
+    if request.method == 'POST':
+        data = request.get_json()
+        if not data:
+            error = 'Data Body Required'
+            return errorResponse(error)
+        uid = data['uid'] if 'uid' in data.keys() else None
+        profilePicUrl = data['profilePicUrl'] if 'profilePicUrl' in data.keys() else None
+        if uid is None:
+            error = 'uid is required.'
+            return errorResponse(error)
+        elif profilePicUrl is None:
+            error = 'profilePicUrl is required.'
+            return errorResponse(error)
+        redis_client.set("picture{}".format(uid), profilePicUrl)
+        return jsonResponse()
+    return jsonResponse()
+
+@bp.route('/pictureDownload', methods=('GET', 'POST'))
+def pictureDownload():
+    redis_client = current_app.config['RDSCXN']
+    if request.method == 'POST':
+        data = request.get_json()
+        if not data:
+            error = 'Data Body Required'
+            return errorResponse(error)
+        uid = data['uid'] if 'uid' in data.keys() else None
+        if uid is None:
+            error = 'uid is required.'
+            return errorResponse(error)
+        profilePicUrl = redis_client.get("picture{}".format(uid)) or ""
+        return jsonResponse({'profilePicUrl': profilePicUrl})
+    return jsonResponse()

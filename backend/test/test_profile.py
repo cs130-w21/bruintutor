@@ -56,3 +56,36 @@ def test_get(client, app):
 
     response = client.post(url, data=None)
     assert response.status_code == 400
+
+def test_pictureUpload(client, app):
+    url = 'api/profile/pictureUpload'
+    json_data = {
+        "uid": "1",
+        "profilePicUrl": "example.com/image.png"
+    }
+    data = json.dumps(json_data)
+    response = client.post(url, data=data, headers={'Content-Type': 'application/json'})
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    response_json = response.json
+    assert not response_json['error']
+
+    response = client.post(url, data=None, headers={'Content-Type': 'application/json'})
+    assert response.status_code == 400
+
+def test_pictureDownload(client, app):
+    test_pictureUpload(client, app)
+    url = 'api/profile/pictureDownload'
+    json_data = {
+        "uid": "1"
+    }
+    data = json.dumps(json_data)
+    response = client.post(url, data=data, headers={'Content-Type': 'application/json'})
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    response_json = response.json
+    assert not response_json['error']
+    assert response_json['payload']['profilePicUrl'] == "example.com/image.png"
+
+    response = client.post(url, data=None, headers={'Content-Type': 'application/json'})
+    assert response.status_code == 400

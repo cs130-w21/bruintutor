@@ -46,7 +46,7 @@ def search_results():
             user_sched = list(map(int, redis_client.lrange('schedule{}'.format(uid), 0, -1)))
             overlaps = schedule_overlaps(schedule, user_sched)
 
-            if ((name != '' and user_name.find(name) >= 0) or
+            if ((name != '' and user_name.lower().find(name.lower()) >= 0) or
                     (len(cla.intersection(classes)) > 0) or
                     overlaps) and isTutor:
                 uid_list.append(uid)
@@ -73,5 +73,3 @@ def schedule_overlaps(schedule, user_sched):
             return True
 
     return False
-
-

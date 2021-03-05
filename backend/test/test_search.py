@@ -28,6 +28,7 @@ def test_search(client, app):
     search_result({'name': '', 'classes': [], 'bytes': create_schedule([15, 22])}, [11, 12], client, url)
     search_result({'name': '', 'classes': [], 'bytes': create_schedule([])}, [], client, url)
     search_result({'name': 'Garbage Data', 'classes': ['Unknown classes'], 'bytes': create_schedule([13, 27])}, [], client, url)
+    search_result({'name': 'jill', 'classes': [], 'bytes': create_schedule([])}, [12], client, url)
 
 
 def search_result(values, expected, client, url):
