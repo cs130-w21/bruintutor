@@ -71,7 +71,8 @@ def test_get(client, app):
         "read": True,
         "type": "MESSAGE",
         "from": "3",
-        "to": "1"
+        "to": "1",
+        "notificationID": "2"
         } in notifs
     assert {
         "msg": "test message 1",
@@ -79,7 +80,8 @@ def test_get(client, app):
         "read": False,
         "type": "MESSAGE",
         "from": "2",
-        "to": "1"
+        "to": "1",
+        "notificationID": "1"
         } in notifs
 
     response = client.post(url, data=None, headers={'Content-Type': 'application/json'})
@@ -113,11 +115,17 @@ def test_delete(client, app):
     }
     data = json.dumps(json_data)
     response = client.post(url, data=data, headers={'Content-Type': 'application/json'})
-
+    url = 'api/notification/get'
+    json_data = {
+        "uid": "2"
+    }
+    data = json.dumps(json_data)
+    response = client.post(url, data=data, headers={'Content-Type': 'application/json'})
+    nids = [response.json['payload']['notification'][0]['notificationID'],response.json['payload']['notification'][1]['notificationID']]
     url = 'api/notification/delete'
     json_data = {
         "uid": "2",
-        "notificationID": "1"
+        "notificationID": nids[0]
     }
     data = json.dumps(json_data)
     response = client.post(url, data=data, headers={'Content-Type': 'application/json'})
@@ -133,13 +141,15 @@ def test_delete(client, app):
     response = client.post(url, data=data, headers={'Content-Type': 'application/json'})
     response_json = response.json
     notifs = response_json['payload']['notification']
+    assert len(notifs) == 1
     assert {
         "msg": "test message 2",
         "createdDate": 2,
         "read": True,
         "type": "MESSAGE",
         "from": "3",
-        "to": "2"
+        "to": "2",
+        "notificationID": nids[1]
         } in notifs
 
     response = client.post(url, data=None, headers={'Content-Type': 'application/json'})

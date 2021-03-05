@@ -34,7 +34,7 @@ def add():
 
         next_nid = redis_client.get('next_nid')
         redis_client.incr('next_nid')
-        redis_client.hmset("notif{}".format(next_nid), {'from': notification['from'], 'to': notification['to'], 'msg': notification['msg'], 'createdDate': notification['createdDate'], 'type': notification['type'], 'read': 1 if notification['read'] else 0})
+        redis_client.hmset("notif{}".format(next_nid), {'from': notification['from'], 'to': notification['to'], 'msg': notification['msg'], 'createdDate': notification['createdDate'], 'type': notification['type'], 'read': 1 if notification['read'] else 0, 'notificationID': next_nid})
         redis_client.rpush("notifications{}".format(uid), next_nid)
         return jsonResponse()
     return jsonResponse()
