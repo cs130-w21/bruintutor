@@ -84,7 +84,7 @@ const InfoSection = ({
         >
           Edit Profile
         </AppButton>
-      ) : (
+      ) : uid ? (
         <AppButton
           style={{ width: 120, height: 30 }}
           onClick={() => {
@@ -93,7 +93,7 @@ const InfoSection = ({
         >
           Back to Profile
         </AppButton>
-      )}
+      ) : (<div/>)}
     </ProfileFrame>
   );
 };
