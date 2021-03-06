@@ -11,6 +11,8 @@ import { deleteNotification } from "../../api";
 const SearchPage = ({
   uid,
   userStore,
+  contacts,
+  setContacts,
   matchedTutors,
   setMatchedTutors,
   notificationOn,
@@ -58,6 +60,8 @@ const SearchPage = ({
           }}
           userStore={userStore}
           notifications={notifications}
+          contacts={contacts}
+          setContacts={setContacts}
         />
       )}
       <Frame

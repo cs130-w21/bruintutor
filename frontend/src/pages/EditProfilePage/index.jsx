@@ -20,11 +20,11 @@ const EditProfilePage = ({ uid }) => {
   const location = useLocation();
 
   useEffect(() => {
-    setFirstName(location.firstName);
-    setLastName(location.lastName);
-    setEditMajor(location.major);
-    setEditYear(location.year);
-    setClasses(location.classes);
+    setFirstName(location.firstName ? location.firstName : "");
+    setLastName(location.lastName ? location.lastName : "");
+    setEditMajor(location.major ? location.major : "");
+    setEditYear(location.year ? location.year : "");
+    setClasses(location.classes ? location.classes : []);
   }, [location]);
 
   // const [selectedClass, setSelectedClass] = useState("");
