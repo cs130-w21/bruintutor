@@ -14,6 +14,7 @@ help:
 
 html: apidoc
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	rm -fdr ../_*
 	mv -f $(BUILDDIR)/html/* ../
 
 apidoc: 
