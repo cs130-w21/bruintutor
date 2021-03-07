@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.com/cs130-w21/bruintutor.svg?branch=master)](https://travis-ci.com/cs130-w21/bruintutor)
 [![Release](https://img.shields.io/github/v/release/cs130-w21/bruintutor?label=release)](https://github.com/cs130-w21/bruintutor/releases/latest)
 
+[Documentation](https://cs130-w21.github.io/bruintutor/)
+
 _"Walking among three people, I find my teacher among them. I choose that which is good in them and follow it, and that which is bad and change it.” \
 -- Confucius_
 
