@@ -1,21 +1,41 @@
+"""
+app.py
+============
+Entrypoint for Bruintutor backend
+"""
+
 import os
-# from flask_cors import CORS, cross_origin
 import auth, profile, class_list, recovery, match, message, search, schedule, notification
 from flask import Flask
 import rdscli
 
-rdscli.connect()
+try:
+    rdscli.connect()
+except:
+    pass
+
 def create_app(test_config=None):
+    """
+    Create and configure the app.
+
+    Parameters
+    ----
+    test_config
+        configuration file for the app
+    """
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     # CORS(app, supports_credentials = True)
-    if rdscli.r.get('next_uid') == None:
-        rdscli.r.set('next_uid', 1)
-    if rdscli.r.get('next_mid') == None:
-        rdscli.r.set('next_mid', 1)
-    if rdscli.r.get('next_nid') == None:
-        rdscli.r.set('next_nid', 1)
-    rdscli.r.bgsave()
+    try:
+        if rdscli.r.get('next_uid') == None:
+            rdscli.r.set('next_uid', 1)
+        if rdscli.r.get('next_mid') == None:
+            rdscli.r.set('next_mid', 1)
+        if rdscli.r.get('next_nid') == None:
+            rdscli.r.set('next_nid', 1)
+        rdscli.r.bgsave()
+    except:
+        pass
     app.config.from_mapping(
         SECRET_KEY = 'dev',
         RDSCXN = rdscli.r,

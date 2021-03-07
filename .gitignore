@@ -3,9 +3,13 @@
 tags*
 .rdb
 **/virtualenv/**
+**/venv/**
 __pycache__
 **/.eslintcache*
 **/package-lock.json
 **/yarn.lock
 **/debug.log
+docs/sphinx/build/
+docs/sphinx/source/*
+!docs/sphinx/source/index.rst
 .vscode

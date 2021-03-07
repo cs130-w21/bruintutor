@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>backend package &#8212; Bruintutor  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="backend" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="backend-package">
+<h1>backend package<a class="headerlink" href="#backend-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-backend.app">
+<span id="backend-app-module"></span><h2>backend.app module<a class="headerlink" href="#module-backend.app" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="app-py">
+<h3>app.py<a class="headerlink" href="#app-py" title="Permalink to this headline">¶</a></h3>
+<p>Entrypoint for Bruintutor backend</p>
+<dl class="py function">
+<dt id="backend.app.create_app">
+<code class="sig-prename descclassname"><span class="pre">backend.app.</span></code><code class="sig-name descname"><span class="pre">create_app</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.app.create_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and configure the app.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>test_config</strong> – configuration file for the app</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-backend.auth">
+<span id="backend-auth-module"></span><h2>backend.auth module<a class="headerlink" href="#module-backend.auth" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.auth.getuid">
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">getuid</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.getuid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.auth.load_logged_in_user">
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">load_logged_in_user</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.load_logged_in_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.auth.login">
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">login</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.auth.login_required">
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">login_required</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.login_required" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.auth.logout">
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">logout</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.logout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.auth.register">
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">register</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.class_list">
+<span id="backend-class-list-module"></span><h2>backend.class_list module<a class="headerlink" href="#module-backend.class_list" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.class_list.class_list">
+<code class="sig-prename descclassname"><span class="pre">backend.class_list.</span></code><code class="sig-name descname"><span class="pre">class_list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.class_list.class_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.form_response">
+<span id="backend-form-response-module"></span><h2>backend.form_response module<a class="headerlink" href="#module-backend.form_response" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.form_response.errorResponse">
+<code class="sig-prename descclassname"><span class="pre">backend.form_response.</span></code><code class="sig-name descname"><span class="pre">errorResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.form_response.errorResponse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.form_response.jsonResponse">
+<code class="sig-prename descclassname"><span class="pre">backend.form_response.</span></code><code class="sig-name descname"><span class="pre">jsonResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.form_response.jsonResponse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.match">
+<span id="backend-match-module"></span><h2>backend.match module<a class="headerlink" href="#module-backend.match" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.match.get_user_list">
+<code class="sig-prename descclassname"><span class="pre">backend.match.</span></code><code class="sig-name descname"><span class="pre">get_user_list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.match.get_user_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.match.tutor_respond">
+<code class="sig-prename descclassname"><span class="pre">backend.match.</span></code><code class="sig-name descname"><span class="pre">tutor_respond</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.match.tutor_respond" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.message">
+<span id="backend-message-module"></span><h2>backend.message module<a class="headerlink" href="#module-backend.message" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.message.add">
+<code class="sig-prename descclassname"><span class="pre">backend.message.</span></code><code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.message.add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.message.get">
+<code class="sig-prename descclassname"><span class="pre">backend.message.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.message.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.message.sortByDate">
+<code class="sig-prename descclassname"><span class="pre">backend.message.</span></code><code class="sig-name descname"><span class="pre">sortByDate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.message.sortByDate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.notification">
+<span id="backend-notification-module"></span><h2>backend.notification module<a class="headerlink" href="#module-backend.notification" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.notification.add">
+<code class="sig-prename descclassname"><span class="pre">backend.notification.</span></code><code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.notification.add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.notification.delete">
+<code class="sig-prename descclassname"><span class="pre">backend.notification.</span></code><code class="sig-name descname"><span class="pre">delete</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.notification.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.notification.get">
+<code class="sig-prename descclassname"><span class="pre">backend.notification.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.notification.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.profile">
+<span id="backend-profile-module"></span><h2>backend.profile module<a class="headerlink" href="#module-backend.profile" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.profile.edit">
+<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">edit</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.profile.edit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.profile.get">
+<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.profile.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.profile.pictureDownload">
+<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">pictureDownload</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.profile.pictureDownload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.profile.pictureUpload">
+<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">pictureUpload</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.profile.pictureUpload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.rdscli">
+<span id="backend-rdscli-module"></span><h2>backend.rdscli module<a class="headerlink" href="#module-backend.rdscli" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.rdscli.connect">
+<code class="sig-prename descclassname"><span class="pre">backend.rdscli.</span></code><code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6379</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.rdscli.connect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.recovery">
+<span id="backend-recovery-module"></span><h2>backend.recovery module<a class="headerlink" href="#module-backend.recovery" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.recovery.forgot">
+<code class="sig-prename descclassname"><span class="pre">backend.recovery.</span></code><code class="sig-name descname"><span class="pre">forgot</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.recovery.forgot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.recovery.reset">
+<code class="sig-prename descclassname"><span class="pre">backend.recovery.</span></code><code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.recovery.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.schedule">
+<span id="backend-schedule-module"></span><h2>backend.schedule module<a class="headerlink" href="#module-backend.schedule" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.schedule.get">
+<code class="sig-prename descclassname"><span class="pre">backend.schedule.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.schedule.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.schedule.set">
+<code class="sig-prename descclassname"><span class="pre">backend.schedule.</span></code><code class="sig-name descname"><span class="pre">set</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.schedule.set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend.search">
+<span id="backend-search-module"></span><h2>backend.search module<a class="headerlink" href="#module-backend.search" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="backend.search.construct_name">
+<code class="sig-prename descclassname"><span class="pre">backend.search.</span></code><code class="sig-name descname"><span class="pre">construct_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.search.construct_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.search.schedule_overlaps">
+<code class="sig-prename descclassname"><span class="pre">backend.search.</span></code><code class="sig-name descname"><span class="pre">schedule_overlaps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schedule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_sched</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.search.schedule_overlaps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="backend.search.search_results">
+<code class="sig-prename descclassname"><span class="pre">backend.search.</span></code><code class="sig-name descname"><span class="pre">search_results</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.search.search_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-backend">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-backend" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Bruintutor</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">backend</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">backend package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">backend</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">backend</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/backend.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
