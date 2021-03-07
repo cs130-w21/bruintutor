@@ -29,6 +29,7 @@ const ProfilePage = ({
   setNotificationOn,
   setUserStore,
   removeNotification,
+  setContacts,
   logOut,
 }) => {
   const [profileInfo, setProfileInfo] = useState();
@@ -58,8 +59,8 @@ const ProfilePage = ({
       setTargetUid(match.params.id);
     }
   };
-  useEffect(() => {
-    fetchInfo();
+  useEffect(async () => {
+    await fetchInfo();
     if (!isOwner) setMsgUid(match.params.id);
     else {
       setMsgUid("");
@@ -134,6 +135,8 @@ const ProfilePage = ({
             }}
             userStore={userStore}
             notifications={notifications}
+            contacts={contacts}
+            setContacts={setContacts}
           />
         )}
         <Frame

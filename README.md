@@ -74,3 +74,20 @@ Delete cached images:
 
 Create a local redis instance connectable from localhost:6379:
 `docker run --rm -d -p 6379:6379 redis:alpine`
+
+## CI Process
+The CI process is triggered upon each change to a branch or to a Pull Request on Github
+to trigger the process, you can upload contents from your local branch through `git push origin local-branch`. 
+To manually trigger the build process, you can go to the [bruintutor Travis CI page](https://travis-ci.com/github/cs130-w21/bruintutor). 
+Here there will be a dropdown menu beside more options that looks like:
+
+![build_options](images/buildOptions.png)
+
+When trigger build is pressed, this should lead you to a popup that looks like:
+
+![start_build](images/popup.png)
+
+Press "Trigger Custom Build" to begin the manually created build process.
+
+Also located at the [bruintutor Travis CI page](https://travis-ci.com/github/cs130-w21/bruintutor) is the history of builds
+from all the PR requests created in this project. This will give an idea of how the CI process has developed.

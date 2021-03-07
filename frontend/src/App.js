@@ -32,20 +32,23 @@ function App() {
   }, []);
 
   useEffect(async () => {
-    for (let id of matchedTutors) {
-      if (!(id in userStore)) {
-        await retrieveProfile(id);
-      }
-    }
-  }, [matchedTutors]);
-
-  useEffect(async () => {
+    const newUsers = {};
     for (let id of contacts) {
       if (!(id in userStore)) {
-        await retrieveProfile(id);
+        await retrieveProfile(id, newUsers);
       }
     }
-  }, [contacts]);
+    for (let id of matchedTutors) {
+      if (!(id in userStore)) {
+        await retrieveProfile(id, newUsers);
+      }
+    }
+    for (let notif of notifications) {
+      const uid = notif.from;
+      if (uid) await retrieveProfile(uid, newUsers);
+    }
+    setUserStore({ ...userStore, ...newUsers });
+  }, [contacts, matchedTutors, notifications]);
 
   useEffect(async () => {
     if (uid) {
@@ -53,13 +56,6 @@ function App() {
       await retrieveContacts(uid);
     }
   }, [uid]);
-
-  useEffect(async () => {
-    for (let notif of notifications) {
-      const uid = notif.from;
-      if (uid) await retrieveProfile(uid);
-    }
-  }, [notifications]);
 
   const removeNotification = (notificationID) => {
     let newNotifications = [...notifications];
@@ -69,7 +65,8 @@ function App() {
     setNotifications(newNotifications);
   };
 
-  const retrieveProfile = async (uid) => {
+  const retrieveProfile = async (uid, newUsers) => {
+    console.log(uid);
     const res = await getProfile(uid);
     const schRes = await getSchedule(uid);
     if (res.error) {
@@ -80,10 +77,7 @@ function App() {
       info.uid = uid;
       if (schedule.bytes.length > 0) info.schedule = schedule.bytes;
       else info.schedule = Array(42).fill(0);
-      setUserStore({
-        ...userStore,
-        [uid]: info,
-      });
+      newUsers[uid] = info;
     }
   };
 
@@ -155,6 +149,7 @@ function App() {
                 setNotificationOn={setNotificationOn}
                 notificationOn={notificationOn}
                 removeNotification={removeNotification}
+                setContacts={setContacts}
                 match={match}
                 logOut={logOut}
               />
@@ -168,6 +163,8 @@ function App() {
                 uid={uid}
                 match={match}
                 userStore={userStore}
+                contacts={contacts}
+                setContacts={setContacts}
                 matchedTutors={matchedTutors}
                 setMatchedTutors={setMatchedTutors}
                 notifications={notifications}

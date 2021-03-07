@@ -7,7 +7,13 @@ import AppButton from "../AppButton";
 import { tutorRespondRequest } from "../../api";
 import { useHistory } from "react-router-dom";
 
-const NotificationCard = ({ userStore, notification, checkNotification }) => {
+const NotificationCard = ({
+  userStore,
+  notification,
+  checkNotification,
+  contacts,
+  setContacts,
+}) => {
   const history = useHistory();
   const fromUser = userStore[notification.from];
   const fromName = fromUser
@@ -30,9 +36,17 @@ const NotificationCard = ({ userStore, notification, checkNotification }) => {
             <AppButton
               style={styles.optionBtn}
               onClick={async () => {
-                await tutorRespondRequest(notification.from, notification.to);
-                checkNotification(notification.notificationID);
-                history.push("/profile/" + notification.from);
+                const res = await tutorRespondRequest(
+                  notification.from,
+                  notification.to
+                );
+                if (res.error) {
+                  window.alert(res.errMsg);
+                } else {
+                  checkNotification(notification.notificationID);
+                  setContacts([...contacts, notification.from]);
+                  history.push("/profile/" + notification.from);
+                }
               }}
             >
               Yes
@@ -74,13 +88,21 @@ const NotificationCard = ({ userStore, notification, checkNotification }) => {
   );
 };
 
-const NotificationBar = ({ userStore, checkNotification, notifications }) => {
+const NotificationBar = ({
+  userStore,
+  checkNotification,
+  notifications,
+  contacts,
+  setContacts,
+}) => {
   const notificationEntries = notifications.map((notification, index) => (
     <NotificationCard
       key={index}
       userStore={userStore}
       checkNotification={checkNotification}
       notification={notification}
+      contacts={contacts}
+      setContacts={setContacts}
     />
   ));
   return <Frame style={styles.bar}>{notificationEntries}</Frame>;
