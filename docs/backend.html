@@ -14,7 +14,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="backend" href="modules.html" />
+    <link rel="prev" title="Welcome to Bruintutor’s documentation!" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -40,10 +40,10 @@
 <span id="backend-app-module"></span><h2>backend.app module<a class="headerlink" href="#module-backend.app" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="app-py">
 <h3>app.py<a class="headerlink" href="#app-py" title="Permalink to this headline">¶</a></h3>
-<p>Entrypoint for Bruintutor backend</p>
+<p>Entrypoint for Bruintutor backend. All API endpoints start with /api</p>
 <dl class="py function">
 <dt id="backend.app.create_app">
-<code class="sig-prename descclassname"><span class="pre">backend.app.</span></code><code class="sig-name descname"><span class="pre">create_app</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.app.create_app" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">backend.app.</span></code><code class="sig-name descname"><span class="pre">create_app</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/app.html#create_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.app.create_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create and configure the app.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -56,181 +56,829 @@
 </div>
 <div class="section" id="module-backend.auth">
 <span id="backend-auth-module"></span><h2>backend.auth module<a class="headerlink" href="#module-backend.auth" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="auth-py">
+<h3>auth.py<a class="headerlink" href="#auth-py" title="Permalink to this headline">¶</a></h3>
+<p>Authentication API endpoints. All routes start with /api/auth
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key ‘payload’,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.</p>
 <dl class="py function">
 <dt id="backend.auth.getuid">
-<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">getuid</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.getuid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="backend.auth.load_logged_in_user">
-<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">load_logged_in_user</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.load_logged_in_user" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">getuid</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/auth.html#getuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.auth.getuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>GET get currently logged in user from session cookie</p>
+<p class="rubric">Notes</p>
+<p>Implicitly sends session cookie with request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>uid</strong> – Unique identification for user.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.auth.login">
-<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">login</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.login" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="backend.auth.login_required">
-<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">login_required</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.login_required" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">login</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/auth.html#login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.auth.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST login as a user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – </p></li>
+<li><p><strong>password</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>uid</strong> – unique ID that idenfies this user.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>InvalidEmail</strong> – Email does not exist in system.</p></li>
+<li><p><strong>InvalidPassword</strong> – Password does not exist in system.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function also sets a encrypted session cookie which can only be
+decrypted server-side.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#backend.auth.getuid" title="backend.auth.getuid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend.auth.getuid</span></code></a></dt><dd><p>getuid from session cookie.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.auth.logout">
-<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">logout</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.logout" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">logout</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/auth.html#logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.auth.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST clear the current session cookie for a logged in user</p>
+<p class="rubric">Notes</p>
+<p>Returns an empty session cookie, in addition to an empty payload.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.auth.register">
-<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">register</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.auth.register" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.auth.</span></code><code class="sig-name descname"><span class="pre">register</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/auth.html#register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.auth.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST Register a new user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>firstName</strong> (<em>str</em>) – </p></li>
+<li><p><strong>lastName</strong> (<em>str</em>) – </p></li>
+<li><p><strong>email</strong> (<em>str</em>) – </p></li>
+<li><p><strong>password</strong> (<em>str</em>) – </p></li>
+<li><p><strong>isTutor</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>uid</strong> – unique ID that idenfies this user.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p></li>
+<li><p><strong>UsersExists</strong> – User with the same email has already registered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend.class_list">
 <span id="backend-class-list-module"></span><h2>backend.class_list module<a class="headerlink" href="#module-backend.class_list" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="class-list-py">
+<h3>class_list.py<a class="headerlink" href="#class-list-py" title="Permalink to this headline">¶</a></h3>
+<p>Endpoints for retrieving a list of all classes. All routes start with
+/api/classList
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key ‘payload’,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.</p>
 <dl class="py function">
 <dt id="backend.class_list.class_list">
-<code class="sig-prename descclassname"><span class="pre">backend.class_list.</span></code><code class="sig-name descname"><span class="pre">class_list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.class_list.class_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.class_list.</span></code><code class="sig-name descname"><span class="pre">class_list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/class_list.html#class_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.class_list.class_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST Get the class list for a given subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>subjectArea</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>uid</strong> – list of all classes associated with the given subject area.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p>
+</dd>
+</dl>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend.form_response">
 <span id="backend-form-response-module"></span><h2>backend.form_response module<a class="headerlink" href="#module-backend.form_response" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="form-response-py">
+<h3>form_response.py<a class="headerlink" href="#form-response-py" title="Permalink to this headline">¶</a></h3>
+<p>Helper methods for generating response objects. All response objects are
+generated like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <dl class="py function">
 <dt id="backend.form_response.errorResponse">
-<code class="sig-prename descclassname"><span class="pre">backend.form_response.</span></code><code class="sig-name descname"><span class="pre">errorResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.form_response.errorResponse" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.form_response.</span></code><code class="sig-name descname"><span class="pre">errorResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/form_response.html#errorResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.form_response.errorResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formulate a response return that is an error.
+:param msg: error message to return to frontend.
+:type msg: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>_</strong> – object suitable for reply over HTTP with a correctly formulated JSON body.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Response object</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.form_response.jsonResponse">
-<code class="sig-prename descclassname"><span class="pre">backend.form_response.</span></code><code class="sig-name descname"><span class="pre">jsonResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.form_response.jsonResponse" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.form_response.</span></code><code class="sig-name descname"><span class="pre">jsonResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/form_response.html#jsonResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.form_response.jsonResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formulate a response return that is successful.
+:param body: dictionary of keys and their values to send with as the response
+:type body: dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>_</strong> – object suitable for reply over HTTP with a correctly formulated JSON body.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Response object</p>
+</dd>
+</dl>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend.match">
 <span id="backend-match-module"></span><h2>backend.match module<a class="headerlink" href="#module-backend.match" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="match-py">
+<h3>match.py<a class="headerlink" href="#match-py" title="Permalink to this headline">¶</a></h3>
+<p>Endpoints for operations related to matching users. All routes start with
+/api/match
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key ‘payload’,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.</p>
 <dl class="py function">
 <dt id="backend.match.get_user_list">
-<code class="sig-prename descclassname"><span class="pre">backend.match.</span></code><code class="sig-name descname"><span class="pre">get_user_list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.match.get_user_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.match.</span></code><code class="sig-name descname"><span class="pre">get_user_list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/match.html#get_user_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.match.get_user_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST get associated users of a given user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uid</strong> (<em>int</em>) – UID for the interested user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>userList</strong> – string list of uids associated with the requested user</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[int]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.match.tutor_respond">
-<code class="sig-prename descclassname"><span class="pre">backend.match.</span></code><code class="sig-name descname"><span class="pre">tutor_respond</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.match.tutor_respond" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.match.</span></code><code class="sig-name descname"><span class="pre">tutor_respond</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/match.html#tutor_respond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.match.tutor_respond" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST [for tutors] respond to an incoming connection request.
+Backend adds both members to each other’s list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>studentID</strong> (<em>int</em>) – UID for the student</p></li>
+<li><p><strong>tutorID</strong> (<em>int</em>) – UID of the tutor</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>returns an empty response body on success.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p>
+</dd>
+</dl>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend.message">
 <span id="backend-message-module"></span><h2>backend.message module<a class="headerlink" href="#module-backend.message" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="message-py">
+<h3>message.py<a class="headerlink" href="#message-py" title="Permalink to this headline">¶</a></h3>
+<p>Endpoints for operations related to matching users. All routes start with
+/api/message
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key ‘payload’,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.</p>
 <dl class="py function">
 <dt id="backend.message.add">
-<code class="sig-prename descclassname"><span class="pre">backend.message.</span></code><code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.message.add" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.message.</span></code><code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/message.html#add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.message.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST submit a message.
+:param from: UID for the originator, as string
+:type from: str
+:param to: UID of the recipient, as string
+:type to: str
+:param msg: message content
+:type msg: str
+:param createdDate:
+:type createdDate: timestamp</p>
+<p class="rubric">Notes</p>
+<p>returns an empty response body on success.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.message.get">
-<code class="sig-prename descclassname"><span class="pre">backend.message.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.message.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.message.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/message.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.message.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST submit a message.
+:param uid1: UID for the originator, as string
+:type uid1: str
+:param uid2: UID of the recipient, as string
+:type uid2: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>messages</strong> – list of messages from uid1 to uid2</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list(Message)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>the Message object is exactly the request parameters of add/</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#backend.message.add" title="backend.message.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend.message.add</span></code></a></dt><dd><p>contents of the Message object</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.message.sortByDate">
-<code class="sig-prename descclassname"><span class="pre">backend.message.</span></code><code class="sig-name descname"><span class="pre">sortByDate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.message.sortByDate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.message.</span></code><code class="sig-name descname"><span class="pre">sortByDate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/message.html#sortByDate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.message.sortByDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>helper function in redis search. unused during communication</p>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend.notification">
 <span id="backend-notification-module"></span><h2>backend.notification module<a class="headerlink" href="#module-backend.notification" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="notification-py">
+<h3>notification.py<a class="headerlink" href="#notification-py" title="Permalink to this headline">¶</a></h3>
+<p>Endpoints for operations related to matching users. All routes start with
+/api/notification
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key ‘payload’,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.</p>
 <dl class="py function">
 <dt id="backend.notification.add">
-<code class="sig-prename descclassname"><span class="pre">backend.notification.</span></code><code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.notification.add" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.notification.</span></code><code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/notification.html#add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.notification.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST get currently pending notifications</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uid</strong> (<em>str</em>) – UID to set the notification for</p></li>
+<li><p><strong>notification</strong> (<em>Notification</em>) – Notification object (see notes)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>notifications</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list(Notification)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>the Notification object is structure as the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">notificationId</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">createDate</span><span class="p">:</span> <span class="n">timestamp</span>
+    <span class="n">read</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;INITIATE&quot;</span> <span class="ow">or</span> <span class="s2">&quot;MESSAGE&quot;</span>
+    <span class="n">from</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">to</span><span class="p">:</span> <span class="n">uid</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.notification.delete">
-<code class="sig-prename descclassname"><span class="pre">backend.notification.</span></code><code class="sig-name descname"><span class="pre">delete</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.notification.delete" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.notification.</span></code><code class="sig-name descname"><span class="pre">delete</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/notification.html#delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.notification.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST delete a given notification</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uid</strong> (<em>str</em>) – </p></li>
+<li><p><strong>notificationId</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Method returns an empty object on success.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#backend.notification.get" title="backend.notification.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend.notification.get</span></code></a></dt><dd><p>notificationId</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.notification.get">
-<code class="sig-prename descclassname"><span class="pre">backend.notification.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.notification.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.notification.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/notification.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.notification.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST get currently pending notifications</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uid</strong> (<em>str</em>) – UID for the user requesting notifications</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>notifications</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list(Notification)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>the Notification objects returned by this endpoint each additionally
+contain a notificationId, which uniquely identifies them.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#backend.notification.add" title="backend.notification.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend.notification.add</span></code></a></dt><dd><p>implementation of Notification</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend.profile">
 <span id="backend-profile-module"></span><h2>backend.profile module<a class="headerlink" href="#module-backend.profile" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="profile-py">
+<h3>profile.py<a class="headerlink" href="#profile-py" title="Permalink to this headline">¶</a></h3>
+<p>Endpoints for operations related to matching users. All routes start with
+/api/profile
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key ‘payload’,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.</p>
 <dl class="py function">
 <dt id="backend.profile.edit">
-<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">edit</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.profile.edit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">edit</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/profile.html#edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.profile.edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST change attributes of a user profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>firstName</strong> (<em>str</em>) – </p></li>
+<li><p><strong>lastName</strong> (<em>str</em>) – </p></li>
+<li><p><strong>major</strong> (<em>str</em>) – </p></li>
+<li><p><strong>year</strong> (<em>int</em>) – </p></li>
+<li><p><strong>classes</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – </p></li>
+<li><p><strong>uid</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>returns empty json object on success.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p></li>
+<li><p><strong>UidNotFound</strong> – Could not find the user in the database.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.profile.get">
-<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.profile.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/profile.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.profile.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST get attributes of a user profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uid</strong> (<em>str</em>) – uid of requested profile</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>firstName</strong> (<em>str</em>)</p></li>
+<li><p><strong>lastName</strong> (<em>str</em>)</p></li>
+<li><p><strong>major</strong> (<em>str</em>)</p></li>
+<li><p><strong>year</strong> (<em>int</em>)</p></li>
+<li><p><strong>classes</strong> (<em>list(str)</em>)</p></li>
+<li><p><strong>uid</strong> (<em>str</em>)</p></li>
+<li><p><strong>notifications</strong> (<em>list(Notifications)</em>)</p></li>
+<li><p><strong>Messages</strong> (<em>list(Messages)</em>)</p></li>
+<li><p><strong>isTutor</strong> (<em>bool</em>)</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p></li>
+<li><p><strong>UidNotFound</strong> – Could not find the user in the database.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#module-backend.message" title="backend.message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend.message</span></code></a></dt><dd><p>messages module</p>
+</dd>
+<dt><a class="reference internal" href="#module-backend.notification" title="backend.notification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend.notification</span></code></a></dt><dd><p>notifications modle</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.profile.pictureDownload">
-<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">pictureDownload</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.profile.pictureDownload" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">pictureDownload</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/profile.html#pictureDownload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.profile.pictureDownload" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST download the profile picture for the given user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uid</strong> (<em>str</em>) – uid of requested profile</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>profilePicUrl</strong> – base64 encoded data string or None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p></li>
+<li><p><strong>UidNotFound</strong> – Could not find the user in the database.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.profile.pictureUpload">
-<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">pictureUpload</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.profile.pictureUpload" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.profile.</span></code><code class="sig-name descname"><span class="pre">pictureUpload</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/profile.html#pictureUpload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.profile.pictureUpload" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST upload a picture for the given user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uid</strong> (<em>str</em>) – uid of requested profile</p></li>
+<li><p><strong>profilePicUrl</strong> (<em>str</em>) – base64 encoded data string</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>method returns empty json object on success.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p></li>
+<li><p><strong>UidNotFound</strong> – Could not find the user in the database.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend.rdscli">
 <span id="backend-rdscli-module"></span><h2>backend.rdscli module<a class="headerlink" href="#module-backend.rdscli" title="Permalink to this headline">¶</a></h2>
+<p>rdscli.py
+helper module to connect to redis database.</p>
 <dl class="py function">
 <dt id="backend.rdscli.connect">
-<code class="sig-prename descclassname"><span class="pre">backend.rdscli.</span></code><code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6379</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.rdscli.connect" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.rdscli.</span></code><code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6379</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/rdscli.html#connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.rdscli.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to database. Each subsequent call connects to the database again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host</strong> (<em>str</em>) – server location of redis</p></li>
+<li><p><strong>port</strong> (<em>int</em>) – default 6379 port of redis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>rdscli.r</strong> – module-global Redis connection object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Redis</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-backend.recovery">
 <span id="backend-recovery-module"></span><h2>backend.recovery module<a class="headerlink" href="#module-backend.recovery" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="recovery-py">
+<h3>recovery.py<a class="headerlink" href="#recovery-py" title="Permalink to this headline">¶</a></h3>
+<p>Endpoints for operations related to matching users. All routes start with
+/api/recovery
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key ‘payload’,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.</p>
 <dl class="py function">
 <dt id="backend.recovery.forgot">
-<code class="sig-prename descclassname"><span class="pre">backend.recovery.</span></code><code class="sig-name descname"><span class="pre">forgot</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.recovery.forgot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.recovery.</span></code><code class="sig-name descname"><span class="pre">forgot</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/recovery.html#forgot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.recovery.forgot" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST submit a password reset request. Emails the user a recovery link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – email to reset to</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>returns an empty response body on success.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p></li>
+<li><p><strong>EmailNotFound</strong> – no user associated with email.</p></li>
+<li><p><strong>ServerBad</strong> – Mailserver is not functioning.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.recovery.reset">
-<code class="sig-prename descclassname"><span class="pre">backend.recovery.</span></code><code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.recovery.reset" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.recovery.</span></code><code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/recovery.html#reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.recovery.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST complete a password reset request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>secret</strong> (<em>str</em>) – secret sent in email</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – new password</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>returns an empty response body on success.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p></li>
+<li><p><strong>NoRecovery</strong> – No recovery has been requested.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend.schedule">
 <span id="backend-schedule-module"></span><h2>backend.schedule module<a class="headerlink" href="#module-backend.schedule" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="schedule-py">
+<h3>schedule.py<a class="headerlink" href="#schedule-py" title="Permalink to this headline">¶</a></h3>
+<p>Endpoints for operations related to matching users. All routes start with
+/api/schedule
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key ‘payload’,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.</p>
+<p>Scheduling blocks are from 9am - 9pm in two hour incrememts for 6 blocks a day,
+7 days a week. We index into a scheduling array by 6*day + block.</p>
 <dl class="py function">
 <dt id="backend.schedule.get">
-<code class="sig-prename descclassname"><span class="pre">backend.schedule.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.schedule.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.schedule.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/schedule.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.schedule.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST get schedule for user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uid</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>bytes</strong> – see module description for magic 42.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int[42]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.schedule.set">
-<code class="sig-prename descclassname"><span class="pre">backend.schedule.</span></code><code class="sig-name descname"><span class="pre">set</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.schedule.set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.schedule.</span></code><code class="sig-name descname"><span class="pre">set</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/schedule.html#set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.schedule.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST set schedule for user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uid</strong> (<em>str</em>) – </p></li>
+<li><p><strong>bytes</strong> (<em>int</em><em>[</em><em>42</em><em>]</em>) – see module description for magic 42.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>returns an empty response body on success.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p>
+</dd>
+</dl>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend.search">
 <span id="backend-search-module"></span><h2>backend.search module<a class="headerlink" href="#module-backend.search" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="search-py">
+<h3>search.py<a class="headerlink" href="#search-py" title="Permalink to this headline">¶</a></h3>
+<p>Endpoints for operations related to matching users. All routes start with
+/api/search
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key ‘payload’,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error-msg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;return-1&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.</p>
 <dl class="py function">
 <dt id="backend.search.construct_name">
-<code class="sig-prename descclassname"><span class="pre">backend.search.</span></code><code class="sig-name descname"><span class="pre">construct_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.search.construct_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.search.</span></code><code class="sig-name descname"><span class="pre">construct_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/search.html#construct_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.search.construct_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function for search. Not used in requests.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.search.schedule_overlaps">
-<code class="sig-prename descclassname"><span class="pre">backend.search.</span></code><code class="sig-name descname"><span class="pre">schedule_overlaps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schedule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_sched</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.search.schedule_overlaps" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.search.</span></code><code class="sig-name descname"><span class="pre">schedule_overlaps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schedule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_sched</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/search.html#schedule_overlaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.search.schedule_overlaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function for search. Not used in requests.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="backend.search.search_results">
-<code class="sig-prename descclassname"><span class="pre">backend.search.</span></code><code class="sig-name descname"><span class="pre">search_results</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.search.search_results" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname"><span class="pre">backend.search.</span></code><code class="sig-name descname"><span class="pre">search_results</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/backend/search.html#search_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#backend.search.search_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST /get get search results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – case-insensitive name search</p></li>
+<li><p><strong>classes</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – name of classes to search for</p></li>
+<li><p><strong>major</strong> (<em>str</em>) – major to search for</p></li>
+<li><p><strong>bytes</strong> (<em>int</em><em>[</em><em>42</em><em>]</em>) – availibility to search for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tutors</strong> – list of UIDs of tutors which match search criteria</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list(str)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>BadRequest</strong> – Some part of the required parameters is missing.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#module-backend.schedule" title="backend.schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend.schedule</span></code></a></dt><dd><p>magic 42</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-backend">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-backend" title="Permalink to this headline">¶</a></h2>
@@ -256,8 +904,21 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">backend</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">backend package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">backend package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.app">backend.app module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.auth">backend.auth module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.class_list">backend.class_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.form_response">backend.form_response module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.match">backend.match module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.message">backend.message module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.notification">backend.notification module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.profile">backend.profile module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.rdscli">backend.rdscli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.recovery">backend.recovery module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.schedule">backend.schedule module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.search">backend.search module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -266,9 +927,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="modules.html">backend</a><ul>
-      <li>Previous: <a href="modules.html" title="previous chapter">backend</a></li>
-  </ul></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Bruintutor’s documentation!</a></li>
   </ul></li>
 </ul>
 </div>

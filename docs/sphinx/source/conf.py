@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('../../../backend'))
 
 project = 'Bruintutor'
 copyright = '2021'
-author = 't'
+author = 'Alex Chen, Gerald Diep-Tran, Davis Gomes, Sammy Li, Nathan Midkiff and Ricky Zhao'
 
 
 # -- General configuration ---------------------------------------------------
@@ -31,7 +31,8 @@ author = 't'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
