@@ -1,3 +1,27 @@
+"""
+auth.py
+============
+Authentication API endpoints. All routes start with /api/auth
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key 'payload',
+like this:
+
+.. code-block::
+
+    {
+      "error": "false",
+      "error-msg": None,
+        "payload": {
+        "return-1": "true"
+      }
+    }
+
+
+Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.
+"""
+
 import functools
 import flask
 from flask import (
@@ -8,9 +32,30 @@ from form_response import jsonResponse, errorResponse
 
 bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
-# TODO: why specify GET?
 @bp.route('/register', methods=['POST'])
 def register():
+    """ POST Register a new user.
+
+    Parameters
+    ------
+    firstName: str
+    lastName: str
+    email: str
+    password: str
+    isTutor: bool
+
+    Returns
+    ------
+    uid: int
+        unique ID that idenfies this user.
+
+    Raises
+    ------
+    BadRequest
+        Some part of the required parameters is missing.
+    UsersExists
+        User with the same email has already registered.
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json(force=True)
@@ -47,6 +92,34 @@ def register():
 
 @bp.route('/login', methods=['POST'])
 def login():
+    """ POST login as a user.
+
+    Parameters
+    ------
+    email: str
+    password: str
+
+    Returns
+    ------
+    uid: int
+        unique ID that idenfies this user.
+
+    Raises
+    ------
+    InvalidEmail
+        Email does not exist in system.
+    InvalidPassword
+        Password does not exist in system.
+
+    Notes
+    -----
+    This function also sets a encrypted session cookie which can only be
+    decrypted server-side.
+
+    See Also
+    --------
+    backend.auth.getuid : getuid from session cookie.
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json(force=True)
@@ -75,13 +148,23 @@ def login():
         return errorResponse(error)
     return errorResponse('POST to this endpoint')
 
-# a way for the frontend to get uid of currently logged in user, if avail
 @bp.route('/getuid', methods=['GET'])
 def getuid():
+    """ GET get currently logged in user from session cookie
+
+    Notes
+    -----
+    Implicitly sends session cookie with request
+
+    Returns
+    -------
+    uid: int
+        Unique identification for user.
+    """
     return jsonResponse({'uid': session.get('user_id')})
 
 @bp.before_app_request
-def load_logged_in_user():
+def _load_logged_in_user():
     redis_client = current_app.config['RDSCXN']
     user_id = session.get('user_id')
 
@@ -92,10 +175,16 @@ def load_logged_in_user():
 
 @bp.route('/logout', methods=['GET'])
 def logout():
+    """ POST clear the current session cookie for a logged in user
+
+    Notes
+    -----
+    Returns an empty session cookie, in addition to an empty payload. 
+    """
     session.clear()
     return jsonResponse()
 
-def login_required(view):
+def _login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:

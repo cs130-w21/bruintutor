@@ -1,3 +1,27 @@
+"""
+profile.py
+===============
+Endpoints for operations related to matching users. All routes start with
+/api/profile
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key 'payload',
+like this:
+
+.. code-block::
+
+    {
+      "error": "false",
+      "error-msg": None,
+        "payload": {
+        "return-1": "true"
+      }
+    }
+
+
+Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.
+"""
 import functools
 import flask
 from flask import (
@@ -10,6 +34,28 @@ bp = Blueprint('profile', __name__, url_prefix='/api/profile')
 
 @bp.route('/edit', methods=('GET', 'POST'))
 def edit():
+    """ POST change attributes of a user profile.
+
+        Parameters
+        ----------
+        firstName: str
+        lastName: str
+        major: str
+        year: int
+        classes: list(str)
+        uid: str
+
+        Notes
+        -----
+        returns empty json object on success.
+
+        Raises
+        ------
+        BadRequest
+            Some part of the required parameters is missing.
+        UidNotFound
+            Could not find the user in the database.
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json()
@@ -45,6 +91,37 @@ def edit():
 
 @bp.route('/get', methods=('GET', 'POST'))
 def get():
+    """ POST get attributes of a user profile.
+
+        Parameters
+        ----------
+        uid: str
+            uid of requested profile
+
+        Returns
+        -------
+        firstName: str
+        lastName: str
+        major: str
+        year: int
+        classes: list(str)
+        uid: str
+        notifications: list(Notifications)
+        Messages: list(Messages)
+        isTutor: bool
+
+        Raises
+        ------
+        BadRequest
+            Some part of the required parameters is missing.
+        UidNotFound
+            Could not find the user in the database.
+
+        See Also
+        --------
+        backend.message: messages module
+        backend.notification: notifications modle
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json()
@@ -75,6 +152,26 @@ def get():
 
 @bp.route('/pictureUpload', methods=('GET', 'POST'))
 def pictureUpload():
+    """ POST upload a picture for the given user.
+
+        Parameters
+        ----------
+        uid: str
+            uid of requested profile
+        profilePicUrl: str
+            base64 encoded data string
+
+        Notes
+        -----
+        method returns empty json object on success.
+
+        Raises
+        ------
+        BadRequest
+            Some part of the required parameters is missing.
+        UidNotFound
+            Could not find the user in the database.
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json()
@@ -95,6 +192,25 @@ def pictureUpload():
 
 @bp.route('/pictureDownload', methods=('GET', 'POST'))
 def pictureDownload():
+    """ POST download the profile picture for the given user.
+
+        Parameters
+        ----------
+        uid: str
+            uid of requested profile
+
+        Returns
+        -------
+        profilePicUrl: str
+            base64 encoded data string or None
+
+        Raises
+        ------
+        BadRequest
+            Some part of the required parameters is missing.
+        UidNotFound
+            Could not find the user in the database.
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json()

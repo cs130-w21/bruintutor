@@ -1,7 +1,6 @@
 """
 app.py
-============
-Entrypoint for Bruintutor backend
+Entrypoint for Bruintutor backend. All API endpoints start with /api
 """
 
 import os

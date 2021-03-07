@@ -1,3 +1,28 @@
+"""
+message.py
+==============
+Endpoints for operations related to matching users. All routes start with
+/api/message
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key 'payload',
+like this:
+
+.. code-block::
+
+    {
+      "error": "false",
+      "error-msg": None,
+        "payload": {
+        "return-1": "true"
+      }
+    }
+
+
+Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.
+"""
+import csv, json, os
 import functools
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
@@ -13,6 +38,26 @@ bp = Blueprint('message', __name__, url_prefix='/api/message')
 
 @bp.route('/add', methods=('GET', 'POST'))
 def add():
+    """ POST submit a message.
+        Parameters
+        ----------
+        from: str
+            UID for the originator, as string
+        to: str
+            UID of the recipient, as string
+        msg: str
+            message content
+        createdDate: timestamp
+
+        Notes
+        -----
+        returns an empty response body on success.
+
+        Raises
+        ------
+        BadRequest
+            Some part of the required parameters is missing.
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json()
@@ -41,10 +86,37 @@ def add():
     return jsonResponse()
 
 def sortByDate(msg):
+    """ helper function in redis search. unused during communication """
     return msg['createdDate']
 
 @bp.route('/get', methods=('GET', 'POST'))
 def get():
+    """ POST submit a message.
+        Parameters
+        ----------
+        uid1: str
+            UID for the originator, as string
+        uid2: str
+            UID of the recipient, as string
+
+        Returns
+        -------
+        messages: list(Message)
+            list of messages from uid1 to uid2
+
+        Notes
+        -----
+        the Message object is exactly the request parameters of add/
+
+        Raises
+        ------
+        BadRequest
+            Some part of the required parameters is missing.
+
+        See Also
+        --------
+        backend.message.add: contents of the Message object
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json()

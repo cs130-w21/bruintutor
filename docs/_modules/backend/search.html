@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>backend.search &#8212; Bruintutor  documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for backend.search</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">search.py</span>
+<span class="sd">==============</span>
+<span class="sd">Endpoints for operations related to matching users. All routes start with</span>
+<span class="sd">/api/search</span>
+<span class="sd">All incoming request parameters are wrapped in a JSON body.</span>
+<span class="sd">All outgoing response returns are wrapped in a JSON entry with key &#39;payload&#39;,</span>
+<span class="sd">like this:</span>
+
+<span class="sd">.. code-block::</span>
+
+<span class="sd">    {</span>
+<span class="sd">      &quot;error&quot;: &quot;false&quot;,</span>
+<span class="sd">      &quot;error-msg&quot;: None,</span>
+<span class="sd">        &quot;payload&quot;: {</span>
+<span class="sd">        &quot;return-1&quot;: &quot;true&quot;</span>
+<span class="sd">      }</span>
+<span class="sd">    }</span>
+
+
+<span class="sd">Note that method documentation assumes you are using jsonResponse/errorResponse</span>
+<span class="sd">to generate the response, and only shows the actual returns within payload.</span>
+<span class="sd">Ditto for request parameters.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Blueprint</span><span class="p">,</span> <span class="n">flash</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span> <span class="n">current_app</span>
+<span class="p">)</span>
+<span class="n">bp</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s1">&#39;/api/search&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">form_response</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="search_results"><a class="viewcode-back" href="../../backend.html#backend.search.search_results">[docs]</a><span class="nd">@bp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">search_results</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; POST /get get search results</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name: str</span>
+<span class="sd">            case-insensitive name search</span>
+<span class="sd">        classes: list(str)</span>
+<span class="sd">            name of classes to search for</span>
+<span class="sd">        major: str</span>
+<span class="sd">            major to search for</span>
+<span class="sd">        bytes: int[42]</span>
+<span class="sd">            availibility to search for</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tutors: list(str)</span>
+<span class="sd">            list of UIDs of tutors which match search criteria</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        BadRequest</span>
+<span class="sd">            Some part of the required parameters is missing.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        backend.schedule: magic 42</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">redis_client</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;RDSCXN&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Data Body Required&#39;</span>
+            <span class="k">return</span> <span class="n">errorResponse</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">cla</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;classes&#39;</span><span class="p">)</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bytes&#39;</span><span class="p">)</span>
+
+        <span class="n">users</span> <span class="o">=</span> <span class="n">redis_client</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="s1">&#39;user*&#39;</span><span class="p">)</span>
+        <span class="n">uid_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">schedule</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">errorResponse</span><span class="p">(</span><span class="s1">&#39;Please include bytes (schedule)&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cla</span><span class="p">:</span>
+            <span class="n">cla</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">redis_client</span><span class="o">.</span><span class="n">hgetall</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">uid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">4</span><span class="p">:])</span>
+
+            <span class="n">user_name</span> <span class="o">=</span> <span class="n">construct_name</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">classes</span> <span class="o">=</span> <span class="n">redis_client</span><span class="o">.</span><span class="n">lrange</span><span class="p">(</span><span class="s2">&quot;classes</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uid</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">cla</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">cla</span><span class="p">)</span>
+            <span class="n">classes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">classes</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s1">&#39;isTutor&#39;</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">isTutor</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;isTutor&#39;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;1&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">isTutor</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="n">user_sched</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">redis_client</span><span class="o">.</span><span class="n">lrange</span><span class="p">(</span><span class="s1">&#39;schedule</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uid</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+            <span class="n">overlaps</span> <span class="o">=</span> <span class="n">schedule_overlaps</span><span class="p">(</span><span class="n">schedule</span><span class="p">,</span> <span class="n">user_sched</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">((</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">user_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cla</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="n">overlaps</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isTutor</span><span class="p">:</span>
+                <span class="n">uid_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">jsonResponse</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonResponse</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="construct_name"><a class="viewcode-back" href="../../backend.html#backend.search.construct_name">[docs]</a><span class="k">def</span> <span class="nf">construct_name</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Helper function for search. Not used in requests.&quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="s1">&#39;fname&#39;</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;fname&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;lname&#39;</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;lname&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="schedule_overlaps"><a class="viewcode-back" href="../../backend.html#backend.search.schedule_overlaps">[docs]</a><span class="k">def</span> <span class="nf">schedule_overlaps</span><span class="p">(</span><span class="n">schedule</span><span class="p">,</span> <span class="n">user_sched</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Helper function for search. Not used in requests.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">schedule</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">user_sched</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">schedule</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">schedule</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">user_sched</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Bruintutor</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../backend.html">backend package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

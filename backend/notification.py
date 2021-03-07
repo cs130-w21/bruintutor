@@ -1,3 +1,27 @@
+"""
+notification.py
+===============
+Endpoints for operations related to matching users. All routes start with
+/api/notification
+All incoming request parameters are wrapped in a JSON body.
+All outgoing response returns are wrapped in a JSON entry with key 'payload',
+like this:
+
+.. code-block::
+
+    {
+      "error": "false",
+      "error-msg": None,
+        "payload": {
+        "return-1": "true"
+      }
+    }
+
+
+Note that method documentation assumes you are using jsonResponse/errorResponse
+to generate the response, and only shows the actual returns within payload.
+Ditto for request parameters.
+"""
 import functools
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
@@ -13,6 +37,40 @@ bp = Blueprint('notification', __name__, url_prefix='/api/notification')
 
 @bp.route('/add', methods=('GET', 'POST'))
 def add():
+    """ POST get currently pending notifications
+
+        Parameters
+        ----------
+        uid: str
+            UID to set the notification for
+        notification: Notification
+            Notification object (see notes)
+
+        Returns
+        -------
+        notifications: list(Notification)
+
+        Notes
+        -----
+        the Notification object is structure as the following:
+
+        .. code-block::
+
+            {
+                msg: str
+                notificationId: str
+                createDate: timestamp
+                read: bool
+                type: "INITIATE" or "MESSAGE"
+                from: str
+                to: uid
+            }
+
+        Raises
+        ------
+        BadRequest
+            Some part of the required parameters is missing.
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json()
@@ -41,6 +99,26 @@ def add():
 
 @bp.route('/get', methods=('GET', 'POST'))
 def get():
+    """ POST get currently pending notifications
+
+        Parameters
+        ----------
+        uid: str
+            UID for the user requesting notifications
+
+        Returns
+        -------
+        notifications: list(Notification)
+
+        Notes
+        -----
+        the Notification objects returned by this endpoint each additionally
+        contain a notificationId, which uniquely identifies them.
+
+        See Also
+        --------
+        backend.notification.add: implementation of Notification
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json()
@@ -65,6 +143,21 @@ def get():
 
 @bp.route('/delete', methods=('GET', 'POST'))
 def delete():
+    """ POST delete a given notification
+
+        Parameters
+        ----------
+        uid: str
+        notificationId: str
+
+        Notes
+        -----
+        Method returns an empty object on success.
+
+        See Also
+        --------
+        backend.notification.get: notificationId
+    """
     redis_client = current_app.config['RDSCXN']
     if request.method == 'POST':
         data = request.get_json()

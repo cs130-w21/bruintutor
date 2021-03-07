@@ -10,7 +10,7 @@ Welcome to Bruintutor's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   modules
+   backend
 
 Indices and tables
 ==================
